@@ -28,7 +28,7 @@ Route::post('/reset', 'PasswordResetController@reset');
 //total - 11
 //Campus - Campus
 //Apenas Admin pode fazer CRUD
-route::group(['prefix'=>'campus'], ['middleware' => ['check.admin','check.assistance']], function (){
+route::group(['prefix'=>'campus', 'middleware' => ['check.admin','check.assistance']], function (){
     Route::get('/', 'CampusController@index')->name('campus.index');
     Route::post('/', 'CampusController@store')->name('campus.store');
     Route::get('/show/{id}', 'CampusController@show')->name('campus.show');
@@ -39,7 +39,7 @@ route::group(['prefix'=>'campus'], ['middleware' => ['check.admin','check.assist
 
 //Apenas Admin pode fazer CRUD
 //User - Usuario
-route::group(['prefix'=>'user'], ['middleware' => ['check.admin']], function (){
+route::group(['prefix'=>'user', 'middleware' => ['check.admin']], function (){
    route::get('/','UserController@index')->name('user.index');
    route::post('/','UserController@store')->name('user.store');
    route::get('/show/{id}','UserController@show')->name('user.show');
@@ -48,8 +48,9 @@ route::group(['prefix'=>'user'], ['middleware' => ['check.admin']], function (){
    Route::get('/search/{search}', 'UserController@search')->name('user.search');
 });
 
+//Apenas Assitencia pode fazer CRUD
 //course - Curso
-route::group(['prefix'=>'course'],function (){
+route::group(['prefix'=>'course','middleware' => ['check.assistance']],function (){
     route::get('/','CourseController@index')->name('course.index');
    route::post('/','CourseController@store')->name('course.store');
    route::get('/show/{id}','CourseController@show')->name('course.show');
@@ -59,7 +60,7 @@ route::group(['prefix'=>'course'],function (){
 });
 
 //shift - Turno
-route::group(['prefix'=>'shift'],function (){
+route::group(['prefix'=>'shift','middleware' => ['check.assistance']],function (){
     route::get('/','ShiftController@index')->name('shift.index');
    route::post('/','ShiftController@store')->name('shift.store');
    route::get('/show/{id}','ShiftController@show')->name('shift.show');
@@ -69,7 +70,7 @@ route::group(['prefix'=>'shift'],function (){
 });
 
 //Student - Aluno
-route::group(['prefix'=>'student'],function (){
+route::group(['prefix'=>'student','middleware' => ['check.assistance']],function (){
     route::get('/','StudentController@index')->name('student.index');
    route::post('/','StudentController@store')->name('student.store');
    route::get('/show/{id}','StudentController@show')->name('student.show');
@@ -80,16 +81,17 @@ route::group(['prefix'=>'student'],function (){
 
 //Meal - Refeição
 route::group(['prefix'=>'meal'],function (){
-    route::get('/','MealController@index')->name('meal.index');
-   route::post('/','MealController@store')->name('meal.store');
+    route::get('/','MealController@index')->name('meal.index')->middleware(['check.nutritionist']);
+   route::post('/','MealController@store')->name('meal.store')->middleware(['check.nutritionist']);
    route::get('/show/{id}','MealController@show')->name('meal.show')->middleware(['check.nutritionist']);
-   Route::put('/{id}', 'MealController@update')->name('meal.update');
-   Route::delete('/{id}', 'MealController@destroy')->name('meal.destroy');
-   Route::get('/search/{search}', 'MealController@search')->name('meal.search');
+   Route::put('/{id}', 'MealController@update')->name('meal.update')->middleware(['check.nutritionist','check.assistance','check.reception']);
+   Route::delete('/{id}', 'MealController@destroy')->name('meal.destroy')->middleware(['check.nutritionist']);
+   Route::get('/search/{search}', 'MealController@search')->name('meal.search')->middleware(['check.nutritionist','check.assistance','check.reception']);
 });
 
 //Menu - Cardapio
-route::group(['prefix'=>'menu'],function (){
+//Apenas Nutricionista pode fazer CRUD
+route::group(['prefix'=>'menu','middleware' => ['check.nutritionist']],function (){
     route::get('/','MenuController@index')->name('menu.index');
    route::post('/','MenuController@store')->name('menu.store');
    route::get('/show/{id}','MenuController@show')->name('menu.show');
@@ -103,14 +105,14 @@ route::group(['prefix'=>'scheduling'],function (){
     route::get('/','SchedulingController@index')->name('scheduling.index');
    route::post('/','SchedulingController@store')->name('scheduling.store');
    route::get('/show/{id}','SchedulingController@show')->name('scheduling.show');
-   Route::put('/{id}', 'SchedulingController@update')->name('scheduling.update');
+   Route::put('/{id}', 'SchedulingController@update')->name('scheduling.update')->middleware(['check.assistance','check.reception']);
    Route::delete('/{id}', 'SchedulingController@destroy')->name('scheduling.destroy');
-   Route::get('/search/{search}', 'SchedulingController@search')->name('scheduling.search');
+   Route::get('/search/{search}', 'SchedulingController@search')->name('scheduling.search')->middleware(['check.assistance','check.reception']);
 });
 
 
 //Republic - Republica
-route::group(['prefix'=>'republic'],function (){
+route::group(['prefix'=>'republic','middleware' => ['check.assistance']],function (){
     route::get('/','RepublicController@index')->name('republic.index');
    route::post('/','RepublicController@store')->name('republic.store');
    route::get('/show/{id}','RepublicController@show')->name('republic.show');
@@ -119,8 +121,9 @@ route::group(['prefix'=>'republic'],function (){
    Route::get('/search/{search}', 'RepublicController@search')->name('republic.search');
 });
 
+
 //Permições - Allowstudenmealday
-route::group(['prefix'=>'allowstudenmealday'],function (){
+route::group(['prefix'=>'allowstudenmealday','middleware' => ['check.assistance']],function (){
     route::get('/','AllowstudenmealdayController@index')->name('allowstudenmealday.index');
     route::post('/','AllowstudenmealdayController@store')->name('allowstudenmealday.store');
     route::get('/show/{republic}','AllowstudenmealdayController@show')->name('allowstudenmealday.show');

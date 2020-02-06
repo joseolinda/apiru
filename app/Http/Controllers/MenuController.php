@@ -172,7 +172,7 @@ class MenuController extends Controller
 
     public function search($search)
     {
-        $menu = Menu::where( 'date', 'LIKE', '%' . $search . '%' )->get();
+        $menu = Menu::where( 'date',$search)->get();
         if(!$menu){
             return response()->json([
                 'message' => 'Cardápio não encontrado!'
