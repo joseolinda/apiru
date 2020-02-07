@@ -127,13 +127,13 @@ class StudentController extends Controller
                 'message' => 'Turno invalido!'
             ], 404);
         }
-
+        /*
         if(!$this->verifyDateValid($request->dateValid)){
             return response()->json([
                 'message' => 'Data Invalida!'
             ], 404);
         }
-
+*/
         $student->name = $request->name;
         $student->mat = $request->mat;
         $student->campus_id = $request->campus_id;

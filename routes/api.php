@@ -28,7 +28,7 @@ Route::post('/reset', 'PasswordResetController@reset');
 //total - 11
 //Campus - Campus
 //Apenas Admin pode fazer CRUD
-route::group(['prefix'=>'campus', 'middleware' => ['check.admin','check.assistance']], function (){
+route::group(['prefix'=>'campus', 'middleware' => ['check.admin']], function (){
     Route::get('/', 'CampusController@index')->name('campus.index');
     Route::post('/', 'CampusController@store')->name('campus.store');
     Route::get('/show/{id}', 'CampusController@show')->name('campus.show');
@@ -81,7 +81,7 @@ route::group(['prefix'=>'student','middleware' => ['check.assistance']],function
 
 //Meal - Refeição
 route::group(['prefix'=>'meal'],function (){
-    route::get('/','MealController@index')->name('meal.index')->middleware(['check.nutritionist']);
+    route::get('/','MealController@index')->name('meal.index')->middleware(['check.nutritionist'])->middleware(['check.assistance','check.reception']);;
    route::post('/','MealController@store')->name('meal.store')->middleware(['check.nutritionist']);
    route::get('/show/{id}','MealController@show')->name('meal.show')->middleware(['check.nutritionist']);
    Route::put('/{id}', 'MealController@update')->name('meal.update')->middleware(['check.nutritionist','check.assistance','check.reception']);
@@ -91,8 +91,9 @@ route::group(['prefix'=>'meal'],function (){
 
 //Menu - Cardapio
 //Apenas Nutricionista pode fazer CRUD
+//Falta criar o middleware do student
 route::group(['prefix'=>'menu','middleware' => ['check.nutritionist']],function (){
-    route::get('/','MenuController@index')->name('menu.index');
+    route::get('/','MenuController@index')->name('menu.index')->middleware(['check.student']);;
    route::post('/','MenuController@store')->name('menu.store');
    route::get('/show/{id}','MenuController@show')->name('menu.show');
    Route::put('/{id}', 'MenuController@update')->name('menu.update');
@@ -101,8 +102,9 @@ route::group(['prefix'=>'menu','middleware' => ['check.nutritionist']],function 
 });
 
 //Scheduling - Agendamento
+//Falta a parte do studante.
 route::group(['prefix'=>'scheduling'],function (){
-    route::get('/','SchedulingController@index')->name('scheduling.index');
+    route::get('/','SchedulingController@index')->name('scheduling.index')->middleware(['check.assistance','check.reception']);
    route::post('/','SchedulingController@store')->name('scheduling.store');
    route::get('/show/{id}','SchedulingController@show')->name('scheduling.show');
    Route::put('/{id}', 'SchedulingController@update')->name('scheduling.update')->middleware(['check.assistance','check.reception']);
