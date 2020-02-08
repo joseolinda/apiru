@@ -18,10 +18,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 //Rotas de Autenticação
-Route::post('/register', 'AuthController@register');
+Route::post('/register', 'AuthController@register')->middleware(['check.admin']);
 Route::post('/login', 'AuthController@login');
 Route::post('/logout', 'AuthController@logout');
 //Rotas de recuperação de senha
+
+//Falta criar as rotas de redifinir senha.
 Route::post('/redefinepassword', 'PasswordResetController@redefinePassword');
 Route::post('/reset', 'PasswordResetController@reset');
 
@@ -39,9 +41,9 @@ route::group(['prefix'=>'campus', 'middleware' => ['check.admin']], function (){
 
 //Apenas Admin pode fazer CRUD
 //User - Usuario
-route::group(['prefix'=>'user', 'middleware' => ['check.admin']], function (){
+route::group(['prefix'=>'user','middleware' => ['check.admin']], function (){
    route::get('/','UserController@index')->name('user.index');
-   route::post('/','UserController@store')->name('user.store');
+   //route::post('/','UserController@store')->name('user.store');
    route::get('/show/{id}','UserController@show')->name('user.show');
    Route::put('/{id}', 'UserController@update')->name('user.update');
    Route::delete('/{id}', 'UserController@destroy')->name('user.destroy');
@@ -93,7 +95,7 @@ route::group(['prefix'=>'meal'],function (){
 //Apenas Nutricionista pode fazer CRUD
 //Falta criar o middleware do student
 route::group(['prefix'=>'menu','middleware' => ['check.nutritionist']],function (){
-    route::get('/','MenuController@index')->name('menu.index')->middleware(['check.student']);;
+    route::get('/','MenuController@index')->name('menu.index')->middleware(['check.student']);
    route::post('/','MenuController@store')->name('menu.store');
    route::get('/show/{id}','MenuController@show')->name('menu.show');
    Route::put('/{id}', 'MenuController@update')->name('menu.update');
