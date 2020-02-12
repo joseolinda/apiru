@@ -47,6 +47,20 @@ class AllowstudenmealdayController extends Controller
         }
         return true;
     }
+
+    public function verifyStudentDouble($id){
+        if(empty($id)) {
+            return false;
+        }
+        $studentDouble = Allowstudenmealday::get();
+        foreach($studentDouble as $x){
+            if($x->student_id == $id){
+                return false;
+                break;
+            }
+        }
+        return true;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -77,12 +91,19 @@ class AllowstudenmealdayController extends Controller
         //Verificando se existe campus cadastrados.
         if(!$this->verifyStudentValid($request->student_id)){
             return response()->json([
-                'message' => 'Campus inválido!'
+                'message' => 'Estudante inválido!'
             ], 404);
         }
+        //Verificando se existe refeição cadastrados.
         if(!$this->verifyMealValid($request->meal_id)){
             return response()->json([
-                'message' => 'Refeição inválid!'
+                'message' => 'Refeição inválida !'
+            ], 404);
+        }
+        //Verificando se existe deplicidade de estudantes.
+        if(!$this->verifyStudentDouble($request->student_id)){
+            return response()->json([
+                'message' => 'Estudante ja cadastrado !'
             ], 404);
         }
 

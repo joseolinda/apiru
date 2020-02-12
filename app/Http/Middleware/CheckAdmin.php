@@ -15,7 +15,7 @@ class CheckAdmin
      */
     public function handle($request, Closure $next)
     {
-        // Verifica se está logado, se não tiver redireciona
+        // Verifica seo usuário está logado.
         if ( !auth()->check() )
             //return redirect()->route('login');
             return response()->json(["Erro 401"], 401);
@@ -23,8 +23,8 @@ class CheckAdmin
         // Recupera o type do usuário logado
         $type = auth()->user()->type;
 
-        // Verifica se é ADMINISTRADOR, se não manda uma msg de erro.
-        if ( $type != 'ADMIN' )
+        // Verifica se é ADMINISTRADOR, se sim manda uma msg de erro.
+        if ( $type == 'ADMIN' )
             return response()->json(["Erro 401"], 401);
 
         return $next($request);

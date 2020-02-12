@@ -41,6 +41,9 @@ class AuthController extends Controller
 
     public function register(Request $request){
 
+        if ( !auth()->check() )
+            return response()->json(["Erro 401"], 401);
+
         $validation = Validator::make($request->all(),$this->rules, $this->messages);
 
         if($validation->fails()){

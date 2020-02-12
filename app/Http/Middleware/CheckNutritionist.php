@@ -15,7 +15,7 @@ class CheckNutritionist
      */
     public function handle($request, Closure $next)
     {
-        // Verifica se está logado, se não tiver redireciona
+        // Verifica seo usuário está logado.
         if ( !auth()->check() )
             //return redirect()->route('login');
             return response()->json(["Erro 401"], 401);
@@ -23,8 +23,8 @@ class CheckNutritionist
         // Recupera o type do usuário logado
         $type = auth()->user()->type;
 
-        // Verifica se é NUTRICIONISTA, se não manda uma msg de erro.
-        if ( $type != 'NUTRI' )
+        // Verifica se é NUTRICIONISTA, se sim manda uma msg de erro.
+        if ( $type == 'NUTRI' )
             return response()->json(["Erro 401"], 401);
 
         return $next($request);
