@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
 use App\Campus;
+use App\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Validator;
@@ -38,6 +38,8 @@ class AuthController extends Controller
         }
         return true;
     }
+
+
 
     public function register(Request $request){
 
@@ -116,6 +118,8 @@ class AuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type'   => 'bearer',
+            //Pegar o type do users
+            'classfication' => auth('api')->getUser()->type,
             'expires_in'   => auth('api')->factory()->getTTL() * 60
         ], 200);
     }
