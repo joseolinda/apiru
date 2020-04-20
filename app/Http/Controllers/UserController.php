@@ -18,15 +18,15 @@ class UserController extends Controller
 
     private $rules = [
         'name' => 'required',
-        'login' => 'required',
+        'email' => 'required',
         'password' => 'required',
         'type' => 'required',
         'campus_id' => 'required',
     ];
     private $messages = [
         'name.required' => 'O nome é obrigatório',
-        'login.required' => 'O email é obrigatório',
-        'login.unique' => 'USUÁRIO já está cadastrado.',
+        'email.required' => 'O email é obrigatório',
+        'email.unique' => 'USUÁRIO já está cadastrado.',
         'password.required' => 'O password é obrigatório',
         'type.required' => 'O tipo é obrigatório',
         'campus_id.required' => 'O Campus é obrigatório',
@@ -96,7 +96,7 @@ class UserController extends Controller
         }
 
         $user->name = $request->name;
-        $user->login = $request->login;
+        $user->email = $request->email;
         $user->password = Hash::make($request->password);
         $user->type = $request->type;
         $user->campus_id = $request->campus_id;

@@ -13,15 +13,15 @@ class AuthController extends Controller
 {
     private $rules = [
         'name' => 'required',
-        'login' => 'required',
+        'email' => 'required',
         'password' => 'required',
         'type' => 'required',
         'campus_id' => 'required',
     ];
     private $messages = [
         'name.required' => 'O nome é obrigatório',
-        'login.required' => 'O email é obrigatório',
-        'login.unique' => 'USUÁRIO já está cadastrado.',
+        'email.required' => 'O email é obrigatório',
+        'email.unique' => 'USUÁRIO já está cadastrado.',
         'password.required' => 'O password é obrigatório',
         'type.required' => 'O tipo é obrigatório',
         'campus_id.required' => 'O Campus é obrigatório',
@@ -69,7 +69,7 @@ class AuthController extends Controller
 
         $user = User::create([
             'name'    => $request->name,
-            'login'    => $request->login,
+            'email'    => $request->email,
             'type'    => $request->type,
             'password' => $request->password,
             'campus_id' =>$request->campus_id,
@@ -86,7 +86,7 @@ class AuthController extends Controller
     public function login(Request $request){
         //$credentials =('email','password');
         $credentials = [
-            "login"=>$request->login,
+            "email"=>$request->email,
             "password"=>$request->password
         ];
         //dd($credentials);
@@ -101,7 +101,7 @@ class AuthController extends Controller
         }
 
         $user = User::where([
-            ['login', '=', request(['login'])],
+            ['email', '=', request(['email'])],
         ])->first();
         auth('api')->setUser($user);
 

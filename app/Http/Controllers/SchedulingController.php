@@ -183,6 +183,33 @@ class SchedulingController extends Controller
         return response()->json($scheduling);
     }
 
+    /**
+     * canceled_by_student the Scheduling
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function canceledScheduling(Request $request, $id){
+        $scheduling = Scheduling::find($id);
+        //Falta validar se pode cancelar antes do dia e hrs estabelecidos.
+        if(!$scheduling){
+            return response()->json([
+                'message' => 'Agendamento não encontrado!'
+            ], 404);
+        }
+
+        $d = date("d-m-Y | h:i:s");
+        strtotime($d);
+        $scheduling->absenceJustification = "O estudante cancelou a solicitação em:".$d.'';
+        $scheduling->canceled_by_student = true;
+
+        $scheduling->save();
+
+        return response()->json([
+            'message' => 'Operação realizada com sucesso!'
+        ], 200);
+    }
 
     /**
      * Update the specified resource in storage.

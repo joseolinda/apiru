@@ -113,6 +113,7 @@ route::group(['prefix'=>'scheduling'],function (){
    Route::put('/{id}', 'SchedulingController@update')->name('scheduling.update')->middleware(['check.admin','check.nutritionist','check.student']);
    Route::delete('/{id}', 'SchedulingController@destroy')->name('scheduling.destroy');
    Route::get('/search/{search}', 'SchedulingController@search')->name('scheduling.search')->middleware(['check.admin','check.nutritionist','check.student']);
+   Route::post('canceled/{id}','SchedulingController@canceledScheduling')->name('scheduling.cancel');
 });
 
 
