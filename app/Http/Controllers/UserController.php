@@ -81,7 +81,22 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $validation = Validator::make($request->all(),$this->rules, $this->messages);
+
+        $validation = Validator::make($request->all(),
+                [
+                    'name' => 'required',
+                    'email' => 'required',
+                    'type' => 'required',
+                    'campus_id' => 'required',
+                ],
+                [
+                    'name.required' => 'O nome é obrigatório',
+                    'email.required' => 'O email é obrigatório',
+                    'email.unique' => 'USUÁRIO já está cadastrado.',
+                    'type.required' => 'O tipo é obrigatório',
+                    'campus_id.required' => 'O Campus é obrigatório',
+                ]
+            );
 
         if($validation->fails()){
             return $validation->errors()->toJson();
@@ -97,7 +112,6 @@ class UserController extends Controller
 
         $user->name = $request->name;
         $user->email = $request->email;
-        $user->password = Hash::make($request->password);
         $user->type = $request->type;
         $user->campus_id = $request->campus_id;
         $user->active = $request->active;
