@@ -120,6 +120,10 @@ class AuthController extends Controller
             'token_type'   => 'bearer',
             //Pegar o type do users
             'classfication' => auth('api')->getUser()->type,
+            //Pegar o name do Users
+            'name' => auth('api')->getUser()->name,
+            //Pegar o campi ao qual o Users faz paprte
+            'campus_id' => auth('api')->getUser()->campus_id,
             'expires_in'   => auth('api')->factory()->getTTL() * 60
         ], 200);
     }
