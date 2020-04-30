@@ -121,9 +121,11 @@ class AuthController extends Controller
             //Pegar o type do users
             'classfication' => auth('api')->getUser()->type,
             //Pegar o name do Users
-            'name' => auth('api')->getUser()->name,
+            'nome' => auth('api')->getUser()->name,
             //Pegar o campi ao qual o Users faz paprte
-            'campus_id' => auth('api')->getUser()->campus_id,
+            'entidade' => auth('api')->getUser()->campus_id,
+            //Pegar o campo de ativo do Users
+            'atuante' => auth('api')->getUser()->active,
             'expires_in'   => auth('api')->factory()->getTTL() * 60
         ], 200);
     }
