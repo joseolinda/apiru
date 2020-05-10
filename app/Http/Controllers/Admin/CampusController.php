@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Campus;
+use App\Http\Controllers\Controller;
+use App\User;
 use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -18,16 +20,22 @@ class CampusController extends Controller
         'description' => 'required',
     ];
     private $messages = [
-        'description.required' => 'O Campus é obrigatório',
+        'description.required' => 'A DESCRIÇÃO é obrigatória',
     ];
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $campus = Campus::get();
+        $description = $request->description;
+        $campus = Campus::when($description, function ($query) use ($description) {
+
+                return $query->where('description', 'like', '%'.$description.'%');
+            })
+            ->orderBy('description')
+            ->paginate(10);
         return response()->json($campus,200);
     }
 
@@ -45,7 +53,11 @@ class CampusController extends Controller
         $validation = Validator::make($request->all(),$this->rules,$this->messages);
 
         if($validation->fails()){
-            return $validation->errors()->toJson();
+            $erros = array('errors' => array(
+                $validation->messages()
+            ));
+            $json_str = json_encode($erros);
+            return response($json_str, 202);
         }
 
         $campus->description = $request->description;
@@ -84,7 +96,11 @@ class CampusController extends Controller
         $validation = Validator::make($request->all(),$this->rules,$this->messages);
 
         if($validation->fails()){
-            return $validation->errors()->toJson();
+            $erros = array('errors' => array(
+                $validation->messages()
+            ));
+            $json_str = json_encode($erros);
+            return response($json_str, 202);
         }
 
         $campus = Campus::find($id);
@@ -115,23 +131,18 @@ class CampusController extends Controller
                 'message' => 'Campus não encontrado!'
             ], 404);
         }
+        $user = User::where('campus_id', $campus->id)->get();
+
+        if(sizeof($user)>0){
+            return response()->json([
+                'message' => 'Existem usuários cadastrados para o campus.'
+            ], 202);
+        }
+
         $campus->delete();
 
         return response()->json([
-            'message' => 'Operação realizada com sucesso!'
+            'message' => 'Campus deletado.'
         ], 200);
-    }
-
-    public function search($search)
-    {
-        $campus = Campus::where( 'description', 'LIKE', '%' . $search . '%' )->get();
-
-        if(!$campus){
-            return response()->json([
-                'message' => 'Campus não encontrado!'
-            ], 404);
-        }
-
-        return response()->json($campus,200);
     }
 }

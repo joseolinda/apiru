@@ -13,7 +13,7 @@ class AuthController extends Controller
 {
     private $rules = [
         'name' => 'required',
-        'email' => 'required',
+        'email' => 'required|unique:user',
         'password' => 'required',
         'type' => 'required',
         'campus_id' => 'required',
@@ -39,12 +39,10 @@ class AuthController extends Controller
         return true;
     }
 
-
-
     public function register(Request $request){
 
-        if ( !auth()->check() )
-            return response()->json(["Erro 401"], 401);
+        //if ( !auth()->check() )
+          //  return response()->json(["Erro 401"], 401);
 
         $validation = Validator::make($request->all(),$this->rules, $this->messages);
 
@@ -52,10 +50,8 @@ class AuthController extends Controller
             $erros = array('errors' => array(
                 $validation->messages()
             ));
-            //return response($validation->errors(), 200);
-            //return $validation->messages()->toJson();
             $json_str = json_encode($erros);
-            return response($json_str, 200);
+            return response($json_str, 202);
         }
 
         //Verificando se existe campus cadastrados.
@@ -64,8 +60,15 @@ class AuthController extends Controller
                 'message' => 'Campus Inválido!'
             ));
             $json_str = json_encode($erros);
-            return response($json_str, 200);
+            return response($json_str, 202);
         }
+
+        if(!$this->verifyEmailValid($request->email))
+        {
+            return response()->json(['message' => 'E-mail Inválido!'], 202);
+        }
+
+        $user = auth()->user();
 
         $user = User::create([
             'name'    => $request->name,
@@ -73,13 +76,11 @@ class AuthController extends Controller
             'type'    => $request->type,
             'password' => $request->password,
             'campus_id' =>$request->campus_id,
-            'active' =>$request->active,
+            'active' => 1,
         ]);
 
         //dd($user);
-
         $token = auth()->login($user);
-
         return $this->respondWithToken($token);
     }
 
@@ -90,6 +91,11 @@ class AuthController extends Controller
             "password"=>$request->password
         ];
         //dd($credentials);
+        if(!$request->email && !$request->password ){
+            return response()->json([
+                'message' => 'Informe o email e senha.'
+            ], 200);
+        }
 
         $token = auth('api')
             ->claims(['role' => '',
@@ -103,6 +109,7 @@ class AuthController extends Controller
         $user = User::where([
             ['email', '=', request(['email'])],
         ])->first();
+
         auth('api')->setUser($user);
 
         return $this->respondWithToken($token);
@@ -121,12 +128,20 @@ class AuthController extends Controller
             //Pegar o type do users
             'classfication' => auth('api')->getUser()->type,
             //Pegar o name do Users
-            'nome' => auth('api')->getUser()->name,
+            'name' => auth('api')->getUser()->name,
             //Pegar o campi ao qual o Users faz paprte
-            'entidade' => auth('api')->getUser()->campus_id,
+            'campus' => auth('api')->getUser()->campus_id,
             //Pegar o campo de ativo do Users
-            'atuante' => auth('api')->getUser()->active,
+            'active' => auth('api')->getUser()->active,
             'expires_in'   => auth('api')->factory()->getTTL() * 60
         ], 200);
+    }
+
+    public function verifyEmailValid($email){
+        if(filter_var($email, FILTER_VALIDATE_EMAIL)){
+            return true;
+        } else {
+            return false;
+        }
     }
 }

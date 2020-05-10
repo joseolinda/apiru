@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Campus;
 use App\User;
@@ -49,9 +49,16 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::get();
+        $name = $request->name;
+        $users = User::when($name, function ($query) use ($name) {
+
+            return $query->where('name', 'like', '%'.$name.'%');
+        })
+            ->orderBy('name')
+            ->paginate(10);
+
         return response()->json($users,200);
     }
 
@@ -88,18 +95,23 @@ class UserController extends Controller
                     'email' => 'required',
                     'type' => 'required',
                     'campus_id' => 'required',
+                    'active' => 'required',
                 ],
                 [
-                    'name.required' => 'O nome é obrigatório',
-                    'email.required' => 'O email é obrigatório',
-                    'email.unique' => 'USUÁRIO já está cadastrado.',
-                    'type.required' => 'O tipo é obrigatório',
-                    'campus_id.required' => 'O Campus é obrigatório',
+                    'name.required' => 'O NOME é obrigatório.',
+                    'email.required' => 'O EMAIL é obrigatório.',
+                    'type.required' => 'O TIPO é obrigatório.',
+                    'campus_id.required' => 'O CAMPUS é obrigatório.',
+                    'active.required' => 'A SITUAÇÃO é obrigatória.',
                 ]
             );
 
         if($validation->fails()){
-            return $validation->errors()->toJson();
+            $erros = array('errors' => array(
+                $validation->messages()
+            ));
+            $json_str = json_encode($erros);
+            return response($json_str, 202);
         }
 
         $user = User::find($id);
@@ -134,21 +146,11 @@ class UserController extends Controller
                 'message' => 'Usuário não encontrado!'
             ], 404);
         }
+        //DEPOIS VERIFICAR SE TEMALGO QUE DEPENDA DO USUÁRIO
         $user->delete();
 
         return response()->json([
             'message' => 'Operação realizada com sucesso!'
         ], 200);
-    }
-
-    public function search($search)
-    {
-        $user = User::where( 'name', 'LIKE', '%' . $search . '%' )->get();
-        if(!$user){
-            return response()->json([
-                'message' => 'Usuário não encontrado!'
-            ], 404);
-        }
-        return response()->json($user, 200);
     }
 }

@@ -30,35 +30,32 @@ Route::post('/reset', 'PasswordResetController@reset');
 //total - 11
 //Campus - Campus
 //Apenas Admin pode fazer CRUD
-route::group(['prefix'=>'campus', 'middleware' => ['check.assistance','check.reception','check.nutritionist','check.student']], function (){
-    Route::get('/', 'CampusController@index')->name('campus.index');
-    Route::post('/', 'CampusController@store')->name('campus.store');
-    Route::get('/show/{id}', 'CampusController@show')->name('campus.show');
-    Route::put('/{id}', 'CampusController@update')->name('campus.update');
-    Route::delete('/{id}', 'CampusController@destroy')->name('campus.destroy');
-    Route::get('/search/{search}', 'CampusController@search')->name('campus.search');
+route::group(['prefix'=>'campus', 'middleware' => ['check.assistance',
+                    'check.reception','check.nutritionist','check.student']], function (){
+    Route::get('/', 'Admin\CampusController@index')->name('campus.index');
+    Route::post('/', 'Admin\CampusController@store')->name('campus.store');
+    Route::get('/show/{id}', 'Admin\CampusController@show')->name('campus.show');
+    Route::put('/{id}', 'Admin\CampusController@update')->name('campus.update');
+    Route::delete('/{id}', 'Admin\CampusController@destroy')->name('campus.destroy');
 });
 
 //Apenas Admin pode fazer CRUD
 //User - Usuario
 route::group(['prefix'=>'user','middleware' => ['check.assistance','check.reception','check.nutritionist','check.student']], function (){
-   route::get('/','UserController@index')->name('user.index');
-   //route::post('/','UserController@store')->name('user.store');
-   route::get('/show/{id}','UserController@show')->name('user.show');
-   Route::put('/{id}', 'UserController@update')->name('user.update');
-   Route::delete('/{id}', 'UserController@destroy')->name('user.destroy');
-   Route::get('/search/{search}', 'UserController@search')->name('user.search');
+   route::get('/','Admin\UserController@index')->name('user.index');
+   route::get('/show/{id}','Admin\UserController@show')->name('user.show');
+   Route::put('/{id}', 'Admin\UserController@update')->name('user.update');
+   Route::delete('/{id}', 'Admin\UserController@destroy')->name('user.destroy');
 });
 
 //Apenas Assitencia pode fazer CRUD
 //course - Curso
 route::group(['prefix'=>'course','middleware' => ['check.admin','check.reception','check.nutritionist','check.student']],function (){
-    route::get('/','CourseController@index')->name('course.index');
-   route::post('/','CourseController@store')->name('course.store');
-   route::get('/show/{id}','CourseController@show')->name('course.show');
-   Route::put('/{id}', 'CourseController@update')->name('course.update');
-   Route::delete('/{id}', 'CourseController@destroy')->name('course.destroy');
-   Route::get('/search/{search}', 'CourseController@search')->name('course.search');
+    route::get('/','Assistencia\CourseController@index')->name('course.index');
+   route::post('/','Assistencia\CourseController@store')->name('course.store');
+   route::get('/show/{id}','Assistencia\CourseController@show')->name('course.show');
+   Route::put('/{id}', 'Assistencia\CourseController@update')->name('course.update');
+   Route::delete('/{id}', 'Assistencia\CourseController@destroy')->name('course.destroy');
 });
 
 //shift - Turno
