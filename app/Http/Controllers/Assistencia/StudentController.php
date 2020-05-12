@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Assistencia;
 
 use App\Campus;
 use App\Course;
+use App\Http\Controllers\Controller;
+use App\Scheduling;
 use App\Shift;
 use App\Student;
 use Illuminate\Http\Request;
@@ -21,38 +23,31 @@ class StudentController extends Controller
     private $rules = [
         'name' => 'required',
         'mat' => 'required',
-        'campus_id' => 'required',
         'course_id' => 'required',
         'shift_id' => 'required',
         'dateValid' => 'required',
+        'semRegular' => 'required',
     ];
     private $messages = [
         'name.required' => 'O nome é obrigatório',
         'mat.required' => 'A matricula é obrigatória',
-        'campus_id.required' => 'O Campus é obrigatório',
+        'mat.unique' => 'A matricula deve ser única',
         'course_id.required' => 'O Curso é obrigatório',
         'shift_id.required' => 'O Turno é obrigatório',
         'dateValid.required' => 'A data de validade é obrigatória',
+        'semRegular.required' => 'Informe se é semestre regular',
     ];
-
-    //Métodos Criados
-    public function verifyCampusValid($id){
-        if(empty($id)) {
-            return false;
-        }
-        $campus = Campus::find($id);
-        if(!$campus){
-            return false;
-        }
-        return true;
-    }
 
     public function verifyCourseValid($id){
         if(empty($id)) {
             return false;
         }
-        $campus = Course::find($id);
-        if(!$campus){
+        $course = Course::find($id);
+        if(!$course){
+            return false;
+        }
+        $user = auth()->user();
+        if($course->campus_id != $user->campus_id){
             return false;
         }
         return true;
@@ -62,8 +57,12 @@ class StudentController extends Controller
             if(empty($id)) {
                 return false;
             }
-            $campus = Shift::find($id);
-            if(!$campus){
+            $shift = Shift::find($id);
+            if(!$shift){
+                return false;
+            }
+            $user = auth()->user();
+            if($shift->campus_id != $user->campus_id){
                 return false;
             }
             return true;
@@ -85,10 +84,22 @@ class StudentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $user = auth()->user();
 
-        $students = Student::get();
+        $name = $request->name;
+        $mat = $request->mat;
+        $students = Student::when($name, function ($query) use ($name) {
+                return $query->where('name', 'like', '%'.$name.'%');
+            })
+            ->when($mat, function ($query) use ($mat) {
+                return $query->where('mat', 'like', '%'.$mat.'%');
+            })
+            ->where('campus_id', $user->campus_id)
+            ->orderBy('name')
+            ->paginate(10);
+
         return response()->json($students);
     }
 
@@ -101,19 +112,14 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
-        $student = new Student();
-
         $validation = Validator::make($request->all(),$this->rules,$this->messages);
 
         if($validation->fails()){
-            return $validation->errors()->toJson();
-        }
-
-        //Verificando se existe campus cadastrados.
-        if(!$this->verifyCampusValid($request->campus_id)){
-            return response()->json([
-                'message' => 'Campus invalido!'
-            ], 404);
+            $erros = array('errors' => array(
+                $validation->messages()
+            ));
+            $json_str = json_encode($erros);
+            return response($json_str, 202);
         }
 
         if(!$this->verifyCourseValid($request->course_id)){
@@ -134,13 +140,16 @@ class StudentController extends Controller
             ], 404);
         }
 */
+        $user = auth()->user();
+
+        $student = new Student();
         $student->name = $request->name;
         $student->mat = $request->mat;
-        $student->campus_id = $request->campus_id;
+        $student->campus_id = $user->campus_id;
         $student->course_id = $request->course_id;
         $student->shift_id = $request->shift_id;
         $student->dateValid = $request->dateValid;
-        $student->active = $request->active;
+        $student->active = 1;
         $student->semRegular = $request->semRegular;
         $student->save();
 
@@ -162,6 +171,13 @@ class StudentController extends Controller
                 'message' => 'Estudante não encontrado!'
             ], 404);
         }
+
+        $user = auth()->user();
+        if($student->campus_id != $user->campus_id){
+            return response()->json([
+                'message' => 'O Estudante pertence a outro campus.'
+            ], 202);
+        }
         return response()->json($student);
     }
 
@@ -178,7 +194,11 @@ class StudentController extends Controller
         $validation = Validator::make($request->all(),$this->rules,$this->messages);
 
         if($validation->fails()){
-            return $validation->errors()->toJson();
+            $erros = array('errors' => array(
+                $validation->messages()
+            ));
+            $json_str = json_encode($erros);
+            return response($json_str, 202);
         }
 
         $student = Student::find($id);
@@ -189,12 +209,32 @@ class StudentController extends Controller
             ], 404);
         }
 
+        $user = auth()->user();
+        if($student->campus_id != $user->campus_id){
+            return response()->json([
+                'message' => 'O Estudante pertence a outro campus.'
+            ], 202);
+        }
+
+        if(!$this->verifyCourseValid($request->course_id)){
+            return response()->json([
+                'message' => 'Curso invalido!'
+            ], 404);
+        }
+
+        if(!$this->verifyShiftValid($request->shift_id)){
+            return response()->json([
+                'message' => 'Turno invalido!'
+            ], 404);
+        }
+
         $student->name = $request->name;
         $student->mat = $request->mat;
-        $student->campus_id = $request->campus_id;
+        $student->campus_id = $user->campus_id;
         $student->course_id = $request->course_id;
         $student->shift_id = $request->shift_id;
         $student->dateValid = $request->dateValid;
+        $student->semRegular = $request->semRegular;
         $student->save();
 
         return response()->json($student, 200);
@@ -214,6 +254,21 @@ class StudentController extends Controller
                 'message' => 'Estudante não encontrado!'
             ], 404);
         }
+
+        $user = auth()->user();
+        if($student->campus_id != $user->campus_id){
+            return response()->json([
+                'message' => 'O Estudante pertence a outro campus.'
+            ], 202);
+        }
+
+        $scheduling = Scheduling::where('student_id', $student->id)->get();
+        if(sizeof($scheduling)>0){
+            return response()->json([
+                'message' => 'O Estudante possui agendamentos.'
+            ], 202);
+        }
+
         $student->delete();
 
         return response()->json([
@@ -221,14 +276,4 @@ class StudentController extends Controller
         ], 200);
     }
 
-    public function search($search)
-    {
-        $student = Student::where( 'name', 'LIKE', '%' . $search . '%' )->orWhere( 'id', 'LIKE', '%' . $search . '%' )->get();
-        if(!$student){
-            return response()->json([
-                'message' => 'Estudante não encontrado!'
-            ], 404);
-        }
-        return response()->json($student, 200);
-    }
 }

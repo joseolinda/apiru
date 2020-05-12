@@ -60,22 +60,20 @@ route::group(['prefix'=>'course','middleware' => ['check.admin','check.reception
 
 //shift - Turno
 route::group(['prefix'=>'shift','middleware' => ['check.admin','check.reception','check.nutritionist','check.student']],function (){
-    route::get('/','ShiftController@index')->name('shift.index');
-   route::post('/','ShiftController@store')->name('shift.store');
-   route::get('/show/{id}','ShiftController@show')->name('shift.show');
-   Route::put('/{id}', 'ShiftController@update')->name('shift.update');
-   Route::delete('/{id}', 'ShiftController@destroy')->name('shift.destroy');
-   Route::get('/search/{search}', 'ShiftController@search')->name('shift.search');
+    route::get('/','Assistencia\ShiftController@index')->name('shift.index');
+   route::post('/','Assistencia\ShiftController@store')->name('shift.store');
+   route::get('/show/{id}','Assistencia\ShiftController@show')->name('shift.show');
+   Route::put('/{id}', 'Assistencia\ShiftController@update')->name('shift.update');
+   Route::delete('/{id}', 'Assistencia\ShiftController@destroy')->name('shift.destroy');
 });
 
 //Student - Aluno
 route::group(['prefix'=>'student','middleware' => ['check.admin','check.reception','check.nutritionist','check.student']],function (){
-    route::get('/','StudentController@index')->name('student.index');
-   route::post('/','StudentController@store')->name('student.store');
-   route::get('/show/{id}','StudentController@show')->name('student.show');
-   Route::put('/{id}', 'StudentController@update')->name('student.update');
-   Route::delete('/{id}', 'StudentController@destroy')->name('student.destroy');
-   Route::get('/search/{search}', 'StudentController@search')->name('student.search');
+    route::get('/','Assistencia\StudentController@index')->name('student.index');
+   route::post('/','Assistencia\StudentController@store')->name('student.store');
+   route::get('/show/{id}','Assistencia\StudentController@show')->name('student.show');
+   Route::put('/{id}', 'Assistencia\StudentController@update')->name('student.update');
+   Route::delete('/{id}', 'Assistencia\StudentController@destroy')->name('student.destroy');
 });
 
 //Meal - Refeição

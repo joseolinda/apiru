@@ -43,11 +43,13 @@ class CourseController extends Controller
      */
     public function index(Request $request)
     {
+        $user = auth()->user();
+
         $description = $request->description;
         $courses = Course::when($description, function ($query) use ($description) {
-
-            return $query->where('description', 'like', '%'.$description.'%');
-        })
+                return $query->where('description', 'like', '%'.$description.'%');
+            })
+            ->where('campus_id', $user->campus_id)
             ->orderBy('description')
             ->paginate(10);
 

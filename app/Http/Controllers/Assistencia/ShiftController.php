@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Assistencia;
 
 use App\Campus;
+use App\Http\Controllers\Controller;
 use App\Shift;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -15,11 +16,9 @@ class ShiftController extends Controller
     }
 
     private $rules = [
-        'campus_id' => 'required',
         'description' => 'required',
     ];
     private $messages = [
-        'campus_id.required' => 'O Campus é obrigatório',
         'description.required' => 'A descrição é obrigatória',
     ];
 
@@ -38,9 +37,18 @@ class ShiftController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $shifts = Shift::get();
+        $user = auth()->user();
+
+        $description = $request->description;
+        $shifts = Shift::when($description, function ($query) use ($description) {
+                        return $query->where('description', 'like', '%'.$description.'%');
+                 })
+            ->where('campus_id', $user->campus_id)
+            ->orderBy('description')
+            ->paginate(10);
+
         return response()->json($shifts, 200);
     }
 
@@ -53,23 +61,21 @@ class ShiftController extends Controller
      */
     public function store(Request $request)
     {
-        $shift = new Shift();
-
         $validation = Validator::make($request->all(),$this->rules,$this->messages);
 
         if($validation->fails()){
-            return $validation->errors()->toJson();
+            $erros = array('errors' => array(
+                $validation->messages()
+            ));
+            $json_str = json_encode($erros);
+            return response($json_str, 202);
         }
 
-        //Verificando se existe campus cadastrados.
-        if(!$this->verifyCampusValid($request->campus_id)){
-            return response()->json([
-                'message' => 'Campus inválido !'
-            ], 404);
-        }
+        $user = auth()->user();
 
+        $shift = new Shift();
         $shift->description = $request->description;
-        $shift->campus_id = $request->campus_id;
+        $shift->campus_id = $user->campus_id;
         $shift->save();
 
         return response()->json($shift, 200);
@@ -83,13 +89,19 @@ class ShiftController extends Controller
      */
     public function show($id)
     {
-        $shifts = Shift::find($id);
-        if(!$shifts){
+        $shift = Shift::find($id);
+        if(!$shift){
             return response()->json([
                 'message' => 'Turno não encontrado!'
             ], 404);
         }
-        return response()->json($shifts);
+        $user = auth()->user();
+        if($shift->campus_id != $user->campus_id){
+            return response()->json([
+                'message' => 'O Turno pertence a outro campus.'
+            ], 202);
+        }
+        return response()->json($shift);
     }
 
 
@@ -105,10 +117,16 @@ class ShiftController extends Controller
         $validation = Validator::make($request->all(),$this->rules,$this->messages);
 
         if($validation->fails()){
-            return $validation->errors()->toJson();
+            $erros = array('errors' => array(
+                $validation->messages()
+            ));
+            $json_str = json_encode($erros);
+            return response($json_str, 202);
         }
 
         $shift = Shift::find($id);
+
+        $user = auth()->user();
 
         if(!$shift){
             return response()->json([
@@ -116,8 +134,14 @@ class ShiftController extends Controller
             ], 404);
         }
 
+        if($shift->campus_id != $user->campus_id){
+            return response()->json([
+                'message' => 'O Turno pertence a outro campus.'
+            ], 202);
+        }
+
         $shift->description = $request->description;
-        $shift->campus_id = $request->campus_id;
+        $shift->campus_id = $user->campus_id;
         $shift->save();
 
         return response()->json($shift, 200);
@@ -131,27 +155,27 @@ class ShiftController extends Controller
      */
     public function destroy($id)
     {
-        $shifts = Shift::find($id);
-        if(!$shifts){
+        $shift = Shift::find($id);
+        if(!$shift){
             return response()->json([
                 'message' => 'Turno não encontrado!'
             ], 404);
         }
-        $shifts->delete();
+        $user = auth()->user();
+
+        $shift = Shift::find($id);
+
+        if($shift->campus_id != $user->campus_id){
+            return response()->json([
+                'message' => 'O Turno pertence a outro campus.'
+            ], 202);
+        }
+
+        $shift->delete();
 
         return response()->json([
             'message' => 'Operação realizada com sucesso!'
         ], 200);
     }
 
-    public function search($search)
-    {
-        $shift = Shift::where( 'description', 'LIKE', '%' . $search . '%' )->get();
-        if(!$shift){
-            return response()->json([
-                'message' => 'Usuário não encontrado!'
-            ], 404);
-        }
-        return response()->json($shift, 200);
-    }
 }
