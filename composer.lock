@@ -4,40 +4,40 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "21a72f0529d150f70f3db3b3bcc3a7fa",
+    "content-hash": "5cd58e764398786102280a9e94c10720",
     "packages": [
         {
             "name": "asm89/stack-cors",
-            "version": "1.3.0",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/asm89/stack-cors.git",
-                "reference": "b9c31def6a83f84b4d4a40d35996d375755f0e08"
+                "reference": "1913589c6de3cc09de5a9bdb4f46fbd550246b40"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/asm89/stack-cors/zipball/b9c31def6a83f84b4d4a40d35996d375755f0e08",
-                "reference": "b9c31def6a83f84b4d4a40d35996d375755f0e08",
+                "url": "https://api.github.com/repos/asm89/stack-cors/zipball/1913589c6de3cc09de5a9bdb4f46fbd550246b40",
+                "reference": "1913589c6de3cc09de5a9bdb4f46fbd550246b40",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.5.9",
+                "php": "^7.0",
                 "symfony/http-foundation": "~2.7|~3.0|~4.0|~5.0",
                 "symfony/http-kernel": "~2.7|~3.0|~4.0|~5.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^5.0 || ^4.8.10",
-                "squizlabs/php_codesniffer": "^2.3"
+                "phpunit/phpunit": "^6|^7|^8|^9",
+                "squizlabs/php_codesniffer": "^3.5"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.2-dev"
+                    "dev-master": "2.0-dev"
                 }
             },
             "autoload": {
                 "psr-4": {
-                    "Asm89\\Stack\\": "src/Asm89/Stack/"
+                    "Asm89\\Stack\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -56,33 +56,35 @@
                 "cors",
                 "stack"
             ],
-            "time": "2019-12-24T22:41:47+00:00"
+            "time": "2020-04-20T10:11:31+00:00"
         },
         {
             "name": "barryvdh/laravel-cors",
-            "version": "v1.0.6",
+            "version": "v2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fruitcake/laravel-cors.git",
-                "reference": "1d127dbec313e2e227d65e0c483765d8d7559bf6"
+                "reference": "8cc9f7e5f1b9b280ae2378b3624e6b5603e63e8c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fruitcake/laravel-cors/zipball/1d127dbec313e2e227d65e0c483765d8d7559bf6",
-                "reference": "1d127dbec313e2e227d65e0c483765d8d7559bf6",
+                "url": "https://api.github.com/repos/fruitcake/laravel-cors/zipball/8cc9f7e5f1b9b280ae2378b3624e6b5603e63e8c",
+                "reference": "8cc9f7e5f1b9b280ae2378b3624e6b5603e63e8c",
                 "shasum": ""
             },
             "require": {
-                "asm89/stack-cors": "^1.3",
-                "illuminate/contracts": "^5.5|^6.0|^7.0|^8.0",
-                "illuminate/support": "^5.5|^6.0|^7.0|^8.0",
-                "php": ">=7",
-                "symfony/http-foundation": "^3.3|^4.0|^5.0",
-                "symfony/http-kernel": "^3.3|^4.0|^5.0"
+                "asm89/stack-cors": "^2",
+                "illuminate/contracts": "^5.6|^6.0|^7.0|^8.0",
+                "illuminate/support": "^5.6|^6.0|^7.0|^8.0",
+                "php": ">=7.1",
+                "symfony/http-foundation": "^4.0|^5.0",
+                "symfony/http-kernel": "^4.0|^5.0"
             },
             "require-dev": {
                 "laravel/framework": "^5.5|^6.0|^7.0|^8.0",
+                "orchestra/dusk-updater": "^1.2",
                 "orchestra/testbench": "^3.5|^4.0|^5.0|^6.0",
+                "orchestra/testbench-dusk": "^5.1",
                 "phpro/grumphp": "^0.16|^0.17",
                 "phpunit/phpunit": "^6.0|^7.0|^8.0",
                 "squizlabs/php_codesniffer": "^3.5"
@@ -90,7 +92,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0-dev"
+                    "dev-master": "2.0-dev"
                 },
                 "laravel": {
                     "providers": [
@@ -124,7 +126,7 @@
                 "crossdomain",
                 "laravel"
             ],
-            "time": "2020-04-28T08:47:37+00:00"
+            "time": "2020-05-11T09:29:18+00:00"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -463,6 +465,76 @@
                 "trusted proxy"
             ],
             "time": "2020-02-22T01:51:47+00:00"
+        },
+        {
+            "name": "fruitcake/laravel-cors",
+            "version": "v2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fruitcake/laravel-cors.git",
+                "reference": "8cc9f7e5f1b9b280ae2378b3624e6b5603e63e8c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fruitcake/laravel-cors/zipball/8cc9f7e5f1b9b280ae2378b3624e6b5603e63e8c",
+                "reference": "8cc9f7e5f1b9b280ae2378b3624e6b5603e63e8c",
+                "shasum": ""
+            },
+            "require": {
+                "asm89/stack-cors": "^2",
+                "illuminate/contracts": "^5.6|^6.0|^7.0|^8.0",
+                "illuminate/support": "^5.6|^6.0|^7.0|^8.0",
+                "php": ">=7.1",
+                "symfony/http-foundation": "^4.0|^5.0",
+                "symfony/http-kernel": "^4.0|^5.0"
+            },
+            "require-dev": {
+                "laravel/framework": "^5.5|^6.0|^7.0|^8.0",
+                "orchestra/dusk-updater": "^1.2",
+                "orchestra/testbench": "^3.5|^4.0|^5.0|^6.0",
+                "orchestra/testbench-dusk": "^5.1",
+                "phpro/grumphp": "^0.16|^0.17",
+                "phpunit/phpunit": "^6.0|^7.0|^8.0",
+                "squizlabs/php_codesniffer": "^3.5"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Fruitcake\\Cors\\CorsServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Fruitcake\\Cors\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fruitcake",
+                    "homepage": "https://fruitcake.nl"
+                },
+                {
+                    "name": "Barry vd. Heuvel",
+                    "email": "barryvdh@gmail.com"
+                }
+            ],
+            "description": "Adds CORS (Cross-Origin Resource Sharing) headers support in your Laravel application",
+            "keywords": [
+                "api",
+                "cors",
+                "crossdomain",
+                "laravel"
+            ],
+            "time": "2020-05-11T09:29:18+00:00"
         },
         {
             "name": "jakub-onderka/php-console-color",
@@ -894,16 +966,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "1.0.67",
+            "version": "1.0.68",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "5b1f36c75c4bdde981294c2a0ebdb437ee6f275e"
+                "reference": "3e4198372276ec99ac3409a21d7c9d1ced9026e4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/5b1f36c75c4bdde981294c2a0ebdb437ee6f275e",
-                "reference": "5b1f36c75c4bdde981294c2a0ebdb437ee6f275e",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/3e4198372276ec99ac3409a21d7c9d1ced9026e4",
+                "reference": "3e4198372276ec99ac3409a21d7c9d1ced9026e4",
                 "shasum": ""
             },
             "require": {
@@ -974,7 +1046,7 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2020-04-16T13:21:26+00:00"
+            "time": "2020-05-12T20:33:44+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -1122,16 +1194,16 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "2.33.0",
+            "version": "2.34.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "4d93cb95a80d9ffbff4018fe58ae3b7dd7f4b99b"
+                "reference": "52ea68aebbad8a3b27b5d24e4c66ebe1933f8399"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/4d93cb95a80d9ffbff4018fe58ae3b7dd7f4b99b",
-                "reference": "4d93cb95a80d9ffbff4018fe58ae3b7dd7f4b99b",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/52ea68aebbad8a3b27b5d24e4c66ebe1933f8399",
+                "reference": "52ea68aebbad8a3b27b5d24e4c66ebe1933f8399",
                 "shasum": ""
             },
             "require": {
@@ -1155,7 +1227,8 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.x-dev"
+                    "dev-master": "2.x-dev",
+                    "dev-3.x": "3.x-dev"
                 },
                 "laravel": {
                     "providers": [
@@ -1190,7 +1263,7 @@
                 "datetime",
                 "time"
             ],
-            "time": "2020-04-20T15:05:43+00:00"
+            "time": "2020-05-12T19:53:34+00:00"
         },
         {
             "name": "nikic/php-parser",
@@ -2399,16 +2472,16 @@
         },
         {
             "name": "symfony/polyfill-ctype",
-            "version": "v1.16.0",
+            "version": "v1.17.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-ctype.git",
-                "reference": "1aab00e39cebaef4d8652497f46c15c1b7e45294"
+                "reference": "e94c8b1bbe2bc77507a1056cdb06451c75b427f9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/1aab00e39cebaef4d8652497f46c15c1b7e45294",
-                "reference": "1aab00e39cebaef4d8652497f46c15c1b7e45294",
+                "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/e94c8b1bbe2bc77507a1056cdb06451c75b427f9",
+                "reference": "e94c8b1bbe2bc77507a1056cdb06451c75b427f9",
                 "shasum": ""
             },
             "require": {
@@ -2420,7 +2493,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.16-dev"
+                    "dev-master": "1.17-dev"
                 }
             },
             "autoload": {
@@ -2453,20 +2526,20 @@
                 "polyfill",
                 "portable"
             ],
-            "time": "2020-05-08T16:50:20+00:00"
+            "time": "2020-05-12T16:14:59+00:00"
         },
         {
             "name": "symfony/polyfill-iconv",
-            "version": "v1.16.0",
+            "version": "v1.17.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-iconv.git",
-                "reference": "d51debc1391a609c514f6f072dd59a61b461502a"
+                "reference": "c4de7601eefbf25f9d47190abe07f79fe0a27424"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-iconv/zipball/d51debc1391a609c514f6f072dd59a61b461502a",
-                "reference": "d51debc1391a609c514f6f072dd59a61b461502a",
+                "url": "https://api.github.com/repos/symfony/polyfill-iconv/zipball/c4de7601eefbf25f9d47190abe07f79fe0a27424",
+                "reference": "c4de7601eefbf25f9d47190abe07f79fe0a27424",
                 "shasum": ""
             },
             "require": {
@@ -2478,7 +2551,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.16-dev"
+                    "dev-master": "1.17-dev"
                 }
             },
             "autoload": {
@@ -2512,20 +2585,20 @@
                 "portable",
                 "shim"
             ],
-            "time": "2020-05-08T16:50:20+00:00"
+            "time": "2020-05-12T16:47:27+00:00"
         },
         {
             "name": "symfony/polyfill-intl-idn",
-            "version": "v1.16.0",
+            "version": "v1.17.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-intl-idn.git",
-                "reference": "ab0af41deab94ec8dceb3d1fb408bdd038eba4dc"
+                "reference": "3bff59ea7047e925be6b7f2059d60af31bb46d6a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-intl-idn/zipball/ab0af41deab94ec8dceb3d1fb408bdd038eba4dc",
-                "reference": "ab0af41deab94ec8dceb3d1fb408bdd038eba4dc",
+                "url": "https://api.github.com/repos/symfony/polyfill-intl-idn/zipball/3bff59ea7047e925be6b7f2059d60af31bb46d6a",
+                "reference": "3bff59ea7047e925be6b7f2059d60af31bb46d6a",
                 "shasum": ""
             },
             "require": {
@@ -2539,7 +2612,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.16-dev"
+                    "dev-master": "1.17-dev"
                 }
             },
             "autoload": {
@@ -2574,20 +2647,20 @@
                 "portable",
                 "shim"
             ],
-            "time": "2020-05-08T16:50:20+00:00"
+            "time": "2020-05-12T16:47:27+00:00"
         },
         {
             "name": "symfony/polyfill-mbstring",
-            "version": "v1.16.0",
+            "version": "v1.17.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",
-                "reference": "a54881ec0ab3b2005c406aed0023c062879031e7"
+                "reference": "fa79b11539418b02fc5e1897267673ba2c19419c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/a54881ec0ab3b2005c406aed0023c062879031e7",
-                "reference": "a54881ec0ab3b2005c406aed0023c062879031e7",
+                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/fa79b11539418b02fc5e1897267673ba2c19419c",
+                "reference": "fa79b11539418b02fc5e1897267673ba2c19419c",
                 "shasum": ""
             },
             "require": {
@@ -2599,7 +2672,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.16-dev"
+                    "dev-master": "1.17-dev"
                 }
             },
             "autoload": {
@@ -2633,20 +2706,20 @@
                 "portable",
                 "shim"
             ],
-            "time": "2020-05-08T16:50:20+00:00"
+            "time": "2020-05-12T16:47:27+00:00"
         },
         {
             "name": "symfony/polyfill-php56",
-            "version": "v1.16.0",
+            "version": "v1.17.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php56.git",
-                "reference": "14b55b0e88c67c6a14526799abaea197dde78911"
+                "reference": "e3c8c138280cdfe4b81488441555583aa1984e23"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php56/zipball/14b55b0e88c67c6a14526799abaea197dde78911",
-                "reference": "14b55b0e88c67c6a14526799abaea197dde78911",
+                "url": "https://api.github.com/repos/symfony/polyfill-php56/zipball/e3c8c138280cdfe4b81488441555583aa1984e23",
+                "reference": "e3c8c138280cdfe4b81488441555583aa1984e23",
                 "shasum": ""
             },
             "require": {
@@ -2656,7 +2729,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.16-dev"
+                    "dev-master": "1.17-dev"
                 }
             },
             "autoload": {
@@ -2689,20 +2762,20 @@
                 "portable",
                 "shim"
             ],
-            "time": "2020-05-08T16:50:20+00:00"
+            "time": "2020-05-12T16:47:27+00:00"
         },
         {
             "name": "symfony/polyfill-php72",
-            "version": "v1.16.0",
+            "version": "v1.17.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php72.git",
-                "reference": "42fda6d7380e5c940d7f68341ccae89d5ab9963b"
+                "reference": "f048e612a3905f34931127360bdd2def19a5e582"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php72/zipball/42fda6d7380e5c940d7f68341ccae89d5ab9963b",
-                "reference": "42fda6d7380e5c940d7f68341ccae89d5ab9963b",
+                "url": "https://api.github.com/repos/symfony/polyfill-php72/zipball/f048e612a3905f34931127360bdd2def19a5e582",
+                "reference": "f048e612a3905f34931127360bdd2def19a5e582",
                 "shasum": ""
             },
             "require": {
@@ -2711,7 +2784,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.16-dev"
+                    "dev-master": "1.17-dev"
                 }
             },
             "autoload": {
@@ -2744,20 +2817,20 @@
                 "portable",
                 "shim"
             ],
-            "time": "2020-05-08T17:28:34+00:00"
+            "time": "2020-05-12T16:47:27+00:00"
         },
         {
             "name": "symfony/polyfill-php73",
-            "version": "v1.16.0",
+            "version": "v1.17.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php73.git",
-                "reference": "7e95fe59d12169fcf4041487e4bf34fca37ee0ed"
+                "reference": "a760d8964ff79ab9bf057613a5808284ec852ccc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php73/zipball/7e95fe59d12169fcf4041487e4bf34fca37ee0ed",
-                "reference": "7e95fe59d12169fcf4041487e4bf34fca37ee0ed",
+                "url": "https://api.github.com/repos/symfony/polyfill-php73/zipball/a760d8964ff79ab9bf057613a5808284ec852ccc",
+                "reference": "a760d8964ff79ab9bf057613a5808284ec852ccc",
                 "shasum": ""
             },
             "require": {
@@ -2766,7 +2839,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.16-dev"
+                    "dev-master": "1.17-dev"
                 }
             },
             "autoload": {
@@ -2802,20 +2875,20 @@
                 "portable",
                 "shim"
             ],
-            "time": "2020-05-02T14:56:09+00:00"
+            "time": "2020-05-12T16:47:27+00:00"
         },
         {
             "name": "symfony/polyfill-util",
-            "version": "v1.16.0",
+            "version": "v1.17.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-util.git",
-                "reference": "fa1fdaf94e8a60932d8821692eb1ed07efc52db2"
+                "reference": "4afb4110fc037752cf0ce9869f9ab8162c4e20d7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-util/zipball/fa1fdaf94e8a60932d8821692eb1ed07efc52db2",
-                "reference": "fa1fdaf94e8a60932d8821692eb1ed07efc52db2",
+                "url": "https://api.github.com/repos/symfony/polyfill-util/zipball/4afb4110fc037752cf0ce9869f9ab8162c4e20d7",
+                "reference": "4afb4110fc037752cf0ce9869f9ab8162c4e20d7",
                 "shasum": ""
             },
             "require": {
@@ -2824,7 +2897,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.16-dev"
+                    "dev-master": "1.17-dev"
                 }
             },
             "autoload": {
@@ -2854,7 +2927,7 @@
                 "polyfill",
                 "shim"
             ],
-            "time": "2020-05-02T14:56:09+00:00"
+            "time": "2020-05-12T16:14:59+00:00"
         },
         {
             "name": "symfony/process",
