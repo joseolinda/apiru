@@ -39,6 +39,13 @@ class CampusController extends Controller
         return response()->json($campus,200);
     }
 
+    public function all(Request $request)
+    {
+        $description = $request->description;
+        $campus = Campus::all();
+        return response()->json($campus,200);
+    }
+
 
     /**
      * Store a newly created resource in storage.

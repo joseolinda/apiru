@@ -33,6 +33,7 @@ Route::post('/reset', 'PasswordResetController@reset');
 route::group(['prefix'=>'campus', 'middleware' => ['check.assistance',
                     'check.reception','check.nutritionist','check.student']], function (){
     Route::get('/', 'Admin\CampusController@index')->name('campus.index');
+    Route::get('/all', 'Admin\CampusController@all')->name('campus.all');
     Route::post('/', 'Admin\CampusController@store')->name('campus.store');
     Route::get('/show/{id}', 'Admin\CampusController@show')->name('campus.show');
     Route::put('/{id}', 'Admin\CampusController@update')->name('campus.update');
