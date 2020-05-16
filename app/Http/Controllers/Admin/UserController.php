@@ -56,6 +56,7 @@ class UserController extends Controller
 
             return $query->where('name', 'like', '%'.$name.'%');
         })
+            ->with('campus')
             ->orderBy('name')
             ->paginate(10);
 
@@ -70,7 +71,9 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = User::find($id);
+        $user = User::where('id',$id)
+                ->with('campus')
+                ->get();
         if(!$user){
             return response()->json([
                 'message' => 'Usuário não encontrado!'
