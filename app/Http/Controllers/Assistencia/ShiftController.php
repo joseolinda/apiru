@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Assistencia;
 use App\Campus;
 use App\Http\Controllers\Controller;
 use App\Shift;
+use App\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -168,6 +169,13 @@ class ShiftController extends Controller
         if($shift->campus_id != $user->campus_id){
             return response()->json([
                 'message' => 'O Turno pertence a outro campus.'
+            ], 202);
+        }
+
+        $student = Student::where('shift_id', $shift->id)->get();
+        if(sizeof($student)>0){
+            return response()->json([
+                'message' => 'Existem alunos relacionados com este turno.'
             ], 202);
         }
 
