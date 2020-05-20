@@ -95,7 +95,7 @@ class StudentController extends Controller
             })
             ->when($mat, function ($query) use ($mat) {
                 return $query->where('mat', 'like', '%'.$mat.'%');
-            })
+            })->with('course')->with('shift')
             ->where('campus_id', $user->campus_id)
             ->orderBy('name')
             ->paginate(10);
