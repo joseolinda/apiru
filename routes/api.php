@@ -53,6 +53,7 @@ route::group(['prefix'=>'user','middleware' => ['check.assistance','check.recept
 //course - Curso
 route::group(['prefix'=>'course','middleware' => ['check.admin','check.reception','check.nutritionist','check.student']],function (){
     route::get('/','Assistencia\CourseController@index')->name('course.index');
+    Route::get('/all', 'Assistencia\CourseController@all')->name('course.all');
    route::post('/','Assistencia\CourseController@store')->name('course.store');
    route::get('/show/{id}','Assistencia\CourseController@show')->name('course.show');
    Route::put('/{id}', 'Assistencia\CourseController@update')->name('course.update');
@@ -62,6 +63,7 @@ route::group(['prefix'=>'course','middleware' => ['check.admin','check.reception
 //shift - Turno
 route::group(['prefix'=>'shift','middleware' => ['check.admin','check.reception','check.nutritionist','check.student']],function (){
     route::get('/','Assistencia\ShiftController@index')->name('shift.index');
+    Route::get('/all', 'Assistencia\ShiftController@all')->name('Shift.all');
    route::post('/','Assistencia\ShiftController@store')->name('shift.store');
    route::get('/show/{id}','Assistencia\ShiftController@show')->name('shift.show');
    Route::put('/{id}', 'Assistencia\ShiftController@update')->name('shift.update');

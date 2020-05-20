@@ -53,6 +53,13 @@ class ShiftController extends Controller
         return response()->json($shifts, 200);
     }
 
+    public function all(Request $request)
+    {
+        $user = auth()->user();
+
+        $shifts = Shift::where('campus_id', $user->campus_id)->get();
+        return response()->json($shifts,200);
+    }
 
     /**
      * Store a newly created resource in storage.

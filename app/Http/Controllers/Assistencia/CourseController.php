@@ -56,7 +56,12 @@ class CourseController extends Controller
         return response()->json($courses, 200);
     }
 
-
+    public function all(Request $request)
+    {
+        $user = auth()->user();
+        $courses = Course::where('campus_id', $user->campus_id)->get();
+        return response()->json($courses,200);
+    }
     /**
      * Store a newly created resource in storage.
      *
