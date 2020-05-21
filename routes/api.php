@@ -73,11 +73,44 @@ route::group(['prefix'=>'shift','middleware' => ['check.admin','check.reception'
 //Student - Aluno
 route::group(['prefix'=>'student','middleware' => ['check.admin','check.reception','check.nutritionist','check.student']],function (){
     route::get('/','Assistencia\StudentController@index')->name('student.index');
+    route::get('/all','Assistencia\StudentController@all')->name('student.all');
+    route::get('/history/{id}','Assistencia\StudentController@historyStudent')->name('student.historyStudent');
    route::post('/','Assistencia\StudentController@store')->name('student.store');
    route::get('/show/{id}','Assistencia\StudentController@show')->name('student.show');
    Route::put('/{id}', 'Assistencia\StudentController@update')->name('student.update');
    Route::delete('/{id}', 'Assistencia\StudentController@destroy')->name('student.destroy');
 });
+
+//Republic - Republica
+route::group(['prefix'=>'republic','middleware' => ['check.admin','check.reception','check.nutritionist','check.student']],function (){
+    route::get('/','Assistencia\RepublicController@index')->name('republic.index');
+    route::post('/','Assistencia\RepublicController@store')->name('republic.store');
+    route::get('/show/{id}','Assistencia\RepublicController@show')->name('republic.show');
+    Route::put('/{id}', 'Assistencia\RepublicController@update')->name('republic.update');
+    Route::delete('/{id}', 'Assistencia\RepublicController@destroy')->name('republic.destroy');
+    //item republic
+    route::get('/item/{idRepublic}','Assistencia\ItemRepublicController@index')->name('itemRepublic.index');
+    route::post('/item/','Assistencia\ItemRepublicController@store')->name('itemRepublic.store');
+    route::put('/item/{id}','Assistencia\ItemRepublicController@update')->name('itemRepublic.update');
+    route::delete('/item/{id}','Assistencia\ItemRepublicController@destroy')->name('itemRepublic.destroy');
+});
+
+//Scheduling - Agendamento
+route::group(['prefix'=>'scheduling', 'middleware' => ['check.admin','check.nutritionist','check.student']],function (){
+    route::post('/justification/{id}','Assistencia\SchedulingController@absenceJustification')->name('scheduling.absenceJustification');
+});
+
+
+
+
+
+
+
+
+
+
+
+
 
 //Meal - Refeição
 route::group(['prefix'=>'meal'],function (){
@@ -102,28 +135,6 @@ route::group(['prefix'=>'menu','middleware' => ['check.admin','check.reception',
    Route::get('/search/{search}', 'MenuController@search')->name('menu.search');
 });
 
-//Scheduling - Agendamento
-//Falta a parte do studante.
-route::group(['prefix'=>'scheduling'],function (){
-    route::get('/','SchedulingController@index')->name('scheduling.index')->middleware(['check.admin','check.nutritionist','check.student']);
-   route::post('/','SchedulingController@store')->name('scheduling.store');
-   route::get('/show/{id}','SchedulingController@show')->name('scheduling.show');
-   Route::put('/{id}', 'SchedulingController@update')->name('scheduling.update')->middleware(['check.admin','check.nutritionist','check.student']);
-   Route::delete('/{id}', 'SchedulingController@destroy')->name('scheduling.destroy');
-   Route::get('/search/{search}', 'SchedulingController@search')->name('scheduling.search')->middleware(['check.admin','check.nutritionist','check.student']);
-   Route::post('canceled/{id}','SchedulingController@canceledScheduling')->name('scheduling.cancel');
-});
-
-
-//Republic - Republica
-route::group(['prefix'=>'republic','middleware' => ['check.admin','check.reception','check.nutritionist','check.student']],function (){
-    route::get('/','RepublicController@index')->name('republic.index');
-   route::post('/','RepublicController@store')->name('republic.store');
-   route::get('/show/{id}','RepublicController@show')->name('republic.show');
-   Route::put('/{id}', 'RepublicController@update')->name('republic.update');
-   Route::delete('/{id}', 'RepublicController@destroy')->name('republic.destroy');
-   Route::get('/search/{search}', 'RepublicController@search')->name('republic.search');
-});
 
 
 //Permições - Allowstudenmealday

@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Republic extends Model
 {
-    //Relacionamento Feito
     protected $table = 'republic';
 
     protected $fillable = [

@@ -6,14 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Itensrepublic extends Model
 {
-    protected $table = 'Itensrepublic';
+    protected $table = 'itens_republic';
 
     protected $fillable = [
         'responsability','republic_id','student_id'
     ];
     protected $guarded = [
-        'id', 'created_at', 'update_at'
+        'id'
     ];
+    public $timestamps = false;
 
     public function student(){
         return $this->belongsTo('App\Student');

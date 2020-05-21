@@ -91,11 +91,11 @@ class StudentController extends Controller
         $name = $request->name;
         $mat = $request->mat;
         $students = Student::when($name, function ($query) use ($name) {
-                return $query->where('name', 'like', '%'.$name.'%');
+                $query->where('name', 'like', '%'.$name.'%')
+                        ->orWhere('mat', 'like', '%'.$name.'%');
+                return $query;
             })
-            ->when($mat, function ($query) use ($mat) {
-                return $query->where('mat', 'like', '%'.$mat.'%');
-            })->with('course')->with('shift')
+            ->with('course')->with('shift')
             ->where('campus_id', $user->campus_id)
             ->orderBy('name')
             ->paginate(10);
@@ -133,13 +133,14 @@ class StudentController extends Controller
                 'message' => 'Turno invalido!'
             ], 404);
         }
-        /*
-        if(!$this->verifyDateValid($request->dateValid)){
+
+        $verify = Student::where('mat', $request->mat)->first();
+        if($verify){
             return response()->json([
-                'message' => 'Data Invalida!'
-            ], 404);
+                'message' => 'Matrícula já cadastrada!'
+            ], 202);
         }
-*/
+
         $user = auth()->user();
 
         $student = new Student();
@@ -228,6 +229,15 @@ class StudentController extends Controller
             ], 404);
         }
 
+        $verify = Student::where('mat', $request->mat)->first();
+        if($verify){
+            if($verify->id != $id){
+                return response()->json([
+                    'message' => 'Matrícula já cadastrada!'
+                ], 202);
+            }
+        }
+
         $student->name = $request->name;
         $student->mat = $request->mat;
         $student->campus_id = $user->campus_id;
@@ -235,6 +245,7 @@ class StudentController extends Controller
         $student->shift_id = $request->shift_id;
         $student->dateValid = $request->dateValid;
         $student->semRegular = $request->semRegular;
+        $student->active = $request->active;
         $student->save();
 
         return response()->json($student, 200);
@@ -274,6 +285,38 @@ class StudentController extends Controller
         return response()->json([
             'message' => 'Operação realizada com sucesso!'
         ], 200);
+    }
+
+    public function all()
+    {
+        $user = auth()->user();
+        $students = Student::where('campus_id', $user->campus_id)->get();
+        return response()->json($students,200);
+    }
+
+    public function historyStudent($idStudent){
+        $student = Student::where('id', $idStudent)->first();
+
+        if(!$student){
+            return response()->json([
+                'message' => 'Estudante não encontrado.'
+            ], 202);
+        }
+
+        $user = auth()->user();
+        if($student->campus_id != $user->campus_id){
+            return response()->json([
+                'message' => 'Estudante pertence a outro campus.'
+            ], 202);
+        }
+
+        $hitory = Scheduling::where('student_id', $student->id)
+            ->orderBy('id', 'desc')
+            ->with('meal')
+            ->with('student')
+            ->paginate(10);
+
+        return response()->json($hitory, 200);
     }
 
 }
