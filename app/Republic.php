@@ -22,7 +22,8 @@ class Republic extends Model
     }
 
     public function itensrepublics(){
-        return $this->hasMany('App\Itensrepublic', 'republic_id', 'id');
+        return $this->hasMany('App\Itensrepublic', 'republic_id', 'id')
+                ->with('student');
     }
 
 

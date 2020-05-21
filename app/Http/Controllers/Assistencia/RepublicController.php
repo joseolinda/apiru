@@ -54,6 +54,7 @@ class RepublicController extends Controller
                 return $query->where('description', 'like', '%'.$description.'%');
             })
             ->where('campus_id', $user->campus_id)
+            ->with('itensrepublics')
             ->orderBy('description')
             ->paginate(10);
 
