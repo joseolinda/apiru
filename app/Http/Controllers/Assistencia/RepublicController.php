@@ -203,4 +203,16 @@ class RepublicController extends Controller
             'message' => 'Operação realizada com sucesso!'
         ], 200);
     }
+
+    public function studentAreNotRepublic()
+    {
+        $user = auth()->user();
+        $republics = Republic::where('campus_id', $user->campus_id)->select('id')->get();
+        $itens_republic = Itensrepublic::whereIn('republic_id', $republics)
+            ->select('student_id')->get();
+        $students = Student::whereNotIn('id', $itens_republic)
+            ->orderBy('name')
+            ->get();
+        return response()->json($students, 200);
+    }
 }

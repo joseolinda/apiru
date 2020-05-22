@@ -88,6 +88,7 @@ route::group(['prefix'=>'republic','middleware' => ['check.admin','check.recepti
     route::get('/show/{id}','Assistencia\RepublicController@show')->name('republic.show');
     Route::put('/{id}', 'Assistencia\RepublicController@update')->name('republic.update');
     Route::delete('/{id}', 'Assistencia\RepublicController@destroy')->name('republic.destroy');
+    Route::get('/students-are-not-republic', 'Assistencia\RepublicController@studentAreNotRepublic')->name('republic.studentAreNotRepublic');
     //item republic
     route::get('/item/{idRepublic}','Assistencia\ItemRepublicController@index')->name('itemRepublic.index');
     route::post('/item/','Assistencia\ItemRepublicController@store')->name('itemRepublic.store');
