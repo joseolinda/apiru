@@ -211,6 +211,7 @@ class RepublicController extends Controller
         $itens_republic = Itensrepublic::whereIn('republic_id', $republics)
             ->select('student_id')->get();
         $students = Student::whereNotIn('id', $itens_republic)
+            ->where('active', true)
             ->orderBy('name')
             ->get();
         return response()->json($students, 200);
