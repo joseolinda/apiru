@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Campus;
 use App\Meal;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class MealController extends Controller
 {
@@ -47,9 +50,18 @@ class MealController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $meals = Meal::get();
+        $user = auth()->user();
+        $description = $request->description;
+
+        $meals = Meal::when($description, function ($query) use ($description) {
+            return $query->where('description', 'like', '%'.$description.'%');
+        })
+        ->where('campus_id', $user->campus_id)
+        ->orderBy('description')
+        ->paginate(10);
+
         return response()->json($meals);
 
     }

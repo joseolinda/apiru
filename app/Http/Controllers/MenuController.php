@@ -54,9 +54,18 @@ class MenuController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $menus = Menu::get();
+        $user = auth()->user();
+        $description = $request->description;
+
+        $menus = Menu::when($description, function ($query) use ($description) {
+            return $query->where('description', 'like', '%'.$description.'%');
+        })->with('meal')
+        ->where('campus_id', $user->campus_id)
+        ->orderBy('description')
+        ->paginate(10);
+
         return response()->json($menus);
     }
 
