@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Nutritionist;
 
 use App\Campus;
+use App\Http\Controllers\Controller;
 use App\Meal;
 use App\Menu;
 use Illuminate\Http\Request;
@@ -18,27 +19,14 @@ class MenuController extends Controller
     private $rules = [
         'description' => 'required',
         'date' => 'required',
-        'campus_id' => 'required',
         'meal_id' => 'required',
     ];
     private $messages = [
-        'description.required' => 'O nome é obrigatório',
-        'date.required' => 'A Data é obrigatória',
-        'campus_id.required' => 'O Campus é obrigatório',
+        'description.required' => 'A descrição é obrigatória',
+        'date.required' => 'A data é obrigatória',
         'meal_id.required' => 'A refeição é obrigatória',
     ];
 
-    //Métodos Criados
-    public function verifyCampusValid($id){
-        if(empty($id)) {
-            return false;
-        }
-        $campus = Campus::find($id);
-        if(!$campus){
-            return false;
-        }
-        return true;
-    }
     public function verifyMealValid($id){
         if(empty($id)) {
             return false;
@@ -63,10 +51,29 @@ class MenuController extends Controller
             return $query->where('description', 'like', '%'.$description.'%');
         })->with('meal')
         ->where('campus_id', $user->campus_id)
-        ->orderBy('description')
+        ->orderBy('date', 'desc')
         ->paginate(10);
 
-        return response()->json($menus);
+        return response()->json($menus, 200);
+    }
+
+    public function allByDate(Request $request)
+    {
+        if(!$request->date){
+            return response()->json([
+                'message' => 'Informe a data!'
+            ], 404);
+        }
+
+        $user = auth()->user();
+
+        $menus = Menu::where('campus_id', $user->campus_id)
+            ->where('date', $request->date)
+            ->with('meal')
+            ->orderBy('description')
+            ->get();
+
+        return response()->json($menus, 200);
     }
 
 
@@ -86,20 +93,16 @@ class MenuController extends Controller
             return $validation->errors()->toJson();
         }
 
-        //Verificando se existe campus cadastrad.
-        if(!$this->verifyCampusValid($request->campus_id)){
-            return response()->json([
-                'message' => 'Campus inválido!'
-            ], 404);
-        }
         if(!$this->verifyMealValid($request->meal_id)){
             return response()->json([
                 'message' => 'Refeição inválida !'
             ], 404);
         }
+        $user = auth()->user();
+
         $menu->description = $request->description;
         $menu->date = $request->date;
-        $menu->campus_id = $request->campus_id;
+        $menu->campus_id = $user->campus_id;
         $menu->meal_id = $request->meal_id;
         $menu->save();
 
@@ -121,7 +124,13 @@ class MenuController extends Controller
                 'message' => 'Cardápio não encontrado!'
             ], 404);
         }
-        return response()->json($menu);
+        $user = auth()->user();
+        if ($menu->campus_id != $user->campus_id){
+            return response()->json([
+                'message' => 'O cardápio não pertence ao campus do usuário!'
+            ], 202);
+        }
+        return response()->json($menu, 200);
     }
 
 
@@ -148,9 +157,16 @@ class MenuController extends Controller
             ], 404);
         }
 
+        $user = auth()->user();
+        if ($menu->campus_id != $user->campus_id){
+            return response()->json([
+                'message' => 'O cardápio não pertence ao campus do usuário!'
+            ], 202);
+        }
+
         $menu->description = $request->description;
         $menu->date = $request->date;
-        $menu->campus_id = $request->campus_id;
+        $menu->campus_id = $user->campus_id;
         $menu->meal_id = $request->meal_id;
         $menu->save();
 
@@ -172,21 +188,17 @@ class MenuController extends Controller
                 'message' => 'Cardápio não encontrado!'
             ], 404);
         }
+
+        $user = auth()->user();
+        if ($menu->campus_id != $user->campus_id){
+            return response()->json([
+                'message' => 'O cardápio não pertence ao campus do usuário!'
+            ], 202);
+        }
         $menu->delete();
 
         return response()->json([
             'message' => 'Operação realizada com sucesso!'
         ], 200);
-    }
-
-    public function search($search)
-    {
-        $menu = Menu::where( 'date',$search)->get();
-        if(!$menu){
-            return response()->json([
-                'message' => 'Cardápio não encontrado!'
-            ], 404);
-        }
-        return response()->json($menu, 200);
     }
 }

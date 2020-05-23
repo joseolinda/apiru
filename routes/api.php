@@ -111,30 +111,30 @@ route::group(['prefix'=>'meal'],function (){
     Route::delete('/{id}', 'Nutritionist\MealController@destroy')->name('meal.destroy')->middleware(['check.admin','check.reception','check.assistance','check.student']);
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
 //Menu - Cardapio
 //Apenas Nutricionista pode fazer CRUD
-//Falta criar o middleware do student
 route::group(['prefix'=>'menu','middleware' => ['check.admin','check.reception','check.assistance','check.student']],function (){
-    route::get('/','MenuController@index')->name('menu.index');
-    //route::get('/','MenuController@index')->name('menu.index')->middleware(['check.student']);
-   route::post('/','MenuController@store')->name('menu.store');
-   route::get('/show/{id}','MenuController@show')->name('menu.show');
-   Route::put('/{id}', 'MenuController@update')->name('menu.update');
-   Route::delete('/{id}', 'MenuController@destroy')->name('menu.destroy');
-   Route::get('/search/{search}', 'MenuController@search')->name('menu.search');
+    route::get('/','Nutritionist\MenuController@index')->name('menu.index');
+    route::get('/all-by-date','Nutritionist\MenuController@allByDate')->name('menu.allByDate');
+    route::post('/','Nutritionist\MenuController@store')->name('menu.store');
+    route::get('/show/{id}','Nutritionist\MenuController@show')->name('menu.show');
+    Route::put('/{id}', 'Nutritionist\MenuController@update')->name('menu.update');
+    Route::delete('/{id}', 'Nutritionist\MenuController@destroy')->name('menu.destroy');
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
