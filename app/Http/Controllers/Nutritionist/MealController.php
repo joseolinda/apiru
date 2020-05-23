@@ -1,14 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Nutritionist;
 
 use App\Campus;
 use App\Meal;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class MealController extends Controller
 {
@@ -23,28 +21,16 @@ class MealController extends Controller
         'qtdTimeReservationStart' => 'required',
         'timeEnd' => 'required',
         'timeStart' => 'required',
-        'campus_id' => 'required',
 
     ];
     private $messages = [
-        'campus_id.required' => 'O Campus é obrigatório',
         'description.required' => 'A descrição é obrigatória',
-        'qtdTimeReservationEnd.required' => 'Quantidade de Hora de Inicios é obrigatório',
-        'qtdTimeReservationStart.required' => 'Quantidade de Hora de Fim é obrigatório',
-        'timeEnd.required' => 'Hora de fim é obrigatório',
-        'timeStart.required' => 'Hora de Inicio é obrigatório',
+        'qtdTimeReservationEnd.required' => 'A quantidade de horas do fim da reserva antes do horário da refeição deve ser informada',
+        'qtdTimeReservationStart.required' => 'A quantidade de horas do inicio da reserva antes do horário da refeição deve ser informada',
+        'timeEnd.required' => 'Hora de fim da refeição é obrigatório',
+        'timeStart.required' => 'Hora de inicio da refeição é obrigatório',
     ];
-    //Métodos Criados
-    public function verifyCampusValid($id){
-        if(empty($id)) {
-            return false;
-        }
-        $campus = Campus::find($id);
-        if(!$campus){
-            return false;
-        }
-        return true;
-    }
+
     /**
      * Display a listing of the resource.
      *
@@ -62,8 +48,15 @@ class MealController extends Controller
         ->orderBy('description')
         ->paginate(10);
 
-        return response()->json($meals);
+        return response()->json($meals, 200);
 
+    }
+
+    public function all(Request $request)
+    {
+        $user = auth()->user();
+        $meal = Meal::where('campus_id', $user->campus_id)->get();
+        return response()->json($meal,200);
     }
 
 
@@ -75,23 +68,23 @@ class MealController extends Controller
      */
     public function store(Request $request)
     {
-       $meal = new Meal();
-
         $validation = Validator::make($request->all(),$this->rules,$this->messages);
 
         if($validation->fails()){
             return $validation->errors()->toJson();
         }
 
-        //Verificando se existe campus cadastrad.
-        if(!$this->verifyCampusValid($request->campus_id)){
+        if($request->timeStart > $request->timeEnd){
             return response()->json([
-                'message' => 'Campus inválido!'
-            ], 404);
+                'message' => 'A hora de inicio deve ser menor que hora de fim da refeição'
+            ], 202);
         }
 
+        $user = auth()->user();
+
+        $meal = new Meal();
         $meal->description = $request->description;
-        $meal->campus_id = $request->campus_id;
+        $meal->campus_id = $user->campus_id;
         $meal->qtdTimeReservationEnd = $request->qtdTimeReservationEnd;
         $meal->qtdTimeReservationStart = $request->qtdTimeReservationStart;
         $meal->timeEnd = $request->timeEnd;
@@ -115,7 +108,14 @@ class MealController extends Controller
                 'message' => 'Refeição não encontrada!'
             ], 404);
         }
-        return response()->json($meal);
+
+        $user = auth()->user();
+        if ($meal->campus_id != $user->campus_id){
+            return response()->json([
+                'message' => 'A refeição não pertence ao campus do usuário!'
+            ], 202);
+        }
+        return response()->json($meal, 200);
 
     }
 
@@ -143,12 +143,25 @@ class MealController extends Controller
             ], 404);
         }
 
+        $user = auth()->user();
+        if ($meal->campus_id != $user->campus_id){
+            return response()->json([
+                'message' => 'A refeição não pertence ao campus do usuário!'
+            ], 202);
+        }
+
+        if($request->timeStart > $request->timeEnd){
+            return response()->json([
+                'message' => 'A hora de inicio deve ser menor que hora de fim da refeição'
+            ], 202);
+        }
+
         $meal->description = $request->description;
-        $meal->campus_id = $request->campus_id;
+        $meal->campus_id = $user->campus_id;
         $meal->qtdTimeReservationEnd = $request->qtdTimeReservationEnd;
         $meal->qtdTimeReservationStart = $request->qtdTimeReservationStart;
         $meal->timeEnd = $request->timeEnd;
-        $meal->timeStart = $request->timeStar;
+        $meal->timeStart = $request->timeStart;
         $meal->save();
 
         return response()->json($meal, 200);
@@ -168,21 +181,18 @@ class MealController extends Controller
                 'message' => 'Refeição não encontrada!'
             ], 404);
         }
+
+        $user = auth()->user();
+        if ($meal->campus_id != $user->campus_id){
+            return response()->json([
+                'message' => 'A refeição não pertence ao campus do usuário!'
+            ], 202);
+        }
+
         $meal->delete();
 
         return response()->json([
             'message' => 'Operação realizada com sucesso!'
         ], 200);
-    }
-
-    public function search($search)
-    {
-        $meal = Meal::where( 'description', 'LIKE', '%' . $search . '%' )->get();
-        if(!$meal){
-            return response()->json([
-                'message' => 'Refeição não encontrada!'
-            ], 404);
-        }
-        return response()->json($meal, 200);
     }
 }

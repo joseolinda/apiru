@@ -101,27 +101,27 @@ route::group(['prefix'=>'scheduling', 'middleware' => ['check.admin','check.nutr
     route::post('/justification/{id}','Assistencia\SchedulingController@absenceJustification')->name('scheduling.absenceJustification');
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
 //Meal - Refeição
 route::group(['prefix'=>'meal'],function (){
-    route::get('/','MealController@index')->name('meal.index')->middleware(['check.admin','check.student']);
-   route::post('/','MealController@store')->name('meal.store')->middleware(['check.admin','check.reception','check.assistance','check.student']);
-   route::get('/show/{id}','MealController@show')->name('meal.show')->middleware(['check.admin','check.reception','check.assistance','check.student']);
-   Route::put('/{id}', 'MealController@update')->name('meal.update')->middleware(['check.admin','check.student']);
-   Route::delete('/{id}', 'MealController@destroy')->name('meal.destroy')->middleware(['check.admin','check.reception','check.assistance','check.student']);
-   Route::get('/search/{search}', 'MealController@search')->name('meal.search')->middleware(['check.admin','check.student']);
+    route::get('/','Nutritionist\MealController@index')->name('meal.index')->middleware(['check.admin','check.student']);
+    route::get('/all','Nutritionist\MealController@all')->name('meal.all')->middleware(['check.admin','check.student']);
+    route::post('/','Nutritionist\MealController@store')->name('meal.store')->middleware(['check.admin','check.reception','check.assistance','check.student']);
+    route::get('/show/{id}','Nutritionist\MealController@show')->name('meal.show')->middleware(['check.admin','check.reception','check.assistance','check.student']);
+    Route::put('/{id}', 'Nutritionist\MealController@update')->name('meal.update')->middleware(['check.admin','check.student']);
+    Route::delete('/{id}', 'Nutritionist\MealController@destroy')->name('meal.destroy')->middleware(['check.admin','check.reception','check.assistance','check.student']);
 });
+
+
+
+
+
+
+
+
+
+
+
+
 
 //Menu - Cardapio
 //Apenas Nutricionista pode fazer CRUD

@@ -41,7 +41,6 @@ class CampusController extends Controller
 
     public function all(Request $request)
     {
-        $description = $request->description;
         $campus = Campus::all();
         return response()->json($campus,200);
     }
