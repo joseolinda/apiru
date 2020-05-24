@@ -302,6 +302,16 @@ class StudentController extends Controller
             $user->active = $student->active;
             $user->type = "STUDENT";
             $user->save();
+        } else {
+            $user = new User();
+            $user->name = $student->name;
+            $user->email = $request->email;
+            $user->password = "123";
+            $user->active = 1;
+            $user->type = "STUDENT";
+            $user->campus_id = $student->campus_id;
+            $user->student_id = $student->id;
+            $user->save();
         }
 
         return response()->json($student, 200);
