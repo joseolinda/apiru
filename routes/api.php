@@ -96,6 +96,16 @@ route::group(['prefix'=>'republic','middleware' => ['check.admin','check.recepti
     route::delete('/item/{id}','Assistencia\ItemRepublicController@destroy')->name('itemRepublic.destroy');
 });
 
+//Permições - Allowstudenmealday
+route::group(['prefix'=>'allowstudenmealday','middleware' => ['check.admin','check.reception','check.nutritionist','check.student']],function (){
+    route::get('/','Assistencia\AllowstudenmealdayController@index')->name('allowstudenmealday.index');
+    route::get('/all-meal','Assistencia\AllowstudenmealdayController@allMeal')->name('allowstudenmealday.allMeal');
+    route::post('/','Assistencia\AllowstudenmealdayController@store')->name('allowstudenmealday.store');
+    route::get('/show/{republic}','Assistencia\AllowstudenmealdayController@show')->name('allowstudenmealday.show');
+    Route::put('/{id}', 'Assistencia\AllowstudenmealdayController@update')->name('allowstudenmealday.update');
+    Route::delete('/{id}', 'Assistencia\AllowstudenmealdayController@destroy')->name('allowstudenmealday.destroy');
+});
+
 //Scheduling - Agendamento
 route::group(['prefix'=>'scheduling', 'middleware' => ['check.admin','check.nutritionist','check.student']],function (){
     route::post('/justification/{id}','Assistencia\SchedulingController@absenceJustification')->name('scheduling.absenceJustification');
@@ -120,30 +130,4 @@ route::group(['prefix'=>'menu','middleware' => ['check.admin','check.reception',
     route::get('/show/{id}','Nutritionist\MenuController@show')->name('menu.show');
     Route::put('/{id}', 'Nutritionist\MenuController@update')->name('menu.update');
     Route::delete('/{id}', 'Nutritionist\MenuController@destroy')->name('menu.destroy');
-});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//Permições - Allowstudenmealday
-route::group(['prefix'=>'allowstudenmealday','middleware' => ['check.admin','check.reception','check.nutritionist','check.student']],function (){
-    route::get('/','AllowstudenmealdayController@index')->name('allowstudenmealday.index');
-    route::post('/','AllowstudenmealdayController@store')->name('allowstudenmealday.store');
-    route::get('/show/{republic}','AllowstudenmealdayController@show')->name('allowstudenmealday.show');
-    Route::put('/{id}', 'AllowstudenmealdayController@update')->name('allowstudenmealday.update');
-    Route::delete('/{id}', 'AllowstudenmealdayController@destroy')->name('allowstudenmealday.destroy');
-    Route::get('/search/{search}', 'AllowstudenmealdayController@search')->name('allowstudenmealday.search');
 });
