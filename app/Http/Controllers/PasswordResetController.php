@@ -3,15 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Notifications\PasswordResetRequestNotifications;
+use App\Notifications\PasswordResetSuccessNotifications;
 use App\PasswordReset;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Validator;
 use App\User;
 use Carbon\Carbon;
-use App\Notifications\PasswordResetRequest;
-use App\Notifications\PasswordResetSuccess;
 
-class PasswordResetController
+class PasswordResetController extends Controller
 {
     /**
      * Create token password reset
@@ -39,20 +40,20 @@ class PasswordResetController
         $user = User::where('email', $request->email)->first();
         if (!$user)
             return response()->json([
-                'message' => 'Não podemos encontrar um usuário com esse endereço de e-mail.'], 404);
+                'message' => 'E-mail não encontrado.'], 404);
         $passwordReset = PasswordReset::updateOrCreate(
             ['email' => $user->email],
             [
                 'email' => $user->email,
-                'token' => str_random(60)
+                'token' => Str::random(60)
             ]
         );
         if ($user && $passwordReset)
             $user->notify(
-                new PasswordResetRequest($passwordReset->token)
+                new PasswordResetRequestNotifications($passwordReset->token, $user)
             );
         return response()->json([
-            'message' => 'Enviamos seu link de redefinição de senha para seu e-mail!'
+            'message' => 'Enviamos o link de redefinição de senha para seu e-mail!'
         ]);
     }
     /**
@@ -120,7 +121,7 @@ class PasswordResetController
             return response()->json([
                 'message' => 'Este token de redefinição de senha é inválido.'
             ], 404);
-        $user = Users::where('email', $passwordReset->email)->first();
+        $user = User::where('email', $passwordReset->email)->first();
         if (!$user)
             return response()->json([
                 'message' => 'Não podemos encontrar um usuário com esse endereço de e-mail.'
@@ -128,7 +129,7 @@ class PasswordResetController
         $user->password = bcrypt($request->password);
         $user->save();
         $passwordReset->delete();
-        $user->notify(new PasswordResetSuccess($passwordReset));
+        $user->notify(new PasswordResetSuccessNotifications($user));
         return response()->json($user);
     }
 }
