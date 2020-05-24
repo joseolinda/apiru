@@ -26,7 +26,8 @@ class Scheduling extends Model
         return $this->belongsTo('App\Meal');
     }
     public function student(){
-        return $this->belongsTo('App\Student');
+        return $this->belongsTo('App\Student')
+            ->with('course');
     }
     public function menu(){
         return $this->belongsTo('App\Menu');

@@ -131,3 +131,7 @@ route::group(['prefix'=>'menu','middleware' => ['check.admin','check.reception',
     Route::put('/{id}', 'Nutritionist\MenuController@update')->name('menu.update');
     Route::delete('/{id}', 'Nutritionist\MenuController@destroy')->name('menu.destroy');
 });
+
+route::group(['prefix'=>'report','middleware' => ['check.admin','check.reception']],function (){
+    route::get('/list-scheduling','ReportStudentMealController@listScheduling')->name('report.listScheduling');
+});

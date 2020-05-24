@@ -72,6 +72,18 @@ class AllowstudenmealdayController extends Controller
                 'message' => 'Informe o estudante.'
             ], 404);
         }
+        $user = auth()->user();
+        $student = Student::where('id', $request->student_id)->first();
+        if(!$student){
+            return response()->json([
+                'message' => 'Estudante não existe.'
+            ], 404);
+        }
+        if($user->campus_id != $student->campus_id){
+            return response()->json([
+                'message' => 'Permissões faz parte de outro campus!'
+            ], 202);
+        }
         $allowstudenmealday = Allowstudenmealday::where('student_id', $request->student_id)
             ->with('meal')
             ->with('student')
