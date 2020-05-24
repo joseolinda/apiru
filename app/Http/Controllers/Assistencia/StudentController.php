@@ -238,6 +238,21 @@ class StudentController extends Controller
             ], 404);
         }
 
+        if(!$request->email){
+            return response()->json([
+                'message' => 'Informe o e-mail.'
+            ], 404);
+        }
+
+        $verifyEmail = User::where('email', $request->email)->first();
+        if($verifyEmail){
+            if($verifyEmail->student_id != $student->id) {
+                return response()->json([
+                    'message' => 'E-mail já cadastrado.'
+                ], 202);
+            }
+        }
+
         $user = auth()->user();
         if($student->campus_id != $user->campus_id){
             return response()->json([
