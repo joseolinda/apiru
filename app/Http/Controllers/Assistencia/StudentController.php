@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Scheduling;
 use App\Shift;
 use App\Student;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -95,7 +96,9 @@ class StudentController extends Controller
                         ->orWhere('mat', 'like', '%'.$name.'%');
                 return $query;
             })
-            ->with('course')->with('shift')
+            ->with('course')
+            ->with('shift')
+            ->with('user')
             ->where('campus_id', $user->campus_id)
             ->orderBy('name')
             ->paginate(10);
@@ -120,6 +123,19 @@ class StudentController extends Controller
             ));
             $json_str = json_encode($erros);
             return response($json_str, 202);
+        }
+
+        if(!$request->email){
+            return response()->json([
+                'message' => 'Informe o e-mail.'
+            ], 404);
+        }
+
+        $verifyEmail = User::where('email', $request->email)->first();
+        if($verifyEmail){
+            return response()->json([
+                'message' => 'E-mail já cadastrado.'
+            ], 202);
         }
 
         if(!$this->verifyCourseValid($request->course_id)){
@@ -151,8 +167,20 @@ class StudentController extends Controller
         $student->shift_id = $request->shift_id;
         $student->dateValid = $request->dateValid;
         $student->active = 1;
-        $student->semRegular = $request->semRegular;
+        $request->semRegular ?
+            $student->semRegular = $request->semRegular : $student->semRegular = 1 ;
         $student->save();
+
+        $user = new User();
+        $user->name = $student->name;
+        $user->email = $request->email;
+        $user->password = "123";
+        $user->active = 1;
+        $user->type = "STUDENT";
+        $user->campus_id = $student->campus_id;
+        $user->student_id = $student->id;
+        $user->save();
+
 
         return response()->json(
             $student, 200);
@@ -166,7 +194,7 @@ class StudentController extends Controller
      */
     public function show($id)
     {
-        $student = Student::find($id);
+        $student = Student::where('id', $id)->with('user')->first();
         if (!$student){
             return response()->json([
                 'message' => 'Estudante não encontrado!'
@@ -244,9 +272,22 @@ class StudentController extends Controller
         $student->course_id = $request->course_id;
         $student->shift_id = $request->shift_id;
         $student->dateValid = $request->dateValid;
-        $student->semRegular = $request->semRegular;
-        $student->active = $request->active;
+        $request->semRegular ?
+            $student->semRegular = $request->semRegular : $student->semRegular = 1 ;
+        $request->active ?
+                $student->active = $request->active : $student->active = 0;
         $student->save();
+
+        $user = User::where('student_id', $student->id)->first();
+        if($user){
+            $user->name = $student->name;
+            $request->email ?
+                    $user->email = $request->email : null;
+            $user->student_id = $student->id;
+            $user->active = $student->active;
+            $user->type = "STUDENT";
+            $user->save();
+        }
 
         return response()->json($student, 200);
     }
@@ -278,6 +319,11 @@ class StudentController extends Controller
             return response()->json([
                 'message' => 'O Estudante possui agendamentos.'
             ], 202);
+        }
+
+        $userStudent = User::where('student_id', $student->id)->first();
+        if($userStudent){
+            $userStudent->delete();
         }
 
         $student->delete();

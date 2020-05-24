@@ -14,7 +14,6 @@ class AuthController extends Controller
     private $rules = [
         'name' => 'required',
         'email' => 'required|unique:user',
-        'password' => 'required',
         'type' => 'required',
         'campus_id' => 'required',
     ];
@@ -22,7 +21,6 @@ class AuthController extends Controller
         'name.required' => 'O nome é obrigatório',
         'email.required' => 'O email é obrigatório',
         'email.unique' => 'USUÁRIO já está cadastrado.',
-        'password.required' => 'O password é obrigatório',
         'type.required' => 'O tipo é obrigatório',
         'campus_id.required' => 'O Campus é obrigatório',
     ];
@@ -74,7 +72,7 @@ class AuthController extends Controller
             'name'    => $request->name,
             'email'    => $request->email,
             'type'    => $request->type,
-            'password' => $request->password,
+            'password' => 123,
             'campus_id' =>$request->campus_id,
             'active' => 1,
         ]);

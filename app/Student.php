@@ -42,4 +42,8 @@ class Student extends Model
     public function schedulings(){
         return $this->hasMany('App\Scheduling', 'student_id', 'id');
     }
+
+    public function user(){
+        return $this->hasMany(User::class, 'student_id');
+    }
 }
