@@ -112,11 +112,12 @@ class PasswordResetController extends Controller
         if($validation->fails()){
             return $validation->errors()->toJson();
         }
-
+        
         $passwordReset = PasswordReset::where([
             ['token', $request->token],
             ['email', $request->email]
         ])->first();
+        
         if (!$passwordReset)
             return response()->json([
                 'message' => 'Este token de redefinição de senha é inválido.'

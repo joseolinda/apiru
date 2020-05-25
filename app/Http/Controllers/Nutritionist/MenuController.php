@@ -45,10 +45,10 @@ class MenuController extends Controller
     public function index(Request $request)
     {
         $user = auth()->user();
-        $description = $request->description;
+        $date = $request->date;
 
-        $menus = Menu::when($description, function ($query) use ($description) {
-            return $query->where('description', 'like', '%'.$description.'%');
+        $menus = Menu::when($date, function ($query) use ($date) {
+            return $query->where('date', $date);
         })->with('meal')
         ->where('campus_id', $user->campus_id)
         ->orderBy('date', 'desc')
