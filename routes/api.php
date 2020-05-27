@@ -132,7 +132,13 @@ route::group(['prefix'=>'menu','middleware' => ['check.admin','check.reception',
     Route::delete('/{id}', 'Nutritionist\MenuController@destroy')->name('menu.destroy');
 });
 
-route::group(['prefix'=>'report','middleware' => ['check.admin']],function (){
+route::group(['prefix'=>'report','middleware' => ['check.admin', 'check.student']],function (){
     route::get('/list-scheduling','ReportStudentMealController@listScheduling')->name('report.listScheduling');
     route::get('/all-meal','ReportStudentMealController@allMeal')->name('report.allMeal');
+});
+
+route::group(['prefix'=>'all','middleware' => ['check.admin', 'check.student']],function (){
+    route::get('/meals','All@allMeal')->name('report.allMeal');
+    route::get('/students','All@allStudent')->name('report.allStudent');
+    route::get('/students-by-mat-or-cod','All@studentByMatOrCod')->name('report.studentByMatOrCod');
 });
