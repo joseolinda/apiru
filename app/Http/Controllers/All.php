@@ -90,7 +90,7 @@ class All extends Controller
                 'message' => 'O estudante está inativo.'
             ], 202);
         }
-        
+
         if($student->dateValid < date('yy-m-d')){
             return response()->json([
                 'message' => 'O estudante precisa fazer a atualização cadastral.'

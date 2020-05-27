@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Allowstudenmealday;
 use App\Campus;
 use App\Meal;
+use App\Menu;
 use App\Scheduling;
 use App\Student;
 use App\User;
@@ -24,9 +25,9 @@ class ConfirmMealsController extends Controller
             ], 202);
         }
 
-        if(!$request->menu_id){
+        if(!$request->meal_id){
             return response()->json([
-                'message' => 'Informe o cardápio'
+                'message' => 'Informe a refeição'
             ], 202);
         }
 
@@ -38,9 +39,20 @@ class ConfirmMealsController extends Controller
 
         $user = auth()->user();
 
+        $menu = Menu::where('meal_id', $request->meal_id)
+            ->where('date', $request->date)
+            ->where('campus_id', $user->campus_id)
+            ->first();
+
+        if(!$menu){
+            return response()->json([
+                'message' => 'Não existe cárdapio cadastrado para esta data.'
+            ], 202);
+        }
+
         $scheduling = Scheduling::where('student_id', $request->student_id)
             ->where('date', $request->date)
-            ->where('menu_id', $request->menu_id)
+            ->where('meal_id', $request->meal_id)
             ->where('campus_id', $user->campus_id)
             ->first();
 
@@ -58,6 +70,7 @@ class ConfirmMealsController extends Controller
 
         $scheduling->wasPresent = 1;
         $scheduling->user_id = $user->id;
+        $scheduling->menu_id = $menu->id;
         $scheduling->time = date('H:i:s');;
 
         $scheduling->save();
