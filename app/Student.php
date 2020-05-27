@@ -10,7 +10,7 @@ class Student extends Model
     protected $table = 'student';
 
     protected $fillable = [
-        'active','dataValid','mat','name','observation','photo','semRegular','campus_id','course_id','shift_id'
+        'active','dateValid','mat','name','observation','photo','semRegular','campus_id','course_id','shift_id'
     ];
     protected $guarded = [
         'id'
