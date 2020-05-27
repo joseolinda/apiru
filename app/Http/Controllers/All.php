@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Allowstudenmealday;
 use App\Campus;
 use App\Meal;
+use App\Menu;
 use App\Scheduling;
 use App\Student;
 use App\User;
@@ -16,11 +17,34 @@ use JWTAuth;
 class All extends Controller
 {
 
+    public function allMenuByDay(Request $request)
+    {
+        if(!$request->date){
+            if(!$request->mat){
+                return response()->json([
+                    'message' => 'Informe a data.'
+                ], 202);
+            }
+        }
+
+        $user = auth()->user();
+
+        $menu = Menu::where('date', $request->date)
+            ->where('campus_id', $user->campus_id)
+            ->with('meal')
+            ->orderBy('description')
+            ->get();
+
+        return response()->json($menu, 200);
+
+    }
+
     public function allMeal()
     {
         $user = auth()->user();
 
         $meals = Meal::where('campus_id', $user->campus_id)
+            ->where('campus_id', $user->campus_id)
             ->orderBy('description')
             ->get();
 
@@ -70,6 +94,7 @@ class All extends Controller
         $schedulingStudent = Scheduling::where('wasPresent', 0)
             ->where('absenceJustification', null)
             ->where('student_id', $student->id)
+            ->where('campus_id', $user->campus_id)
             ->get();
 
         if(sizeof($schedulingStudent)>0){
