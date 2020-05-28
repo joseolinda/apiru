@@ -109,6 +109,7 @@ route::group(['prefix'=>'allowstudenmealday','middleware' => ['check.admin','che
 //Scheduling - Agendamento
 route::group(['prefix'=>'scheduling', 'middleware' => ['check.admin','check.nutritionist','check.student']],function (){
     route::post('/justification/{id}','Assistencia\SchedulingController@absenceJustification')->name('scheduling.absenceJustification');
+    route::post('/','Assistencia\SchedulingController@scheduleMeal')->name('scheduling.scheduleMeal');
 });
 
 //Meal - Refeição
@@ -149,6 +150,3 @@ route::group(['prefix'=>'confirm-meals','middleware' => ['check.admin', 'check.s
     route::get('/list','ConfirmMealsController@listConfirmedMeals')->name('confirmMeals.listConfirmedMeals');
 });
 
-route::group(['prefix'=>'schedule-meals','middleware' => ['check.admin', 'check.reception', 'check.student']],function (){
-    route::post('/','ScheduleMealsController@scheduleMeal')->name('scheduleMeals.scheduleMeal');
-});
