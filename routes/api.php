@@ -148,3 +148,7 @@ route::group(['prefix'=>'confirm-meals','middleware' => ['check.admin', 'check.s
     route::post('/','ConfirmMealsController@confirmMeal')->name('confirmMeals.confirmMeal');
     route::get('/list','ConfirmMealsController@listConfirmedMeals')->name('confirmMeals.listConfirmedMeals');
 });
+
+route::group(['prefix'=>'schedule-meals','middleware' => ['check.admin', 'check.reception', 'check.student']],function (){
+    route::post('/','ScheduleMealsController@scheduleMeal')->name('scheduleMeals.scheduleMeal');
+});

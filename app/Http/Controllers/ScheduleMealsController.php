@@ -14,9 +14,9 @@ use Illuminate\Http\Request;
 use Validator;
 use JWTAuth;
 
-class ConfirmMealsController extends Controller
+class ScheduleMealsController extends Controller
 {
-    public function confirmMeal(Request $request)
+    public function scheduleMeal(Request $request)
     {
 
         if(!$request->student_id){
@@ -37,9 +37,33 @@ class ConfirmMealsController extends Controller
             ], 202);
         }
 
+        if($request->date < date('yy-m-d')){
+            return response()->json([
+                'message' => 'A data do agendamento não pode ser menor que a data atual.'
+            ], 202);
+        }
+
         $user = auth()->user();
 
-        $menu = Menu::where('meal_id', $request->meal_id)
+        $student = Student::where('id', $request->student_id)
+                ->where('campus_id',$user->campus_id)
+                ->first();
+        if(!$student){
+            return response()->json([
+                'message' => 'Estudante não encontrado.'
+            ], 404);
+        }
+
+        $meal = Meal::where('id', $request->meal_id)
+            ->where('campus_id',$user->campus_id)
+            ->first();
+        if(!$meal){
+            return response()->json([
+                'message' => 'Refeição não encontrada.'
+            ], 404);
+        }
+
+        $menu = Menu::where('meal_id', $meal->id)
             ->where('date', $request->date)
             ->where('campus_id', $user->campus_id)
             ->first();
@@ -49,31 +73,27 @@ class ConfirmMealsController extends Controller
             ], 202);
         }
 
-        $scheduling = Scheduling::where('student_id', $request->student_id)
-            ->where('date', $request->date)
-            ->where('meal_id', $request->meal_id)
+        $schedulingStudent = Scheduling::where('wasPresent', 0)
+            ->where('absenceJustification', null)
+            ->where('student_id', $student->id)
             ->where('campus_id', $user->campus_id)
-            ->first();
-
-        if(!$scheduling){
+            ->where('canceled_by_student', 0)
+            ->get();
+        if(sizeof($schedulingStudent)>0){
             return response()->json([
-                'message' => 'O agendamento não foi encontrado.'
+                'message' => 'O estudante está bloqueado.'
             ], 404);
         }
 
-        if($scheduling->wasPresent == 1){
-            return response()->json([
-                'message' => 'A refeição já foi confirmada.'
-            ], 202);
-        }
-
-        $scheduling->wasPresent = 1;
-        $scheduling->user_id = $user->id;
+        $scheduling = new Scheduling();
+        $scheduling->wasPresent = 0;
+        $scheduling->dateInsert = date('yy-m-d');
         $scheduling->menu_id = $menu->id;
-        $scheduling->time = date('H:i:s');;
+        $scheduling->meal_id = $meal->id;
+        $scheduling->student_id = $student->id;
+        $scheduling->campus_id = $user->campus_id;
 
         $scheduling->save();
-
 
         return response()->json($scheduling, 200);
 
