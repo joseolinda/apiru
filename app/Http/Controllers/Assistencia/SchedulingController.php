@@ -160,4 +160,24 @@ class SchedulingController extends Controller
         return response()->json($scheduling, 200);
 
     }
+
+    public function listSchedulingMeals(Request $request)
+    {
+        if(!$request->date){
+            return response()->json([
+                'message' => 'Informe a data.'
+            ], 202);
+        }
+
+        $user = auth()->user();
+
+        $schedulings = Scheduling::where('date', $request->date)
+            ->where('campus_id', $user->campus_id)
+            ->where('wasPresent', 0)
+            ->orderBy('date', 'desc')
+            ->paginate(10);
+
+        return response()->json($schedulings, 200);
+
+    }
 }
