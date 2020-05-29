@@ -101,6 +101,7 @@ class All extends Controller
             ->where('absenceJustification', null)
             ->where('student_id', $student->id)
             ->where('campus_id', $user->campus_id)
+            ->where('date', '<', date('yy-m-d'))
             ->where('canceled_by_student', 0)
             ->get();
 
