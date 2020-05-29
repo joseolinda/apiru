@@ -84,13 +84,13 @@ class SchedulingController extends Controller
                 'message' => 'Informe a data'
             ], 202);
         }
-
+        /*
         if($request->date < date('yy-m-d')){
             return response()->json([
                 'message' => 'A data do agendamento não pode ser menor que a data atual.'
             ], 202);
         }
-
+        */
         $user = auth()->user();
 
         $student = Student::where('id', $request->student_id)
@@ -146,6 +146,7 @@ class SchedulingController extends Controller
             ], 202);
         }
 
+        date_default_timezone_set('America/Sao_Paulo');
         $scheduling = new Scheduling();
         $scheduling->wasPresent = 0;
         $scheduling->date = $request->date;
