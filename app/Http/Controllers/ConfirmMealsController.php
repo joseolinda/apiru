@@ -92,6 +92,9 @@ class ConfirmMealsController extends Controller
         $schedulings = Scheduling::where('date', $request->date)
             ->where('campus_id', $user->campus_id)
             ->where('wasPresent', 1)
+            ->with('student')
+            ->with('menu')
+            ->with('meal')
             ->orderBy('date', 'desc')
             ->paginate(10);
 
