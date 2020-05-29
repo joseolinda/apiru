@@ -41,13 +41,13 @@ class SchedulingController extends Controller
         if(!$schedule){
             return response()->json([
                 'message' => 'Agendamento não encontrado.'
-            ], 404);
+            ], 202);
         }
 
         if(!$request->absenceJustification){
             return response()->json([
                 'message' => 'Informe a justificativa!'
-            ], 404);
+            ], 202);
         }
 
         $user = auth()->user();
@@ -99,7 +99,7 @@ class SchedulingController extends Controller
         if(!$student){
             return response()->json([
                 'message' => 'Estudante não encontrado.'
-            ], 404);
+            ], 202);
         }
 
         $meal = Meal::where('id', $request->meal_id)
@@ -108,7 +108,7 @@ class SchedulingController extends Controller
         if(!$meal){
             return response()->json([
                 'message' => 'Refeição não encontrada.'
-            ], 404);
+            ], 202);
         }
 
         $menu = Menu::where('meal_id', $meal->id)
@@ -131,7 +131,7 @@ class SchedulingController extends Controller
         if(sizeof($schedulingStudent)>0){
             return response()->json([
                 'message' => 'O estudante está bloqueado.'
-            ], 404);
+            ], 202);
         }
 
         $schedulingVerifyDuplicated = Scheduling::where('date', $request->date)
@@ -143,7 +143,7 @@ class SchedulingController extends Controller
         if(sizeof($schedulingVerifyDuplicated)>0){
             return response()->json([
                 'message' => 'A refeição já foi cadastrada para o estudante.'
-            ], 404);
+            ], 202);
         }
 
         $scheduling = new Scheduling();

@@ -58,7 +58,7 @@ class ConfirmMealsController extends Controller
         if(!$scheduling){
             return response()->json([
                 'message' => 'O agendamento não foi encontrado.'
-            ], 404);
+            ], 202);
         }
 
         if($scheduling->wasPresent == 1){
