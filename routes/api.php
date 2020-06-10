@@ -23,7 +23,6 @@ Route::post('/login', 'AuthController@login');
 Route::post('/logout', 'AuthController@logout');
 //Rotas de recuperação de senha
 
-//Falta criar os controllers de redifinir senha.
 Route::post('/redefinepassword', 'PasswordResetController@redefinePassword');
 Route::post('/reset', 'PasswordResetController@reset');
 
@@ -139,7 +138,8 @@ route::group(['prefix'=>'report','middleware' => ['check.admin', 'check.student'
     route::get('/all-meal','ReportStudentMealController@allMeal')->name('report.allMeal');
 });
 
-route::group(['prefix'=>'all','middleware' => ['check.admin', 'check.student']],function (){
+
+route::group(['prefix'=>'all','middleware' => ['check.admin','check.nutritionist']],function (){
     route::get('/meals','All@allMeal')->name('report.allMeal');
     route::get('/menus-today','All@menusToday')->name('report.menusToday');
     route::get('/menus-week','All@menusByWeek')->name('report.menusByWeek');
