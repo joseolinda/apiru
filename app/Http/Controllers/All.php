@@ -9,6 +9,7 @@ use App\Menu;
 use App\Scheduling;
 use App\Student;
 use App\User;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Validator;
@@ -16,6 +17,37 @@ use JWTAuth;
 
 class All extends Controller
 {
+
+    public function menusToday(Request $request)
+    {
+
+        $user = auth()->user();
+
+        $menu = Menu::where('date',\date('Y-m-d'))
+            ->where('campus_id', $user->campus_id)
+            ->with('meal')
+            ->orderBy('description')
+            ->get();
+
+        return response()->json($menu, 200);
+
+    }
+
+    public function menusByWeek(Request $request)
+    {
+
+        $user = auth()->user();
+
+        $menu = Menu::where('date', '>=',\date('Y-m-d'))
+            ->where('date', '<=', \date('Y-m-d', strtotime('+7 days')))
+            ->where('campus_id', $user->campus_id)
+            ->with('meal')
+            ->orderBy('date')
+            ->get();
+
+        return response()->json($menu, 200);
+
+    }
 
     public function allMenuByDay(Request $request)
     {
