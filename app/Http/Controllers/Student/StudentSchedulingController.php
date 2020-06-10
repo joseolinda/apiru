@@ -42,7 +42,7 @@ class StudentSchedulingController extends Controller
             ->with('meal')
             ->with('menu')
             ->orderBy('date', 'desc')
-            ->get();
+            ->paginate(10);
 
         return response()->json($scheduling, 200);
     }
