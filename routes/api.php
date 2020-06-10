@@ -153,3 +153,7 @@ route::group(['prefix'=>'confirm-meals','middleware' => ['check.admin', 'check.s
     route::get('/list','ConfirmMealsController@listConfirmedMeals')->name('confirmMeals.listConfirmedMeals');
 });
 
+route::group(['prefix'=>'student','middleware' => ['check.admin', 'check.reception','check.assistance', 'check.nutritionist']],function (){
+    route::get('/schedulings','Student\StudentSchedulingController@schedulings')->name('student.schedulings');
+});
+
