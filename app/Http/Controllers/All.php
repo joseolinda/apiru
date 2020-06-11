@@ -113,7 +113,7 @@ class All extends Controller
             ], 202);
         }
 
-        $student = Student::where('id', $user->student_id)->first();
+        $student = Student::where('id', $user->student_id) ->with('course')->first();
 
         if ($user->campus_id!=$student->campus_id){
             return response()->json([
