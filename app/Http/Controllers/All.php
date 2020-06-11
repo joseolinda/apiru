@@ -96,6 +96,22 @@ class All extends Controller
 
     }
 
+
+    public function showStudent($id)
+    {       
+
+        $student = User::where('id', $id)->with('student')->get();
+        if (!$student){
+            return response()->json([
+                'message' => 'Estudante não encontrado!'
+            ], 404);
+        }
+
+        return response()->json($student, 200);
+
+    }
+
+
     public function studentByMatOrCod(Request $request)
     {
         $user = auth()->user();
