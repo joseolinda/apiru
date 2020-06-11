@@ -123,6 +123,8 @@ class AuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type'   => 'bearer',
+            //Pegar o id do users
+            'id' => auth('api')->getUser()->id,
             //Pegar o type do users
             'classfication' => auth('api')->getUser()->type,
             //Pegar o name do Users
