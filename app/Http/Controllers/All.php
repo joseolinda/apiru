@@ -99,14 +99,27 @@ class All extends Controller
 
     public function showStudent($id)
     {       
-
-        $student = User::where('id', $id)->with('student')->get();
-        if (!$student){
+        
+        $user = User::where('id', $id)->first();
+        if (!$user){
             return response()->json([
                 'message' => 'Estudante não encontrado!'
             ], 404);
         }
 
+        if (!$user->student_id){
+            return response()->json([
+                'message' => 'Estudante não encontrado!'
+            ], 202);
+        }
+
+        $student = Student::where('id', $user->student_id)->first();
+
+        if ($user->campus_id!=$student->campus_id){
+            return response()->json([
+                'message' => 'Estudante não pertence a esse campus!'
+            ], 404);
+        }
         return response()->json($student, 200);
 
     }
