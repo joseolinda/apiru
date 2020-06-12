@@ -147,6 +147,7 @@ route::group(['prefix'=>'all','middleware' => ['check.admin','check.nutritionist
     route::get('/students','All@allStudent')->name('report.allStudent');
     route::get('/students-by-mat-or-cod','All@studentByMatOrCod')->name('report.studentByMatOrCod');
     route::get('/show-student/{id}','All@showStudent')->name('report.showStudent');
+    route::get('/show-user/{id}','All@showUser')->name('report.showUser');
 });
 
 route::group(['prefix'=>'confirm-meals','middleware' => ['check.admin', 'check.student']],function (){
