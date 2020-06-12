@@ -67,6 +67,12 @@ class ConfirmMealsController extends Controller
             ], 202);
         }
 
+        if($scheduling->canceled_by_student == 1){
+            return response()->json([
+                'message' => 'A refeição foi cancelada pelo estudante.'
+            ], 202);
+        }
+
         $scheduling->wasPresent = 1;
         $scheduling->user_id = $user->id;
         $scheduling->menu_id = $menu->id;

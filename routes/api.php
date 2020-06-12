@@ -158,5 +158,6 @@ route::group(['prefix'=>'confirm-meals','middleware' => ['check.admin', 'check.s
 route::group(['prefix'=>'student','middleware' => ['check.admin', 'check.reception','check.assistance', 'check.nutritionist']],function (){
     route::get('/schedulings','Student\StudentSchedulingController@schedulings')->name('student.schedulings');
     route::post('/schedulings/new','Student\StudentSchedulingController@newScheduling')->name('student.newScheduling');
+    route::put('/schedulings/cancel','Student\StudentSchedulingController@cancelScheduling')->name('student.cancelScheduling');
 });
 

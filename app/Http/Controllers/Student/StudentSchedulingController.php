@@ -99,6 +99,7 @@ class StudentSchedulingController extends Controller
         $schedulingVerify = Scheduling::where('date', $request->date)
             ->where('meal_id', $request->meal_id)
             ->where('student_id', $student->id)
+            ->where('campus_id', $user->campus_id)
             ->first();
 
         if($schedulingVerify){
@@ -131,6 +132,72 @@ class StudentSchedulingController extends Controller
         $scheduling->student_id = $student->id;
         $scheduling->dateInsert = \date('Y-m-d');
 
+        $scheduling->save();
+
+        return response()->json($scheduling, 200);
+
+    }
+
+    public function cancelScheduling(Request $request)
+    {
+
+        if(!$request->meal_id){
+            return response()->json([
+                'message' => 'Informe a refeição'
+            ], 202);
+        }
+
+        if(!$request->date){
+            return response()->json([
+                'message' => 'Informe a data'
+            ], 202);
+        }
+
+        $user = auth()->user();
+        if($user->student_id == null){
+            return response()->json([
+                'message' => 'O usuário não é um estudante.'
+            ], 202);
+        }
+
+        $student = Student::where('id', $user->student_id)->first();
+        if(!$student){
+            return response()->json([
+                'message' => 'Estudante  não encontrado.'
+            ], 202);
+        }
+
+        $meal = Meal::where('id', $request->meal_id)->first();
+        if(!$meal){
+            return response()->json([
+                'message' => 'Refeição não encontrada.'
+            ], 202);
+        }
+
+        $scheduling = Scheduling::where('date', $request->date)
+            ->where('meal_id', $request->meal_id)
+            ->where('student_id', $student->id)
+            ->where('campus_id', $user->campus_id)
+            ->first();
+
+        if(!$scheduling){
+            return response()->json([
+                'message' => 'O agendamento não foi encontrado.'
+            ], 202);
+        }
+
+        $dataEnd = new \DateTime( $request->date .' '. $meal->timeEnd);
+        $dataEnd->sub(new \DateInterval('PT'.$meal->qtdTimeReservationEnd.'H'));
+
+        $dateNow = new \DateTime();
+
+        if($dateNow > $dataEnd){
+            return response()->json([
+                'message' => 'O cancelamento está fora do horário permitido.'
+            ], 202);
+        }
+
+        $scheduling->canceled_by_student = 1;
         $scheduling->save();
 
         return response()->json($scheduling, 200);
