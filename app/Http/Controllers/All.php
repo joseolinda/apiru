@@ -20,11 +20,8 @@ class All extends Controller
 
     public function menusToday(Request $request)
     {
-        //dd($request->date);
         //verifica quais refeições estão habilitadas para fazer reserva no horário solicitado.
         $meals = Meal::all();
-        //$meals = Meal::where('id', 2)->get();
-        //dd($meals);
         $resultMealsEnable = array();
         foreach ($meals as $meal){
 
@@ -36,17 +33,9 @@ class All extends Controller
 
             $dateNow = new \DateTime();
 
-            $auxAnswer= (object)[
-                //'dtStart' => $dataStart,
-                'dtEnd' => $dataEnd,
-                'meal' => $meal,
-
-            ];
-
             if(!($dateNow < $dataStart || $dateNow > $dataEnd)){
                 $resultMealsEnable[] = $meal->id;
             }
-            //dd($dataStart);
 
         }
 

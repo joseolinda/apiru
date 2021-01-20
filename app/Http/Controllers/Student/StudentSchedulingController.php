@@ -186,6 +186,12 @@ class StudentSchedulingController extends Controller
             ], 202);
         }
 
+        if($scheduling->canceled_by_student == 1){
+            return response()->json([
+                'message' => 'Reserva já cancelada pelo estudante.'
+            ], 202);
+        }
+
         $dataEnd = new \DateTime( $request->date .' '. $meal->timeEnd);
         $dataEnd->sub(new \DateInterval('PT'.$meal->qtdTimeReservationEnd.'H'));
 
