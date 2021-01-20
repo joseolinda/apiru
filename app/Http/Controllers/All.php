@@ -20,11 +20,33 @@ class All extends Controller
 
     public function menusToday(Request $request)
     {
+        //verifica quais refeições estão habilitadas para fazer reserva no horário solicitado.
+        $meals = Meal::all();
+        $resultMealsEnable = array();
+        foreach ($meals as $meal){
+
+            $dataEnd = new \DateTime( $request->date .' '. $meal->timeEnd);
+            $dataEnd->sub(new \DateInterval('PT'.$meal->qtdTimeReservationEnd.'H'));
+
+            $dateNow = new \DateTime();
+
+            $auxAnswer= (object)[
+                //'dtStart' => $dataStart,
+                'dtEnd' => $dataEnd,
+                'meal' => $meal,
+
+            ];
+            if($dataEnd > $dateNow){
+                $resultMealsEnable[] = $meal->id;
+            }
+
+        }
 
         $user = auth()->user();
 
         $menu = Menu::where('date',\date('Y-m-d'))
-            ->where('campus_id', $user->campus_id)
+            //->where('campus_id', $user->campus_id)
+            ->whereIn('meal_id', $resultMealsEnable)
             ->with('meal')
             ->orderBy('description')
             ->get();
@@ -98,8 +120,8 @@ class All extends Controller
 
 
     public function showStudent($id)
-    {       
-        
+    {
+
         $user = User::where('id', $id)->first();
         if (!$user){
             return response()->json([
