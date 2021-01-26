@@ -188,7 +188,7 @@ class All extends Controller
             ], 202);
         }
 
-        if($student->dateValid < date('yy-m-d')){
+        if($student->dateValid < date('Y-m-d')){
             return response()->json([
                 'message' => 'O estudante precisa fazer a atualização cadastral.'
             ], 202);
@@ -198,7 +198,7 @@ class All extends Controller
             ->where('absenceJustification', null)
             ->where('student_id', $student->id)
             ->where('campus_id', $user->campus_id)
-            ->where('date', '<', date('yy-m-d'))
+            ->where('date', '<', date('Y-m-d'))
             ->where('canceled_by_student', 0)
             ->get();
 

@@ -150,7 +150,7 @@ class SchedulingController extends Controller
         $scheduling = new Scheduling();
         $scheduling->wasPresent = 0;
         $scheduling->date = $request->date;
-        $scheduling->dateInsert = date('yy-m-d');
+        $scheduling->dateInsert = date('Y-m-d');
         $scheduling->menu_id = $menu->id;
         $scheduling->meal_id = $meal->id;
         $scheduling->student_id = $student->id;
