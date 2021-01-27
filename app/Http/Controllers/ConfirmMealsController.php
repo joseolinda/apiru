@@ -36,6 +36,19 @@ class ConfirmMealsController extends Controller
                 'message' => 'Informe a data'
             ], 202);
         }
+        
+        $meal = Meal::where('id', $request->meal_id)->first();
+
+        $dataStart = new \DateTime( $request->date .' '. $meal->timeStart);
+        $dataEnd = new \DateTime( $request->date .' '. $meal->timeEnd);
+
+        $dateNow = new \DateTime();
+        //dd($dateNow, $dataStart,  $dataEnd);
+        if($dateNow < $dataStart || $dateNow > $dataEnd){
+            return response()->json([
+                'message' => 'A confirmação está fora do horário permitido.'
+            ], 202);
+        }
 
         $user = auth()->user();
 
