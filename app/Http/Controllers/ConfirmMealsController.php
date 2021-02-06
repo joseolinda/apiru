@@ -121,4 +121,33 @@ class ConfirmMealsController extends Controller
 
     }
 
+    public function qtdMealsRegistered(Request $request)
+    {
+        if(!$request->date){
+            return response()->json([
+                'message' => 'Informe a data.'
+            ], 202);
+        }
+
+        if(!$request->meal_id){
+            return response()->json([
+                'message' => 'Informe a refeição'
+            ], 202);
+        }
+        
+        $user = auth()->user();
+        //dd($request->date,$request->meal_id, $user->campus_id);
+
+        $schedulings = Scheduling::where('date', $request->date)
+            ->where('campus_id', $user->campus_id)
+            ->where('canceled_by_student',0)
+            ->where('meal_id', $request->meal_id)
+            ->count();
+
+        return response()->json($schedulings, 200);
+
+    }
+
+    
+
 }
