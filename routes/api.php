@@ -110,6 +110,7 @@ route::group(['prefix'=>'scheduling', 'middleware' => ['check.admin','check.nutr
     route::post('/justification/{id}','Assistencia\SchedulingController@absenceJustification')->name('scheduling.absenceJustification');
     route::post('/','Assistencia\SchedulingController@scheduleMeal')->name('scheduling.scheduleMeal');
     route::get('/list-by-date','Assistencia\SchedulingController@listSchedulingMeals')->name('scheduling.listSchedulingMeals');
+    route::delete('/{id}', 'Assistencia\SchedulingController@destroy')->name('scheduling.destroy');
 });
 
 //Meal - Refeição

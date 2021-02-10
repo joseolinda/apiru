@@ -184,4 +184,24 @@ class SchedulingController extends Controller
         return response()->json($schedulings, 200);
 
     }
+
+    public function destroy($id)
+    {
+        $Scheduling = Scheduling::find($id);
+        if (!$Scheduling){
+            return response()->json([
+                'message' => 'Agendamento não encontrado'
+            ], 202);
+        }
+        $user = auth()->user();
+        if($Scheduling->campus_id != $user->campus_id){
+            return response()->json([
+                'message' => 'O Agendamento pertence a outro campus.'
+            ], 202);
+        }
+        $Scheduling->delete();
+        return response()->json([
+            'message' => 'Agendamento excluido.'
+        ], 200);
+    }
 }
