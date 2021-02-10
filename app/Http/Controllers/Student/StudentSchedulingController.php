@@ -104,7 +104,8 @@ class StudentSchedulingController extends Controller
 
         if($schedulingVerify){
             return response()->json([
-                'message' => 'O agendamento já foi registrado.'
+                'message' => 'Não foi possível solicitar reserva. 
+                Procure a Assistência Estudantil.'
             ], 202);
         }
 
