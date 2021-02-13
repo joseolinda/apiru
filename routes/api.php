@@ -137,6 +137,7 @@ route::group(['prefix'=>'menu','middleware' => ['check.admin','check.reception',
 route::group(['prefix'=>'report','middleware' => ['check.admin', 'check.student']],function (){
     route::get('/list-scheduling','ReportStudentMealController@listScheduling')->name('report.listScheduling');
     route::get('/all-meal','ReportStudentMealController@allMeal')->name('report.allMeal');
+    Route::get('/all-course', 'ReportStudentMealController@allCourse')->name('course.allCourse');
 });
 
 
