@@ -50,13 +50,13 @@ route::group(['prefix'=>'user','middleware' => ['check.assistance','check.recept
 
 //Apenas Assitencia pode fazer CRUD
 //course - Curso
-route::group(['prefix'=>'course','middleware' => ['check.admin','check.reception','check.nutritionist','check.student']],function (){
-    route::get('/','Assistencia\CourseController@index')->name('course.index');
-    Route::get('/all', 'Assistencia\CourseController@all')->name('course.all');
-   route::post('/','Assistencia\CourseController@store')->name('course.store');
-   route::get('/show/{id}','Assistencia\CourseController@show')->name('course.show');
-   Route::put('/{id}', 'Assistencia\CourseController@update')->name('course.update');
-   Route::delete('/{id}', 'Assistencia\CourseController@destroy')->name('course.destroy');
+route::group(['prefix'=>'course'],function (){
+    route::get('/','Assistencia\CourseController@index')->name('course.index')->middleware(['check.admin','check.reception','check.nutritionist','check.student']);
+    Route::get('/all', 'Assistencia\CourseController@all')->name('course.all')->middleware(['check.admin','check.reception','check.nutritionist','check.student']);
+   route::post('/','Assistencia\CourseController@store')->name('course.store')->middleware(['check.admin','check.reception','check.nutritionist','check.student']);
+   route::get('/show/{id}','Assistencia\CourseController@show')->name('course.show')->middleware(['check.admin','check.reception','check.student']);
+   Route::put('/{id}', 'Assistencia\CourseController@update')->name('course.update')->middleware(['check.admin','check.reception','check.nutritionist','check.student']);
+   Route::delete('/{id}', 'Assistencia\CourseController@destroy')->name('course.destroy')->middleware(['check.admin','check.reception','check.nutritionist','check.student']);
 });
 
 //shift - Turno
