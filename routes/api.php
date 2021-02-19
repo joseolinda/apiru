@@ -118,7 +118,7 @@ route::group(['prefix'=>'meal'],function (){
     route::get('/','Nutritionist\MealController@index')->name('meal.index')->middleware(['check.admin','check.student']);
     route::get('/all','Nutritionist\MealController@all')->name('meal.all')->middleware(['check.admin','check.student']);
     route::post('/','Nutritionist\MealController@store')->name('meal.store')->middleware(['check.admin','check.reception','check.assistance','check.student']);
-    route::get('/show/{id}','Nutritionist\MealController@show')->name('meal.show')->middleware(['check.admin','check.reception','check.assistance','check.student']);
+    route::get('/show/{id}','Nutritionist\MealController@show')->name('meal.show')->middleware(['check.admin','check.reception','check.student']);
     Route::put('/{id}', 'Nutritionist\MealController@update')->name('meal.update')->middleware(['check.admin','check.student']);
     Route::delete('/{id}', 'Nutritionist\MealController@destroy')->name('meal.destroy')->middleware(['check.admin','check.reception','check.assistance','check.student']);
 });
@@ -136,6 +136,7 @@ route::group(['prefix'=>'menu','middleware' => ['check.admin','check.reception',
 
 route::group(['prefix'=>'report','middleware' => ['check.admin', 'check.student']],function (){
     route::get('/list-scheduling','ReportStudentMealController@listScheduling')->name('report.listScheduling');
+    route::get('/list-scheduling-print','ReportStudentMealController@listSchedulingPrint')->name('report.listSchedulingPrint');
     route::get('/all-meal','ReportStudentMealController@allMeal')->name('report.allMeal');
     Route::get('/all-course', 'ReportStudentMealController@allCourse')->name('course.allCourse');
 });
