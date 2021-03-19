@@ -15,6 +15,7 @@ class ModifyTableUserAddForeignKeyStundet extends Migration
     {
         Schema::table('user', function (Blueprint $table) {
             $table->integer('student_id')->nullable();
+            $table->string('email');
             $table->foreign('student_id')->references('id')->on('student');
         });
     }
