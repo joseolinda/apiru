@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Course extends Model
 {
     //Relacionamento Feito
-    protected $table = 'Course';
+    protected $table = 'course';
 
     protected $fillable = [
         'description','initials','campus_id'

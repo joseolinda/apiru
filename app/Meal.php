@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Meal extends Model
 {
     //Relacionamento feito
-    protected $table = 'Meal';
+    protected $table = 'meal';
 
     protected $fillable = [
         'description','qtdTimeReservationEnd','qtdTimeReservationStart','timeEnd','timeStart','campus_id'

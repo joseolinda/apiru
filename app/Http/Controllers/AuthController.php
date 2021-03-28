@@ -83,9 +83,10 @@ class AuthController extends Controller
     }
 
     public function login(Request $request){
-        //$credentials =('email','password');
+
         $credentials = [
             "email"=>$request->email,
+            //"password"=>crypt($request->password, '$2a$' . $custo . '$' . $salt . '$')
             "password"=>$request->password
         ];
         //dd($credentials);
@@ -95,7 +96,7 @@ class AuthController extends Controller
             ], 200);
         }
 
-        $token = auth('api')
+        $token = auth()
             ->claims(['role' => '',
                 'name' => ''])
             ->setTTL(1800)
