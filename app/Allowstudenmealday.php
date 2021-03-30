@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Allowstudenmealday extends Model
 {
     //Feito relacionamento
-    protected $table = 'Allowstudenmealday';
+    protected $table = 'allowstudenmealday';
 
     protected $fillable = [
         'friday','monday','saturday','thursday','tuesday','wednesday','student_id','meal_id'
