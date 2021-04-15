@@ -160,12 +160,12 @@ route::group(['prefix'=>'confirm-meals','middleware' => ['check.admin', 'check.s
     route::post('/registered','ConfirmMealsController@qtdMealsRegistered')->name('confirmMeals.qtdMealsRegistered');
 });
 
-route::group(['prefix'=>'student','middleware' => ['check.admin', 'check.reception','check.assistance', 'check.nutritionist']],function (){
-    route::get('/schedulings-used','Student\StudentSchedulingController@schedulings_used')->name('student.schedulings.used');
-    route::get('/schedulings-to-use','Student\StudentSchedulingController@schedulings_to_use')->name('student.schedulings.toUse');
-    route::get('/schedulings-canceled','Student\StudentSchedulingController@schedulings_canceled')->name('student.schedulings.canceled');
-    route::get('/schedulings','Student\StudentSchedulingController@schedulings')->name('student.schedulings');
-    route::post('/schedulings/new','Student\StudentSchedulingController@newScheduling')->name('student.newScheduling');
-    route::put('/schedulings/cancel','Student\StudentSchedulingController@cancelScheduling')->name('student.cancelScheduling');
+route::group(['prefix'=>'student/schedulings','middleware' => ['check.admin', 'check.reception','check.assistance', 'check.nutritionist']],function (){
+    route::get('/used','Student\StudentSchedulingController@schedulings_used')->name('student.schedulings.used');
+    route::get('/to-use','Student\StudentSchedulingController@schedulings_to_use')->name('student.schedulings.toUse');
+    route::get('/canceled','Student\StudentSchedulingController@schedulings_canceled')->name('student.schedulings.canceled');
+    route::get('/','Student\StudentSchedulingController@schedulings')->name('student.schedulings');
+    route::post('/new','Student\StudentSchedulingController@newScheduling')->name('student.newScheduling');
+    route::put('/cancel','Student\StudentSchedulingController@cancelScheduling')->name('student.cancelScheduling');
 });
 
