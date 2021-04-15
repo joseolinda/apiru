@@ -142,7 +142,7 @@ route::group(['prefix'=>'report','middleware' => ['check.admin', 'check.student'
 });
 
 
-route::group(['prefix'=>'all','middleware' => ['check.admin','check.nutritionist']],function (){
+route::group(['prefix'=>'all','middleware' => ['']],function (){
     route::get('/campus','All@campus_active')->name('all.campus');
     route::get('/meals','All@allMeal')->name('all.allMeal');
     route::get('/menus-today','All@menusToday')->name('all.menusToday');
