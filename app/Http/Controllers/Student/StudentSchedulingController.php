@@ -104,7 +104,7 @@ class StudentSchedulingController extends Controller
 
         if($schedulingVerify){
             return response()->json([
-                'message' => 'Não foi possível solicitar reserva. 
+                'message' => 'Não foi possível solicitar reserva.
                 Procure a Assistência Estudantil.'
             ], 202);
         }
@@ -209,6 +209,49 @@ class StudentSchedulingController extends Controller
 
         return response()->json($scheduling, 200);
 
+    }
+
+    public function schedulings_canceled(Request $request){
+        $user = auth()->user();
+
+        $schedulings = Scheduling::where('student_id', $user->student_id)
+            ->where('canceled_by_student', 1)
+            ->orderBy('id', 'DESC')
+            ->with('menu')
+            ->with('meal')
+            ->paginate(10);
+
+        return response()->json($schedulings, 200);
+    }
+
+    public function schedulings_to_use(Request $request){
+        $user = auth()->user();
+
+        $schedulings = Scheduling::where('student_id', $user->student_id)
+            ->where('canceled_by_student', 0)
+            ->where('wasPresent', 0)
+            ->whereNull('time')
+            ->orderBy('id', 'DESC')
+            ->with('menu')
+            ->with('meal')
+            ->paginate(10);
+
+        return response()->json($schedulings, 200);
+    }
+
+    public function schedulings_used(Request $request){
+        $user = auth()->user();
+
+        $schedulings = Scheduling::where('student_id', $user->student_id)
+            ->where('canceled_by_student', 0)
+            ->where('wasPresent', 1)
+            ->whereNotNull('time')
+            ->orderBy('id', 'DESC')
+            ->with('menu')
+            ->with('meal')
+            ->paginate(10);
+
+        return response()->json($schedulings, 200);
     }
 
 }
