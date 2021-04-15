@@ -107,7 +107,8 @@ class AuthController extends Controller
 
         $user = User::where([
             ['email', '=', request(['email'])],
-        ])->first();
+        ])->with('campus')
+            ->first();
 
         auth('api')->setUser($user);
 
