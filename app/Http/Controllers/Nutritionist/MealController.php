@@ -80,6 +80,12 @@ class MealController extends Controller
             ], 202);
         }
 
+        if($request->qtdTimeReservationStart <= $request->qtdTimeReservationEnd){
+            return response()->json([
+                'message' => 'A qtd horas de inicio da reserva deve ser maior que a qtd hora de fim'
+            ], 202);
+        }
+
         $user = auth()->user();
 
         $meal = new Meal();
