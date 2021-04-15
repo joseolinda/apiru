@@ -143,14 +143,15 @@ route::group(['prefix'=>'report','middleware' => ['check.admin', 'check.student'
 
 
 route::group(['prefix'=>'all','middleware' => ['check.admin','check.nutritionist']],function (){
-    route::get('/meals','All@allMeal')->name('report.allMeal');
-    route::get('/menus-today','All@menusToday')->name('report.menusToday');
-    route::get('/menus-week','All@menusByWeek')->name('report.menusByWeek');
-    route::get('/menus-by-date','All@allMenuByDay')->name('report.allMenuByDay');
-    route::get('/students','All@allStudent')->name('report.allStudent');
-    route::get('/students-by-mat-or-cod','All@studentByMatOrCod')->name('report.studentByMatOrCod');
-    route::get('/show-student/{id}','All@showStudent')->name('report.showStudent');
-    route::get('/show-user/{id}','All@showUser')->name('report.showUser');
+    route::get('/campus','All@campus_active')->name('all.campus');
+    route::get('/meals','All@allMeal')->name('all.allMeal');
+    route::get('/menus-today','All@menusToday')->name('all.menusToday');
+    route::get('/menus-week','All@menusByWeek')->name('all.menusByWeek');
+    route::get('/menus-by-date','All@allMenuByDay')->name('all.allMenuByDay');
+    route::get('/students','All@allStudent')->name('all.allStudent');
+    route::get('/students-by-mat-or-cod','All@studentByMatOrCod')->name('all.studentByMatOrCod');
+    route::get('/show-student/{id}','All@showStudent')->name('all.showStudent');
+    route::get('/show-user/{id}','All@showUser')->name('all.showUser');
 });
 
 route::group(['prefix'=>'confirm-meals','middleware' => ['check.admin', 'check.student']],function (){

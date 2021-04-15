@@ -18,11 +18,20 @@ use JWTAuth;
 class All extends Controller
 {
 
+    public function campus_active(Request $request){
+        $user = auth()->user();
+
+        $campus = Campus::where('id', $user->campus_id)->first();
+
+        return response()->json($campus, 200);
+    }
+
     public function menusToday(Request $request)
     {
         //verifica quais refeições estão habilitadas para fazer reserva no horário solicitado.
         $meals = Meal::all();
         $resultMealsEnable = array();
+
         foreach ($meals as $meal){
 
             $dataStart = new \DateTime( $request->date .' '. $meal->timeStart);
@@ -33,17 +42,22 @@ class All extends Controller
 
             $dateNow = new \DateTime();
 
-            if(!($dateNow < $dataStart || $dateNow > $dataEnd)){
+            if(($dataStart <= $dateNow) && ($dataEnd >= $dateNow)){
                 $resultMealsEnable[] = $meal->id;
             }
-
         }
 
         $user = auth()->user();
 
-        $menu = Menu::where('date',\date('Y-m-d'))
+        //pega as refeições já solicitadas pelo usuário
+        $scheduling = Scheduling::where('date',$request->date)
+            ->where('student_id', $user->student_id)
+            ->pluck('meal_id');
+
+        $menu = Menu::where('date',$request->date)
             //->where('campus_id', $user->campus_id)
             ->whereIn('meal_id', $resultMealsEnable)
+            ->whereNotIn('meal_id', $scheduling)
             ->with('meal')
             ->orderBy('description')
             ->get();
