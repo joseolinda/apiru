@@ -227,8 +227,8 @@ class StudentSchedulingController extends Controller
     public function schedulings_to_use(Request $request){
         $user = auth()->user();
 
-        $dateNow = new \DateTime();
-
+        $dateNow = date('y-m-d');
+        
         $schedulings = Scheduling::where('student_id', $user->student_id)
             ->where('canceled_by_student', 0)
             ->where('date', '>=', $dateNow)
