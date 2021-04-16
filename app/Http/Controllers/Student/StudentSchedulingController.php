@@ -227,8 +227,11 @@ class StudentSchedulingController extends Controller
     public function schedulings_to_use(Request $request){
         $user = auth()->user();
 
+        $dateNow = new \DateTime();
+
         $schedulings = Scheduling::where('student_id', $user->student_id)
             ->where('canceled_by_student', 0)
+            ->where('date', '>=', $dateNow)
             ->where('wasPresent', 0)
             ->whereNull('time')
             ->orderBy('id', 'DESC')
@@ -246,6 +249,24 @@ class StudentSchedulingController extends Controller
             ->where('canceled_by_student', 0)
             ->where('wasPresent', 1)
             ->whereNotNull('time')
+            ->orderBy('id', 'DESC')
+            ->with('menu')
+            ->with('meal')
+            ->paginate(10);
+
+        return response()->json($schedulings, 200);
+    }
+
+    public function schedulings_not_used(Request $request){
+        $user = auth()->user();
+
+        $dateNow = new \DateTime();
+
+        $schedulings = Scheduling::where('student_id', $user->student_id)
+            ->where('canceled_by_student', 0)
+            ->where('date', '<=', $dateNow)
+            ->where('wasPresent', 0)
+            ->whereNull('time')
             ->orderBy('id', 'DESC')
             ->with('menu')
             ->with('meal')
