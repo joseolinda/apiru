@@ -36,7 +36,7 @@ class PasswordResetSuccessNotifications extends Notification implements ShouldQu
     */
     public function toMail($notifiable)
     {
-        $url = "http://localhost:3000";
+        $url = "https://ru.cedro.ifce.edu.br";
         return (new MailMessage)
             ->subject('Senha recuperada')
             ->greeting('Olá, '.$this->user->name.'.')

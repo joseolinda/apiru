@@ -228,7 +228,7 @@ class StudentSchedulingController extends Controller
         $user = auth()->user();
 
         $dateNow = date('y-m-d');
-        
+
         $schedulings = Scheduling::where('student_id', $user->student_id)
             ->where('canceled_by_student', 0)
             ->where('date', '>=', $dateNow)

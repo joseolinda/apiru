@@ -174,7 +174,7 @@ class StudentController extends Controller
         $user = new User();
         $user->name = $student->name;
         $user->email = $request->email;
-        $user->password = "123";
+        $user->password = "ifce123";
         $user->active = 1;
         $user->type = "STUDENT";
         $user->campus_id = $student->campus_id;
