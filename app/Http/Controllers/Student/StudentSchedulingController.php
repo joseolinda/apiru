@@ -12,6 +12,7 @@ use App\Shift;
 use App\Student;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -77,6 +78,23 @@ class StudentSchedulingController extends Controller
                 'message' => 'Estudante  não encontrado.'
             ], 202);
         }
+
+       if($student->active == 0){
+            return response()->json([
+                'message' => 'O Estudante encontra-se inativo.'
+            ], 202);
+        }
+
+        $dateNow = new \DateTime();
+        $dateValid = new \DateTime($student->dateValid);
+        //dd($dateNow >= $dateValid);
+        if($dateNow >= $dateValid){
+            return response()->json([
+                'message' => 'O Estudante encontra-se com o cadastro desatualizado.'
+            ], 202);
+        }
+
+
 
         $meal = Meal::where('id', $request->meal_id)->first();
         if(!$meal){
