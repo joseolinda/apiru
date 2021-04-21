@@ -130,7 +130,7 @@ class SchedulingController extends Controller
             ->get();
         if(sizeof($schedulingStudent)>0){
             return response()->json([
-                'message' => 'O estudante está bloqueado.'
+                'message' => 'O estudante esteve ausente em alguma refeição. É necessário justificá-la.'
             ], 202);
         }
 

@@ -204,9 +204,24 @@ class All extends Controller
 
         if ($user->campus_id!=$student->campus_id){
             return response()->json([
-                'message' => 'Estudante não pertence a esse campus!'
+                'message' => 'O Estudante não pertence a este campus!'
             ], 404);
         }
+        //verifica se o estudante possui refeições ausentes sem justificativa
+        $dateNow = new \DateTime();
+        $schedulingStudent = Scheduling::where('wasPresent', 0)
+            ->where('absenceJustification', null)
+            ->where('student_id', $student->id)
+            ->where('campus_id', $user->campus_id)
+            ->where('canceled_by_student', 0)
+            ->where('date', '<',  $dateNow)
+            ->get();
+        if(sizeof($schedulingStudent)>0){
+            $student->absent_meal = 1;
+        } else {
+            $student->absent_meal = 0;
+        }
+
         return response()->json($student, 200);
 
     }

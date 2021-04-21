@@ -76,7 +76,7 @@ class StudentSchedulingController extends Controller
         $student = Student::where('id', $user->student_id)->first();
         if(!$student){
             return response()->json([
-                'message' => 'Estudante  não encontrado.'
+                'message' => 'O Estudante não foi encontrado.'
             ], 202);
         }
 
@@ -95,12 +95,26 @@ class StudentSchedulingController extends Controller
             ], 202);
         }
 
+        //verifica se o estudante possui refeições ausentes sem justificativa
+        $schedulingStudent = Scheduling::where('wasPresent', 0)
+            ->where('absenceJustification', null)
+            ->where('student_id', $student->id)
+            ->where('campus_id', $user->campus_id)
+            ->where('canceled_by_student', 0)
+            ->where('date', '<',  $dateNow)
+            ->get();
+        if(sizeof($schedulingStudent)>0){
+            return response()->json([
+                'message' => 'O estudante esteve ausente em alguma refeição. É necessário justificá-la.'
+            ], 202);
+        }
+
 
 
         $meal = Meal::where('id', $request->meal_id)->first();
         if(!$meal){
             return response()->json([
-                'message' => 'Refeição não encontrada.'
+                'message' => 'A Refeição não foi encontrada.'
             ], 202);
         }
 
