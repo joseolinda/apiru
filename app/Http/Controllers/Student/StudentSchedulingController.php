@@ -347,4 +347,26 @@ class StudentSchedulingController extends Controller
         return response()->json($schedulings, 200);
     }
 
+    public function allowsMealByDay(Request $request)
+    {
+        $user = auth()->user();
+        $student = Student::where('id', $user->student_id)->first();
+        if(!$student){
+            return response()->json([
+                'message' => 'Estudante não existe.'
+            ], 404);
+        }
+        if($user->campus_id != $student->campus_id){
+            return response()->json([
+                'message' => 'Permissões faz parte de outro campus!'
+            ], 202);
+        }
+        $allowstudenmealday = Allowstudenmealday::where('student_id', $student->id)
+            ->with('meal')
+            ->with('student')
+            ->orderBy('id', 'desc')
+            ->get();
+        return response()->json($allowstudenmealday, 200);
+    }
+
 }

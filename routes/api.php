@@ -152,6 +152,7 @@ route::group(['prefix'=>'all'],function (){
     route::get('/students-by-mat-or-cod','All@studentByMatOrCod')->name('all.studentByMatOrCod');
     route::get('/show-student/{id}','All@showStudent')->name('all.showStudent');
     route::get('/show-user/{id}','All@showUser')->name('all.showUser');
+    route::get('/','Assistencia\AllowstudenmealdayController@index')->name('allowstudenmealday.index');
 });
 
 route::group(['prefix'=>'confirm-meals','middleware' => ['check.admin', 'check.student']],function (){
@@ -168,5 +169,6 @@ route::group(['prefix'=>'student/schedulings','middleware' => ['check.admin', 'c
     route::get('/','Student\StudentSchedulingController@schedulings')->name('student.schedulings');
     route::post('/new','Student\StudentSchedulingController@newScheduling')->name('student.newScheduling');
     route::put('/cancel','Student\StudentSchedulingController@cancelScheduling')->name('student.cancelScheduling');
+    route::get('/allows-meal-by-day','Student\StudentSchedulingController@allowsMealByDay')->name('student.allowsMealByDay');
 });
 
