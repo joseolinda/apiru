@@ -284,7 +284,6 @@ class StudentSchedulingController extends Controller
             ->where('canceled_by_student', 0)
             ->where('date', '<=', $dateNow)
             ->where('wasPresent', 0)
-            ->whereNull('time')
             ->orderBy('id', 'DESC')
             ->with('menu')
             ->with('meal')
