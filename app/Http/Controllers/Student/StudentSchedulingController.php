@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Student;
 
+use App\Allowstudenmealday;
 use App\Campus;
 use App\Course;
 use App\Http\Controllers\Controller;
@@ -100,6 +101,60 @@ class StudentSchedulingController extends Controller
         if(!$meal){
             return response()->json([
                 'message' => 'Refeição não encontrada.'
+            ], 202);
+        }
+
+        //verifica se o estudante possui permissão e acrescenta um atributo permission ao response
+        //pega o dia da semana 0 - Domingo ... 6 - Sábado
+        $dayWeek = date('w', strtotime($request->date));
+        $permission = 0;
+        $allowMealDay = Allowstudenmealday::where('student_id', $user->student_id)
+            ->where('meal_id', $meal->id)
+            ->get();
+        try{
+            if($allowMealDay){ //verifica se tem alguma permissão cadastrada
+                switch ($dayWeek) { //verifica o dia da semana e monta um if para saber se existe permissão, se sim adiciona permission 1 (com permissão)
+                    case 0:
+                        $permission = 0;
+                        break;
+                    case 1:
+                        if ($allowMealDay[0]->monday === 1) {
+                            $permission = 1;
+                        }
+                        break;
+                    case 2:
+                        if ($allowMealDay[0]->tuesday === 1) {
+                            $permission = 1;
+                        }
+                        break;
+                    case 3:
+                        if ($allowMealDay[0]->wednesday === 1) {
+                            $permission = 1;
+                        }
+                        break;
+                    case 4:
+                        if ($allowMealDay[0]->thursday === 1) {
+                            $permission = 1;
+                        }
+                        break;
+                    case 5:
+                        if ($allowMealDay[0]->friday === 1) {
+                            $permission = 1;
+                        }
+                        break;
+                    case 6:
+                        if ($allowMealDay[0]->saturday === 1) {
+                            $permission = 1;
+                        }
+                        break;
+                }
+            }
+        } catch (\ErrorException $e){
+
+        }
+        if($permission == 0){
+            return response()->json([
+                'message' => 'O usuário não possui permissão para reservar esta refeição.'
             ], 202);
         }
 

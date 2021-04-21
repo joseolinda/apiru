@@ -12,6 +12,7 @@ use App\User;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
+use mysql_xdevapi\Exception;
 use Validator;
 use JWTAuth;
 
@@ -61,6 +62,59 @@ class All extends Controller
             ->with('meal')
             ->orderBy('description')
             ->get();
+
+        //verifica se o estudante possui permissão e acrescenta um atributo permission ao response
+        //pega o dia da semana 0 - Domingo ... 6 - Sábado
+        $dayWeek = date('w', strtotime($request->date));
+        for($i = 0; $i < sizeof($menu); $i++){ //percorre todo o cardapio do dia selecionado
+            $menu[$i]->permission = 0; //seta permission 0 (sem permissão)
+
+            $allowMealDay = Allowstudenmealday::where('student_id', $user->student_id)
+                ->where('meal_id', $menu[$i]->meal_id)
+                ->get();
+            try{
+                if($allowMealDay){ //verifica se tem alguma permissão cadastrada
+                    switch ($dayWeek) { //verifica o dia da semana e monta um if para saber se existe permissão, se sim adiciona permission 1 (com permissão)
+                        case 0:
+                            $menu[$i]->permission = 0;
+                            break;
+                        case 1:
+                            if ($allowMealDay[0]->monday === 1) {
+                                $menu[$i]->permission = 1;
+                            }
+                            break;
+                        case 2:
+                            if ($allowMealDay[0]->tuesday === 1) {
+                                $menu[$i]->permission = 1;
+                            }
+                            break;
+                        case 3:
+                            if ($allowMealDay[0]->wednesday === 1) {
+                                $menu[$i]->permission = 1;
+                            }
+                            break;
+                        case 4:
+                            if ($allowMealDay[0]->thursday === 1) {
+                                $menu[$i]->permission = 1;
+                            }
+                            break;
+                        case 5:
+                            if ($allowMealDay[0]->friday === 1) {
+                                $menu[$i]->permission = 1;
+                            }
+                            break;
+                        case 6:
+                            if ($allowMealDay[0]->saturday === 1) {
+                                $menu[$i]->permission = 1;
+                            }
+                            break;
+                    }
+                }
+            } catch (\ErrorException $e){
+                continue;
+            }
+
+        }
 
         return response()->json($menu, 200);
 
