@@ -90,9 +90,9 @@ class StudentController extends Controller
         $user = auth()->user();
 
         $name = $request->name;
-        $mat = $request->mat;
         $students = Student::when($name, function ($query) use ($name) {
                 $query->where('name', 'like', '%'.$name.'%')
+                        ->orWhere('id', '=', $name)
                         ->orWhere('mat', 'like', '%'.$name.'%');
                 return $query;
             })

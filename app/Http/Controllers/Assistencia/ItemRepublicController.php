@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Assistencia;
 
+use App\Allowstudenmealday;
 use App\Campus;
 use App\Course;
 use App\Http\Controllers\Controller;
 use App\Itensrepublic;
+use App\Meal;
 use App\Republic;
 use App\Scheduling;
 use App\Shift;
@@ -118,6 +120,39 @@ class ItemRepublicController extends Controller
             ], 404);
         }
 
+        //adiciona todas as permissoes para as refeicoes em todos os dias, para o aluno
+        $meal = Meal::all();
+
+        foreach($meal as $m_each){
+            //verifica se existe uma permissão
+            $allow = Allowstudenmealday::where('student_id', $student->id)
+                ->where('meal_id', $m_each->id)
+                ->first();
+
+            if($allow){ //se existir
+                $allow->monday = 1;
+                $allow->tuesday = 1;
+                $allow->wednesday = 1;
+                $allow->thursday = 1;
+                $allow->friday = 1;
+                $allow->saturday = 0;
+                $allow->save();
+                continue;
+            }
+
+            //se não existir
+            $allow = new Allowstudenmealday();
+            $allow->student_id = $student->id;
+            $allow->meal_id = $m_each->id;
+            $allow->monday = 1;
+            $allow->tuesday = 1;
+            $allow->wednesday = 1;
+            $allow->thursday = 1;
+            $allow->friday = 1;
+            $allow->saturday = 0;
+            $allow->save();
+
+        }
 
 
         $itens_republic = new Itensrepublic();
@@ -212,6 +247,21 @@ class ItemRepublicController extends Controller
             return response()->json([
                 'message' => 'O república pertence a outro campus.'
             ], 202);
+        }
+
+        //pesquisa as permissões para serem retiradas
+        $allow = Allowstudenmealday::where('student_id', $item_republic->student_id)
+            ->get();
+
+
+        foreach($allow as $a_while){ //percorre todas as permissões retirando-as
+            $a_while->monday = 0;
+            $a_while->tuesday = 0;
+            $a_while->wednesday = 0;
+            $a_while->thursday = 0;
+            $a_while->friday = 0;
+            $a_while->saturday = 0;
+            $a_while->save();
         }
 
         $item_republic->delete();
