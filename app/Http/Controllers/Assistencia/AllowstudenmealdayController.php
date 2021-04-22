@@ -76,12 +76,12 @@ class AllowstudenmealdayController extends Controller
         $student = Student::where('id', $request->student_id)->first();
         if(!$student){
             return response()->json([
-                'message' => 'Estudante não existe.'
+                'message' => 'O Estudante não foi encontrado.'
             ], 404);
         }
         if($user->campus_id != $student->campus_id){
             return response()->json([
-                'message' => 'Permissões faz parte de outro campus!'
+                'message' => 'A Permissões fazem parte de outro campus!'
             ], 202);
         }
         $allowstudenmealday = Allowstudenmealday::where('student_id', $request->student_id)
@@ -121,13 +121,13 @@ class AllowstudenmealdayController extends Controller
 
         if(!$this->verifyStudentValid($request->student_id)){
             return response()->json([
-                'message' => 'Estudante inválido!'
+                'message' => 'O Estudante não foi encontrado.'
             ], 404);
         }
 
         if(!$this->verifyMealValid($request->meal_id)){
             return response()->json([
-                'message' => 'Refeição inválida !'
+                'message' => 'A Refeição não foi encontrada.'
             ], 404);
         }
 
@@ -136,7 +136,7 @@ class AllowstudenmealdayController extends Controller
             ->get();
         if(sizeof($verify)>0){
             return response()->json([
-                'message' => 'Permissão ja cadastrada !'
+                'message' => 'A Permissão já foi cadastrada.'
             ], 202);
         }
 
@@ -172,7 +172,7 @@ class AllowstudenmealdayController extends Controller
 
         if (!$allowstudenmealday){
             return response()->json([
-                'message' => 'Permissões não encontrada!'
+                'message' => 'As Permissões não foram encontradas.'
             ], 404);
         }
 
@@ -180,7 +180,7 @@ class AllowstudenmealdayController extends Controller
         $user = auth()->user();
         if($user->campus_id != $student->campus_id){
             return response()->json([
-                'message' => 'Permissões faz parte de outro campus!'
+                'message' => 'A Permissões fazem parte de outro campus.'
             ], 202);
         }
 
@@ -207,7 +207,7 @@ class AllowstudenmealdayController extends Controller
 
         if (!$allowstudenmealday){
             return response()->json([
-                'message' => 'Permição não encontrada!'
+                'message' => 'A Permissão não foi encontrada.'
             ], 404);
         }
 
@@ -215,7 +215,7 @@ class AllowstudenmealdayController extends Controller
         $user = auth()->user();
         if($user->campus_id != $student->campus_id){
             return response()->json([
-                'message' => 'Permissões faz parte de outro campus!'
+                'message' => 'As Permissões fazem parte de outro campus!'
             ], 202);
         }
 
@@ -251,7 +251,7 @@ class AllowstudenmealdayController extends Controller
 
         if (!$allowstudenmealday){
             return response()->json([
-                'message' => 'Permissão não encontrada!'
+                'message' => 'A Permissão não foi encontrada.'
             ], 404);
         }
 
@@ -259,14 +259,14 @@ class AllowstudenmealdayController extends Controller
         $user = auth()->user();
         if($user->campus_id != $student->campus_id){
             return response()->json([
-                'message' => 'Permissões faz parte de outro campus!'
+                'message' => 'As Permissões fazem parte de outro campus!'
             ], 202);
         }
 
         $allowstudenmealday->delete();
 
         return response()->json([
-            'message' => 'Operação realizada com sucesso!'
+            'message' => 'As Permissões foram deletadas.'
         ], 200);
     }
 

@@ -31,7 +31,7 @@ class SchedulingController extends Controller
         'campus_id.required' => 'O Campus é obrigatório',
         'meal_id.required' => 'A refeição é obrigatória',
         'menu_id.required' => 'O Cardápio é obrigatório',
-        'student_id.required' => 'Os estudantes é obrigatória',
+        'student_id.required' => 'O estudante é obrigatória',
         'user_id.required' => 'O usuário é obrigatória',
     ];
 
@@ -40,13 +40,13 @@ class SchedulingController extends Controller
 
         if(!$schedule){
             return response()->json([
-                'message' => 'Agendamento não encontrado.'
+                'message' => 'O Agendamento não foi encontrado.'
             ], 202);
         }
 
         if(!$request->absenceJustification){
             return response()->json([
-                'message' => 'Informe a justificativa!'
+                'message' => 'A justificativa não foi informada.'
             ], 202);
         }
 
@@ -69,28 +69,22 @@ class SchedulingController extends Controller
 
         if(!$request->student_id){
             return response()->json([
-                'message' => 'Informe o estudante'
+                'message' => 'O estudante não foi informado.'
             ], 202);
         }
 
         if(!$request->meal_id){
             return response()->json([
-                'message' => 'Informe a refeição'
+                'message' => 'A refeição não foi informada.'
             ], 202);
         }
 
         if(!$request->date){
             return response()->json([
-                'message' => 'Informe a data'
+                'message' => 'A data não foi informada.'
             ], 202);
         }
-        /*
-        if($request->date < date('yy-m-d')){
-            return response()->json([
-                'message' => 'A data do agendamento não pode ser menor que a data atual.'
-            ], 202);
-        }
-        */
+
         $user = auth()->user();
 
         $student = Student::where('id', $request->student_id)
@@ -98,7 +92,7 @@ class SchedulingController extends Controller
             ->first();
         if(!$student){
             return response()->json([
-                'message' => 'Estudante não encontrado.'
+                'message' => 'O estudante não foi encontrado..'
             ], 202);
         }
 
@@ -107,7 +101,7 @@ class SchedulingController extends Controller
             ->first();
         if(!$meal){
             return response()->json([
-                'message' => 'Refeição não encontrada.'
+                'message' => 'A Refeição não foi encontrada.'
             ], 202);
         }
 
@@ -117,7 +111,7 @@ class SchedulingController extends Controller
             ->first();
         if(!$menu){
             return response()->json([
-                'message' => 'Não existe cárdapio cadastrado para esta data.'
+                'message' => 'Não existe cardápio cadastrado para esta data.'
             ], 202);
         }
 
@@ -166,7 +160,7 @@ class SchedulingController extends Controller
     {
         if(!$request->date){
             return response()->json([
-                'message' => 'Informe a data.'
+                'message' => 'A data não foi informada.'
             ], 202);
         }
 
@@ -190,7 +184,7 @@ class SchedulingController extends Controller
         $Scheduling = Scheduling::find($id);
         if (!$Scheduling){
             return response()->json([
-                'message' => 'Agendamento não encontrado'
+                'message' => 'O Agendamento não foi encontrado'
             ], 202);
         }
         $user = auth()->user();
@@ -201,7 +195,7 @@ class SchedulingController extends Controller
         }
         $Scheduling->delete();
         return response()->json([
-            'message' => 'Agendamento excluido.'
+            'message' => 'O Agendamento foi excluído.'
         ], 200);
     }
 }

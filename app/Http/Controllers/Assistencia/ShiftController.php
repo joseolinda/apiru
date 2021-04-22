@@ -100,7 +100,7 @@ class ShiftController extends Controller
         $shift = Shift::find($id);
         if(!$shift){
             return response()->json([
-                'message' => 'Turno não encontrado!'
+                'message' => 'O Turno não foi encontrado.'
             ], 404);
         }
         $user = auth()->user();
@@ -138,7 +138,7 @@ class ShiftController extends Controller
 
         if(!$shift){
             return response()->json([
-                'message' => 'Turno não encontrado!'
+                'message' => 'O Turno não foi encontrado.'
             ], 404);
         }
 
@@ -166,7 +166,7 @@ class ShiftController extends Controller
         $shift = Shift::find($id);
         if(!$shift){
             return response()->json([
-                'message' => 'Turno não encontrado!'
+                'message' => 'O Turno não foi encontrado.'
             ], 404);
         }
         $user = auth()->user();
@@ -189,7 +189,7 @@ class ShiftController extends Controller
         $shift->delete();
 
         return response()->json([
-            'message' => 'Operação realizada com sucesso!'
+            'message' => 'O Turno foi excluído.'
         ], 200);
     }
 

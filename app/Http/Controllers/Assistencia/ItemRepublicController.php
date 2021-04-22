@@ -46,7 +46,7 @@ class ItemRepublicController extends Controller
         $republic = Republic::where('id', $idRepublic)->first();
         if(!$republic){
             return response()->json([
-                'message' => 'República não encontrada!'
+                'message' => 'A República não foi encontrada!'
             ], 404);
         }
 
@@ -86,7 +86,7 @@ class ItemRepublicController extends Controller
         $republic = Republic::where('id', $request->republic_id)->first();
         if(!$republic){
             return response()->json([
-                'message' => 'República não encontrada!'
+                'message' => 'A República não foi encontrada.'
             ], 404);
         }
 
@@ -100,7 +100,7 @@ class ItemRepublicController extends Controller
         $student = Student::where('id', $request->student_id)->first();
         if(!$student){
             return response()->json([
-                'message' => 'Estudante não encontrado!'
+                'message' => 'O Estudante não foi encontrado.'
             ], 404);
         }
 
@@ -109,14 +109,14 @@ class ItemRepublicController extends Controller
             ->first();
         if($verify){
             return response()->json([
-                'message' => 'Estudante já está cadastrado nesta república!'
+                'message' => 'O Estudante já está cadastrado nesta república!'
             ], 404);
         }
 
         $verify = Itensrepublic::where('student_id', $student->id)->first();
         if($verify){
             return response()->json([
-                'message' => 'Estudante já cadastrado na república '.$verify->republic_id.'.'
+                'message' => 'O Estudante já cadastrado na república '.$verify->republic_id.'.'
             ], 404);
         }
 
@@ -188,28 +188,28 @@ class ItemRepublicController extends Controller
 
         if(!$item_republic){
             return response()->json([
-                'message' => 'Item de república não encontrado!'
+                'message' => 'O Item de república não foi encontrado.'
             ], 404);
         }
 
         $republic = Republic::where('id', $request->republic_id)->first();
         if(!$republic){
             return response()->json([
-                'message' => 'República não encontrada!'
+                'message' => 'A República não foi encontrada!'
             ], 404);
         }
 
         $user = auth()->user();
         if($republic->campus_id != $user->campus_id){
             return response()->json([
-                'message' => 'O república pertence a outro campus.'
+                'message' => 'A república pertence a outro campus.'
             ], 202);
         }
 
         $student = Student::where('id', $request->student_id)->first();
         if(!$student){
             return response()->json([
-                'message' => 'Estudante não encontrado!'
+                'message' => 'O Estudante não foi encontrado.'
             ], 404);
         }
         //poderá alterar apenas a responsabilidade
@@ -231,21 +231,21 @@ class ItemRepublicController extends Controller
         $item_republic = Itensrepublic::find($id);
         if (!$item_republic){
             return response()->json([
-                'message' => 'Item de república não encontrado!'
+                'message' => 'O Item de república não foi encontrado.'
             ], 404);
         }
 
         $republic = Republic::where('id', $item_republic->republic_id)->first();
         if(!$republic){
             return response()->json([
-                'message' => 'República não encontrada!'
+                'message' => 'A República não foi encontrada.'
             ], 404);
         }
 
         $user = auth()->user();
         if($republic->campus_id != $user->campus_id){
             return response()->json([
-                'message' => 'O república pertence a outro campus.'
+                'message' => 'A república pertence a outro campus.'
             ], 202);
         }
 
@@ -267,7 +267,7 @@ class ItemRepublicController extends Controller
         $item_republic->delete();
 
         return response()->json([
-            'message' => 'Operação realizada com sucesso!'
+            'message' => 'O item de república foi excluído.'
         ], 200);
     }
 }

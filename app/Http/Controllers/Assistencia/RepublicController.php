@@ -108,14 +108,14 @@ class RepublicController extends Controller
         $republic = Republic::find($id);
         if (!$republic){
             return response()->json([
-                'message' => 'República não encontrada!'
+                'message' => 'A República não foi encontrada.'
             ], 404);
         }
 
         $user = auth()->user();
         if($republic->campus_id != $user->campus_id){
             return response()->json([
-                'message' => 'O república pertence a outro campus.'
+                'message' => 'A república pertence a outro campus.'
             ], 202);
         }
         return response()->json($republic);
@@ -145,7 +145,7 @@ class RepublicController extends Controller
 
         if(!$republic){
             return response()->json([
-                'message' => 'República não encontrada!'
+                'message' => 'A República não foi encontrada.'
             ], 404);
         }
 
@@ -179,7 +179,7 @@ class RepublicController extends Controller
         $republic = Republic::find($id);
         if (!$republic){
             return response()->json([
-                'message' => 'República não encontrada!'
+                'message' => 'A República não foi encontrada.'
             ], 404);
         }
 
@@ -200,7 +200,7 @@ class RepublicController extends Controller
         $republic->delete();
 
         return response()->json([
-            'message' => 'Operação realizada com sucesso!'
+            'message' => 'A república foi excluída.'
         ], 200);
     }
 

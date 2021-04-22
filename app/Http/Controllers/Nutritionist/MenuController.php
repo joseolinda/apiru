@@ -6,6 +6,7 @@ use App\Campus;
 use App\Http\Controllers\Controller;
 use App\Meal;
 use App\Menu;
+use App\Scheduling;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -95,7 +96,7 @@ class MenuController extends Controller
 
         if(!$this->verifyMealValid($request->meal_id)){
             return response()->json([
-                'message' => 'Refeição inválida !'
+                'message' => 'A Refeição não foi encontrada.'
             ], 404);
         }
         $user = auth()->user();
@@ -121,13 +122,13 @@ class MenuController extends Controller
         $menu = Menu::find($id);
         if (!$menu){
             return response()->json([
-                'message' => 'Cardápio não encontrado!'
+                'message' => 'O Cardápio não foi encontrado.'
             ], 404);
         }
         $user = auth()->user();
         if ($menu->campus_id != $user->campus_id){
             return response()->json([
-                'message' => 'O cardápio não pertence ao campus do usuário!'
+                'message' => 'O cardápio pertence a outro campus.'
             ], 202);
         }
         return response()->json($menu, 200);
@@ -153,14 +154,14 @@ class MenuController extends Controller
 
         if(!$menu){
             return response()->json([
-                'message' => 'Cardápio não encontrado!'
+                'message' => 'O Cardápio não foi encontrado.'
             ], 404);
         }
 
         $user = auth()->user();
         if ($menu->campus_id != $user->campus_id){
             return response()->json([
-                'message' => 'O cardápio não pertence ao campus do usuário!'
+                'message' => 'O cardápio pertence a outro campus.'
             ], 202);
         }
 
@@ -185,20 +186,29 @@ class MenuController extends Controller
         $menu = Menu::find($id);
         if (!$menu){
             return response()->json([
-                'message' => 'Cardápio não encontrado!'
+                'message' => 'O Cardápio não foi encontrado.'
             ], 404);
         }
 
         $user = auth()->user();
         if ($menu->campus_id != $user->campus_id){
             return response()->json([
-                'message' => 'O cardápio não pertence ao campus do usuário!'
+                'message' => 'O cardápio pertence a outro campus.'
             ], 202);
         }
+
+        $scheduling = Scheduling::where('menu_id', $menu->id)->first();
+        if($scheduling){
+            return response()->json([
+                'message' => 'Existem agendamentos para este cardápio.'
+            ], 202);
+        }
+
+
         $menu->delete();
 
         return response()->json([
-            'message' => 'Operação realizada com sucesso!'
+            'message' => 'O cardápio foi excluído.'
         ], 200);
     }
 }

@@ -76,7 +76,7 @@ class UserController extends Controller
                 ->get();
         if(!$user){
             return response()->json([
-                'message' => 'Usuário não encontrado!'
+                'message' => 'O Usuário não foi encontrado!'
             ], 404);
         }
         return response()->json($user, 200);
@@ -121,7 +121,7 @@ class UserController extends Controller
 
         if(!$user){
             return response()->json([
-                'message' => 'Usuário não encontrado!'
+                'message' => 'O Usuário não foi encontrado!'
             ], 404);
         }
 
@@ -146,14 +146,14 @@ class UserController extends Controller
         $user = User::find($id);
         if(!$user){
             return response()->json([
-                'message' => 'Usuário não encontrado!'
+                'message' => 'O Usuário não foi encontrado!'
             ], 404);
         }
         //DEPOIS VERIFICAR SE TEMALGO QUE DEPENDA DO USUÁRIO
         $user->delete();
 
         return response()->json([
-            'message' => 'Operação realizada com sucesso!'
+            'message' => 'A Usuário foi deletado.'
         ], 200);
     }
 }

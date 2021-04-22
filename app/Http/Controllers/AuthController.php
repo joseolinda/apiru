@@ -55,7 +55,7 @@ class AuthController extends Controller
         //Verificando se existe campus cadastrados.
         if(!$this->verifyCampusValid($request->campus_id)){
             $erros = array('errors' => array(
-                'message' => 'Campus Inválido!'
+                'message' => 'O Campus não foi encontrado.'
             ));
             $json_str = json_encode($erros);
             return response($json_str, 202);
@@ -63,7 +63,7 @@ class AuthController extends Controller
 
         if(!$this->verifyEmailValid($request->email))
         {
-            return response()->json(['message' => 'E-mail Inválido!'], 202);
+            return response()->json(['message' => 'O E-mail é Inválido.'], 202);
         }
 
         $user = auth()->user();
@@ -92,7 +92,7 @@ class AuthController extends Controller
         //dd($credentials);
         if(!$request->email && !$request->password ){
             return response()->json([
-                'message' => 'Informe o email e senha.'
+                'message' => 'O e-mail e a senha não foram informados.'
             ], 200);
         }
 

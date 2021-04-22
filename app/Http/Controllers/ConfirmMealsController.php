@@ -21,22 +21,22 @@ class ConfirmMealsController extends Controller
 
         if(!$request->student_id){
             return response()->json([
-                'message' => 'Informe o estudante'
+                'message' => 'O estudante não foi informado.'
             ], 202);
         }
 
         if(!$request->meal_id){
             return response()->json([
-                'message' => 'Informe a refeição'
+                'message' => 'A refeição não foi informada.'
             ], 202);
         }
 
         if(!$request->date){
             return response()->json([
-                'message' => 'Informe a data'
+                'message' => 'A data não foi informada.'
             ], 202);
         }
-        
+
         $meal = Meal::where('id', $request->meal_id)->first();
 
         $dataStart = new \DateTime( $request->date .' '. $meal->timeStart);
@@ -58,7 +58,7 @@ class ConfirmMealsController extends Controller
             ->first();
         if(!$menu){
             return response()->json([
-                'message' => 'Não existe cárdapio cadastrado para esta data.'
+                'message' => 'Não existe agendamento cadastrado para esta data.'
             ], 202);
         }
 
@@ -102,7 +102,7 @@ class ConfirmMealsController extends Controller
     {
         if(!$request->date){
             return response()->json([
-                'message' => 'Informe a data.'
+                'message' => 'A data não foi informada.'
             ], 202);
         }
 
@@ -125,16 +125,16 @@ class ConfirmMealsController extends Controller
     {
         if(!$request->date){
             return response()->json([
-                'message' => 'Informe a data.'
+                'message' => 'A data não foi informada.'
             ], 202);
         }
 
         if(!$request->meal_id){
             return response()->json([
-                'message' => 'Informe a refeição'
+                'message' => 'A refeição não foi informada.'
             ], 202);
         }
-        
+
         $user = auth()->user();
         //dd($request->date,$request->meal_id, $user->campus_id);
 
@@ -148,6 +148,6 @@ class ConfirmMealsController extends Controller
 
     }
 
-    
+
 
 }

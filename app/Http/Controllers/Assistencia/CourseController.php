@@ -47,7 +47,8 @@ class CourseController extends Controller
 
         $description = $request->description;
         $courses = Course::when($description, function ($query) use ($description) {
-                return $query->where('description', 'like', '%'.$description.'%');
+                return $query->where('description', 'like', '%'.$description.'%')
+                    ->orWhere('initials', 'like', '%'.$description.'%');
             })
             ->where('campus_id', $user->campus_id)
             ->orderBy('description')
@@ -103,7 +104,7 @@ class CourseController extends Controller
         $course = Course::find($id);
         if(!$course){
             return response()->json([
-                'message' => 'Curso não encontrado.'
+                'message' => 'O Curso não foi encontrado.'
             ], 404);
         }
         $user = auth()->user();
@@ -140,7 +141,7 @@ class CourseController extends Controller
 
         if(!$course){
             return response()->json([
-                'message' => 'Curso não encontrado.'
+                'message' => 'O Curso não foi encontrado.'
             ], 404);
         }
 
@@ -170,7 +171,7 @@ class CourseController extends Controller
         $course = Course::find($id);
         if (!$course){
             return response()->json([
-                'message' => 'Curso não encontrado.'
+                'message' => 'O Curso não foi encontrado.'
             ], 404);
         }
         $user = auth()->user();
@@ -190,7 +191,7 @@ class CourseController extends Controller
         $course->delete();
 
         return response()->json([
-            'message' => 'Curso deletado.'
+            'message' => 'O Curso foi deletado.'
         ], 200);
     }
 }

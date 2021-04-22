@@ -141,7 +141,7 @@ class All extends Controller
         if(!$request->date){
             if(!$request->mat){
                 return response()->json([
-                    'message' => 'Informe a data.'
+                    'message' => 'A data não foi informada.'
                 ], 202);
             }
         }
@@ -190,13 +190,13 @@ class All extends Controller
         $user = User::where('id', $id)->first();
         if (!$user){
             return response()->json([
-                'message' => 'Estudante não encontrado!'
+                'message' => 'O Estudante não foi encontrado.'
             ], 404);
         }
 
         if (!$user->student_id){
             return response()->json([
-                'message' => 'Estudante não encontrado!'
+                'message' => 'O Estudante não foi encontrado.'
             ], 202);
         }
 
@@ -231,13 +231,13 @@ class All extends Controller
         $user = User::where('id', $id)->first();
         if (!$user){
             return response()->json([
-                'message' => 'Estudante não encontrado!'
+                'message' => 'O Estudante não foi encontrado.'
             ], 404);
         }
 
         if (!$user->student_id){
             return response()->json([
-                'message' => 'Estudante não encontrado!'
+                'message' => 'O Estudante não foi encontrado.'
             ], 202);
         }
 
@@ -250,7 +250,7 @@ class All extends Controller
 
         if(!$request->mat){
             return response()->json([
-                'message' => 'Informe a matrícula ou o código do estuante.'
+                'message' => 'A matrícula ou o código do estuante não foi informado.'
             ], 202);
         }
 

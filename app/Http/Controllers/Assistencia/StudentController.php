@@ -31,8 +31,8 @@ class StudentController extends Controller
     ];
     private $messages = [
         'name.required' => 'O nome é obrigatório',
-        'mat.required' => 'A matricula é obrigatória',
-        'mat.unique' => 'A matricula deve ser única',
+        'mat.required' => 'A matrícula é obrigatória',
+        'mat.unique' => 'A matrícula deve ser única',
         'course_id.required' => 'O Curso é obrigatório',
         'shift_id.required' => 'O Turno é obrigatório',
         'dateValid.required' => 'A data de validade é obrigatória',
@@ -127,33 +127,33 @@ class StudentController extends Controller
 
         if(!$request->email){
             return response()->json([
-                'message' => 'Informe o e-mail.'
+                'message' => 'O e-mail não foi informado.'
             ], 404);
         }
 
         $verifyEmail = User::where('email', $request->email)->first();
         if($verifyEmail){
             return response()->json([
-                'message' => 'E-mail já cadastrado.'
+                'message' => 'O E-mail já foi cadastrado.'
             ], 202);
         }
 
         if(!$this->verifyCourseValid($request->course_id)){
             return response()->json([
-                'message' => 'Curso invalido!'
+                'message' => 'O curso não foi encontrado.'
             ], 404);
         }
 
         if(!$this->verifyShiftValid($request->shift_id)){
             return response()->json([
-                'message' => 'Turno invalido!'
+                'message' => 'O Turno não foi encontrado.'
             ], 404);
         }
 
         $verify = Student::where('mat', $request->mat)->first();
         if($verify){
             return response()->json([
-                'message' => 'Matrícula já cadastrada!'
+                'message' => 'A Matrícula já está cadastrada!'
             ], 202);
         }
 
@@ -197,7 +197,7 @@ class StudentController extends Controller
         $student = Student::where('id', $id)->with('user')->first();
         if (!$student){
             return response()->json([
-                'message' => 'Estudante não encontrado!'
+                'message' => 'O Estudante não foi encontrado.'
             ], 404);
         }
 
@@ -234,13 +234,13 @@ class StudentController extends Controller
 
         if(!$student){
             return response()->json([
-                'message' => 'Estudante não encontrado!'
+                'message' => 'O Estudante não foi encontrado.'
             ], 404);
         }
 
         if(!$request->email){
             return response()->json([
-                'message' => 'Informe o e-mail.'
+                'message' => 'O e-mail não foi encontrado.'
             ], 404);
         }
 
@@ -248,7 +248,7 @@ class StudentController extends Controller
         if($verifyEmail){
             if($verifyEmail->student_id != $student->id) {
                 return response()->json([
-                    'message' => 'E-mail já cadastrado.'
+                    'message' => 'O E-mail já está cadastrado.'
                 ], 202);
             }
         }
@@ -262,13 +262,13 @@ class StudentController extends Controller
 
         if(!$this->verifyCourseValid($request->course_id)){
             return response()->json([
-                'message' => 'Curso invalido!'
+                'message' => 'O curso não foi encontrado.'
             ], 404);
         }
 
         if(!$this->verifyShiftValid($request->shift_id)){
             return response()->json([
-                'message' => 'Turno invalido!'
+                'message' => 'O turno não foi encontrado.'
             ], 404);
         }
 
@@ -276,7 +276,7 @@ class StudentController extends Controller
         if($verify){
             if($verify->id != $id){
                 return response()->json([
-                    'message' => 'Matrícula já cadastrada!'
+                    'message' => 'A Matrícula já foi cadastrada.'
                 ], 202);
             }
         }
@@ -306,7 +306,7 @@ class StudentController extends Controller
             $user = new User();
             $user->name = $student->name;
             $user->email = $request->email;
-            $user->password = "123";
+            $user->password = "ifce123";
             $user->active = 1;
             $user->type = "STUDENT";
             $user->campus_id = $student->campus_id;
@@ -328,7 +328,7 @@ class StudentController extends Controller
         $student = Student::find($id);
         if (!$student){
             return response()->json([
-                'message' => 'Estudante não encontrado!'
+                'message' => 'O Estudante não foi encontrado.'
             ], 404);
         }
 
@@ -354,7 +354,7 @@ class StudentController extends Controller
         $student->delete();
 
         return response()->json([
-            'message' => 'Operação realizada com sucesso!'
+            'message' => 'O Estudante foi excluído.'
         ], 200);
     }
 
@@ -370,14 +370,14 @@ class StudentController extends Controller
 
         if(!$student){
             return response()->json([
-                'message' => 'Estudante não encontrado.'
+                'message' => 'O Estudante não foi encontrado.'
             ], 202);
         }
 
         $user = auth()->user();
         if($student->campus_id != $user->campus_id){
             return response()->json([
-                'message' => 'Estudante pertence a outro campus.'
+                'message' => 'O Estudante pertence a outro campus.'
             ], 202);
         }
 

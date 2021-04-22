@@ -40,7 +40,7 @@ class PasswordResetController extends Controller
         $user = User::where('email', $request->email)->first();
         if (!$user)
             return response()->json([
-                'message' => 'E-mail não encontrado.'], 404);
+                'message' => 'O E-mail não foi encontrado.'], 404);
         $passwordReset = PasswordReset::updateOrCreate(
             ['email' => $user->email],
             [
@@ -53,7 +53,7 @@ class PasswordResetController extends Controller
                 new PasswordResetRequestNotifications($passwordReset->token, $user)
             );
         return response()->json([
-            'message' => 'Enviamos o link de redefinição de senha para seu e-mail!'
+            'message' => 'Enviamos o link de redefinição de senha para seu e-mail.'
         ]);
     }
     /**
@@ -125,7 +125,7 @@ class PasswordResetController extends Controller
         $user = User::where('email', $passwordReset->email)->first();
         if (!$user)
             return response()->json([
-                'message' => 'Não podemos encontrar um usuário com esse endereço de e-mail.'
+                'message' => 'Não foi encontrado um usuário com esse endereço de e-mail.'
             ], 404);
         $user->password = $request->password;
         $user->save();

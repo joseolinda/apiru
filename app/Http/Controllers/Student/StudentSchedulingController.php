@@ -38,7 +38,7 @@ class StudentSchedulingController extends Controller
 
         if(!$student){
             return response()->json([
-                'message' => 'O estudante não foi encontrado!'
+                'message' => 'O estudante não foi encontrado.'
             ], 202);
         }
 
@@ -56,13 +56,13 @@ class StudentSchedulingController extends Controller
 
         if(!$request->meal_id){
             return response()->json([
-                'message' => 'Informe a refeição'
+                'message' => 'A refeição não foi informada.'
             ], 202);
         }
 
         if(!$request->date){
             return response()->json([
-                'message' => 'Informe a data'
+                'message' => 'A data não foi informada.'
             ], 202);
         }
 
@@ -191,8 +191,8 @@ class StudentSchedulingController extends Controller
 
         if($schedulingVerify){
             return response()->json([
-                'message' => 'Não foi possível solicitar reserva.
-                Procure a Assistência Estudantil.'
+                'message' => 'Não foi possível solicitar a reserva.
+                Procure a Assistência Estudantil do seu campus.'
             ], 202);
         }
 
@@ -231,13 +231,13 @@ class StudentSchedulingController extends Controller
 
         if(!$request->meal_id){
             return response()->json([
-                'message' => 'Informe a refeição'
+                'message' => 'A refeição não foi informada.'
             ], 202);
         }
 
         if(!$request->date){
             return response()->json([
-                'message' => 'Informe a data'
+            'message' => 'A data não foi informada.'
             ], 202);
         }
 
@@ -251,14 +251,14 @@ class StudentSchedulingController extends Controller
         $student = Student::where('id', $user->student_id)->first();
         if(!$student){
             return response()->json([
-                'message' => 'Estudante  não encontrado.'
+                'message' => 'O Estudante não foi encontrado.'
             ], 202);
         }
 
         $meal = Meal::where('id', $request->meal_id)->first();
         if(!$meal){
             return response()->json([
-                'message' => 'Refeição não encontrada.'
+                'message' => 'A Refeição não foi encontrada.'
             ], 202);
         }
 
@@ -367,12 +367,12 @@ class StudentSchedulingController extends Controller
         $student = Student::where('id', $user->student_id)->first();
         if(!$student){
             return response()->json([
-                'message' => 'Estudante não existe.'
+                'message' => 'O Estudante não foi encontrado.'
             ], 404);
         }
         if($user->campus_id != $student->campus_id){
             return response()->json([
-                'message' => 'Permissões faz parte de outro campus!'
+                'message' => 'As Permissões fazem pertencem a outro campus!'
             ], 202);
         }
         $allowstudenmealday = Allowstudenmealday::where('student_id', $student->id)

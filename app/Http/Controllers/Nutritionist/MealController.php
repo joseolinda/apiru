@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Nutritionist;
 
 use App\Campus;
 use App\Meal;
+use App\Menu;
 use App\Http\Controllers\Controller;
+use App\Scheduling;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -26,9 +28,9 @@ class MealController extends Controller
     private $messages = [
         'description.required' => 'A descrição é obrigatória',
         'qtdTimeReservationEnd.required' => 'A quantidade de horas do fim da reserva antes do horário da refeição deve ser informada',
-        'qtdTimeReservationStart.required' => 'A quantidade de horas do inicio da reserva antes do horário da refeição deve ser informada',
-        'timeEnd.required' => 'Hora de fim da refeição é obrigatório',
-        'timeStart.required' => 'Hora de inicio da refeição é obrigatório',
+        'qtdTimeReservationStart.required' => 'A quantidade de horas do início da reserva antes do horário da refeição deve ser informada',
+        'timeEnd.required' => 'Hora de fim da refeição é obrigatória',
+        'timeStart.required' => 'Hora de início da refeição é obrigatória',
     ];
 
     /**
@@ -76,13 +78,13 @@ class MealController extends Controller
 
         if($request->timeStart > $request->timeEnd){
             return response()->json([
-                'message' => 'A hora de inicio deve ser menor que hora de fim da refeição'
+                'message' => 'A hora de início da refeição deve ser menor que hora de fim.'
             ], 202);
         }
 
         if($request->qtdTimeReservationStart <= $request->qtdTimeReservationEnd){
             return response()->json([
-                'message' => 'A qtd horas de inicio da reserva deve ser maior que a qtd hora de fim'
+                'message' => 'A qtd horas de início da reserva deve ser maior que a qtd hora de fim.'
             ], 202);
         }
 
@@ -111,14 +113,14 @@ class MealController extends Controller
         $meal = Meal::find($id);
         if (!$meal){
             return response()->json([
-                'message' => 'Refeição não encontrada!'
+                'message' => 'A Refeição não foi encontrada.'
             ], 404);
         }
 
         $user = auth()->user();
         if ($meal->campus_id != $user->campus_id){
             return response()->json([
-                'message' => 'A refeição não pertence ao campus do usuário!'
+                'message' => 'A refeição pertence a outro campus.'
             ], 202);
         }
         return response()->json($meal, 200);
@@ -145,20 +147,26 @@ class MealController extends Controller
 
         if(!$meal){
             return response()->json([
-                'message' => 'Refeição não encontrada!'
+                'message' => 'A Refeição não foi encontrada!'
             ], 404);
         }
 
         $user = auth()->user();
         if ($meal->campus_id != $user->campus_id){
             return response()->json([
-                'message' => 'A refeição não pertence ao campus do usuário!'
+                'message' => 'A refeição pertence a outro campus.'
             ], 202);
         }
 
         if($request->timeStart > $request->timeEnd){
             return response()->json([
-                'message' => 'A hora de inicio deve ser menor que hora de fim da refeição'
+                'message' => 'A hora de início da refeição deve ser menor que hora de fim.'
+            ], 202);
+        }
+
+        if($request->qtdTimeReservationStart <= $request->qtdTimeReservationEnd){
+            return response()->json([
+                'message' => 'A qtd horas de inicio da refeição deve ser maior que a qtd hora de fim.'
             ], 202);
         }
 
@@ -184,21 +192,28 @@ class MealController extends Controller
         $meal = Meal::find($id);
         if (!$meal){
             return response()->json([
-                'message' => 'Refeição não encontrada!'
+                'message' => 'A Refeição não foi encontrada.'
             ], 404);
         }
 
         $user = auth()->user();
         if ($meal->campus_id != $user->campus_id){
             return response()->json([
-                'message' => 'A refeição não pertence ao campus do usuário!'
+                'message' => 'A refeição pertence a outro campus.'
+            ], 202);
+        }
+
+        $menu = Menu::where('meal_id', $meal->id)->first();
+        if($menu){
+            return response()->json([
+                'message' => 'Existem cardápios para esta refeição.'
             ], 202);
         }
 
         $meal->delete();
 
         return response()->json([
-            'message' => 'Operação realizada com sucesso!'
+            'message' => 'A refeição foi excluída.'
         ], 200);
     }
 }

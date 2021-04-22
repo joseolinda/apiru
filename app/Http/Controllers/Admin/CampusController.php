@@ -20,7 +20,7 @@ class CampusController extends Controller
         'description' => 'required',
     ];
     private $messages = [
-        'description.required' => 'A DESCRIÇÃO é obrigatória',
+        'description.required' => 'A DESCRIÇÃO do campus é obrigatória',
     ];
     /**
      * Display a listing of the resource.
@@ -83,7 +83,7 @@ class CampusController extends Controller
         $campus = Campus::find($id);
         if(!$campus){
             return response()->json([
-                'message' => 'Campus não encontrado!'
+                'message' => 'O Campus não foi encontrado!'
             ], 404);
         }
         return response()->json($campus,200);
@@ -113,7 +113,7 @@ class CampusController extends Controller
 
         if(!$campus){
             return response()->json([
-                'message' => 'Campus não encontrado!'
+                'message' => 'O Campus não foi encontrado!'
             ], 404);
         }
 
@@ -134,21 +134,21 @@ class CampusController extends Controller
         $campus = Campus::find($id);
         if(!$campus){
             return response()->json([
-                'message' => 'Campus não encontrado!'
+                'message' => 'O Campus não foi encontrado!'
             ], 404);
         }
         $user = User::where('campus_id', $campus->id)->get();
 
         if(sizeof($user)>0){
             return response()->json([
-                'message' => 'Existem usuários cadastrados para o campus.'
+                'message' => 'Há usuários cadastrados para o campus.'
             ], 202);
         }
 
         $campus->delete();
 
         return response()->json([
-            'message' => 'Campus deletado.'
+            'message' => 'O Campus foi deletado.'
         ], 200);
     }
 }
