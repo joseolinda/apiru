@@ -92,7 +92,7 @@ class AuthController extends Controller
         //dd($credentials);
         if(!$request->email || !$request->password ){
             return response()->json([
-                'message' => 'O e-mail ou a senha não foram informados.'
+                'message' => 'O email ou a senha não foram informados.'
             ], 202);
         }
 
