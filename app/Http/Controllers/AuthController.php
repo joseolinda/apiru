@@ -90,10 +90,10 @@ class AuthController extends Controller
             "password"=>$request->password
         ];
         //dd($credentials);
-        if(!$request->email && !$request->password ){
+        if(!$request->email || !$request->password ){
             return response()->json([
-                'message' => 'O e-mail e a senha não foram informados.'
-            ], 200);
+                'message' => 'O e-mail ou a senha não foram informados.'
+            ], 202);
         }
 
         $token = auth()
@@ -102,7 +102,7 @@ class AuthController extends Controller
             ->setTTL(1800)
             ->attempt($credentials);
         if (!$token) {
-            return response()->json(['error' => 'Não Autorizado!'], 401);
+            return response()->json(['message' => 'Email ou senha incorretos!'], 202);
         }
 
         $user = User::where([
