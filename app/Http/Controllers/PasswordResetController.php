@@ -41,6 +41,7 @@ class PasswordResetController extends Controller
         if (!$user)
             return response()->json([
                 'message' => 'O E-mail não foi encontrado.'], 404);
+        /*         
         $passwordReset = PasswordReset::updateOrCreate(
             ['email' => $user->email],
             [
@@ -52,8 +53,22 @@ class PasswordResetController extends Controller
             $user->notify(
                 new PasswordResetRequestNotifications($passwordReset->token, $user)
             );
+
+        */ 
+        // Mudar a senha para uma string padrão, sem enviar e-mail
+        $defult_pass = bcrypt(env("PASS_DEFAULT_RESET", "123")); 
+        $user->password = $defult_pass;
+        $update = $user->save();
+
+        if ($update) {
+            return response()->json([
+                // 'message' => 'Enviamos o link de redefinição de senha para seu e-mail.'
+                'message' => 'Senha redefinida para a senha padrão.'
+            ]);
+        }
+
         return response()->json([
-            'message' => 'Enviamos o link de redefinição de senha para seu e-mail.'
+            'message' => 'Não foi possível gerar uma nova senha.'
         ]);
     }
     /**
