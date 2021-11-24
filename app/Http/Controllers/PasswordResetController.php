@@ -56,8 +56,8 @@ class PasswordResetController extends Controller
 
         */ 
         // Mudar a senha para uma string padrão, sem enviar e-mail
-        $defult_pass = bcrypt(env("PASS_DEFAULT_RESET", "123")); 
-        $user->password = $defult_pass;
+        $default_pass = env("PASS_DEFAULT_RESET", "123456"); 
+        $user->password = $default_pass;
         $update = $user->save();
 
         if ($update) {
