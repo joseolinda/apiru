@@ -39,7 +39,7 @@ class Kernel extends HttpKernel
         ],
 
         'api' => [
-            'throttle:60,1',
+            'throttle:60000,1',
             'bindings',
         ],
     ];
@@ -69,6 +69,7 @@ class Kernel extends HttpKernel
         'check.assistance' => \App\Http\Middleware\CheckStudentAssistance::class,
         'check.admin' => \App\Http\Middleware\CheckAdmin::class,
         'check.student' => \App\Http\Middleware\CheckStudent::class,
+	//'cors' => \App\Http\Middleware\Cors::class,  \\ cors
     ];
 
     /**

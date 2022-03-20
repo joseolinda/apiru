@@ -134,7 +134,7 @@ class SchedulingController extends Controller
             ->where('campus_id', $user->campus_id)
             ->where('canceled_by_student', 0)
             ->get();
-        if(sizeof($schedulingVerifyDuplicated)>0){
+        if(sizeof($schedulingVerifyDuplicated)>5){
             return response()->json([
                 'message' => 'A refeição já foi cadastrada para o estudante.'
             ], 202);
