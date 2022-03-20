@@ -234,6 +234,10 @@ class AllowstudenmealdayController extends Controller
         $request->wednesday ? $allowstudenmealday->wednesday = $request->wednesday
             : $allowstudenmealday->wednesday = false;
 
+        if ($request->comentario) {
+            $allowstudenmealday->comentario = $request->comentario;
+        }
+        
         $allowstudenmealday->save();
 
         return response()->json($allowstudenmealday, 200);
