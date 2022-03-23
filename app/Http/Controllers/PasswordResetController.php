@@ -60,7 +60,7 @@ class PasswordResetController extends Controller
             $update = $user->save();
         */
 
-        if ($update) {
+        if (!!$passwordReset) {
             return response()->json([
                 'message' => 'Enviamos o link de redefinição de senha para seu e-mail.'
                 // 'message' => 'Senha redefinida para a senha padrão.'
