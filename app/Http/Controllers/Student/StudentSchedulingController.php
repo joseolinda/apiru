@@ -103,7 +103,7 @@ class StudentSchedulingController extends Controller
             ->where('canceled_by_student', 0)
             ->where('date', '<',  $dateNow)
             ->get();
-        if(sizeof($schedulingStudent)>5){
+        if(sizeof($schedulingStudent)>=1){
             return response()->json([
                 'message' => 'O estudante esteve ausente em alguma refeição. É necessário justificá-la.'
             ], 202);
