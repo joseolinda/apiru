@@ -90,7 +90,7 @@ route::group(['prefix'=>'republic','middleware' => ['check.admin','check.recepti
     Route::get('/students-are-not-republic', 'Assistencia\RepublicController@studentAreNotRepublic')->name('republic.studentAreNotRepublic');
     //item republic
     route::get('/item/{idRepublic}','Assistencia\ItemRepublicController@index')->name('itemRepublic.index');
-    route::post('/item/','Assistencia\ItemRepublicController@store')->name('itemRepublic.store');
+    route::post('/item','Assistencia\ItemRepublicController@store')->name('itemRepublic.store');
     route::put('/item/{id}','Assistencia\ItemRepublicController@update')->name('itemRepublic.update');
     route::delete('/item/{id}','Assistencia\ItemRepublicController@destroy')->name('itemRepublic.destroy');
 });
