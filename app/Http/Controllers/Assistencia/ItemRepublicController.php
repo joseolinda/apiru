@@ -72,7 +72,7 @@ class ItemRepublicController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
+    { 
         $validation = Validator::make($request->all(),$this->rules,$this->messages);
 
         if($validation->fails()){

@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
+Route::middleware('auth:api', 'throttle:60000,1')->get('/user', function (Request $request) {
     return $request->user();
 });
 //Verificações
@@ -94,6 +94,10 @@ route::group(['prefix'=>'republic','middleware' => ['check.admin','check.recepti
     route::put('/item/{id}','Assistencia\ItemRepublicController@update')->name('itemRepublic.update');
     route::delete('/item/{id}','Assistencia\ItemRepublicController@destroy')->name('itemRepublic.destroy');
 });
+route::group(['prefix'=>'item-republic','middleware' => ['check.admin','check.reception','check.nutritionist','check.student']],function (){
+    route::post('/','Assistencia\ItemRepublicController@store')->name('itemRepublic.store');
+});
+
 
 //Permições - Allowstudenmealday
 route::group(['prefix'=>'allowstudenmealday','middleware' => ['check.admin','check.reception','check.nutritionist','check.student']],function (){

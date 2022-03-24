@@ -365,7 +365,7 @@ class StudentController extends Controller
         return response()->json($students,200);
     }
 
-    public function historyStudent($idStudent){
+    public function historyStudent(Request $request, $idStudent){
         $student = Student::where('id', $idStudent)->first();
 
         if(!$student){
@@ -381,13 +381,33 @@ class StudentController extends Controller
             ], 202);
         }
 
-        $hitory = Scheduling::where('student_id', $student->id)
+        $history = Scheduling::where('student_id', $student->id)
             ->orderBy('id', 'desc')
             ->with('meal')
-            ->with('student')
-            ->paginate(10);
+            ->with('student');
 
-        return response()->json($hitory, 200);
+        if ($request->filter) {
+            switch($request->filter) {
+                case 'present':
+                    $history = $history->where('wasPresent', 1);
+                    break;
+                case 'justified':
+                    $history = $history->where('wasPresent', 0)->whereNotNull('absenceJustification');
+                    break;
+                case 'absent':
+                    $history = $history->where('wasPresent', 0)->whereNull('absenceJustification');
+                case 'all':
+                    break;
+                default:
+                    return response()->json([
+                        'message' => 'Filtro inválido'
+                    ], 400);
+            }
+        }
+
+        $paginatedHistory = $history->paginate(10);
+
+        return response()->json($paginatedHistory, 200);
     }
 
 }
