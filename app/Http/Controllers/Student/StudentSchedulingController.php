@@ -101,7 +101,7 @@ class StudentSchedulingController extends Controller
             ->where('student_id', $student->id)
             ->where('campus_id', $user->campus_id)
             ->where('canceled_by_student', 0)
-            ->where('date', '<',  $dateNow)
+            ->where('date', '<',  $dateNow->format('Y-m-d'))
             ->get();
         if(sizeof($schedulingStudent)>=1){
             return response()->json([
