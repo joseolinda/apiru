@@ -199,7 +199,7 @@ class StudentSchedulingController extends Controller
         $dataStart = new \DateTime( $request->date .' '. $meal->timeStart);
         $dataStart->sub(new \DateInterval('PT'.$meal->qtdTimeReservationStart.'H'));
 
-        $dataEnd = new \DateTime( $request->date .' '. $meal->timeEnd);
+        $dataEnd = new \DateTime( $request->date .' '. $meal->timeStart);
         $dataEnd->sub(new \DateInterval('PT'.$meal->qtdTimeReservationEnd.'H'));
 
         $dateNow = new \DateTime();
