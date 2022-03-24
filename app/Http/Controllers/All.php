@@ -58,9 +58,9 @@ class All extends Controller
         $menu = Menu::where('date',$request->date)
             //->where('campus_id', $user->campus_id)
             ->whereIn('meal_id', $resultMealsEnable)
-            ->whereNotIn('meal_id', $scheduling)
+            //->whereNotIn('meal_id', $scheduling)
             ->with('meal')
-            ->orderBy('description')
+            ->orderBy('meal_id')
             ->get();
 
         //verifica se o estudante possui permissão e acrescenta um atributo permission ao response
@@ -68,6 +68,9 @@ class All extends Controller
         $dayWeek = date('w', strtotime($request->date));
         for($i = 0; $i < sizeof($menu); $i++){ //percorre todo o cardapio do dia selecionado
             $menu[$i]->permission = 0; //seta permission 0 (sem permissão)
+
+	    $agendado = array_search($menu[$i]->meal_id, $scheduling->toArray());
+	    $menu[$i]->agendado = !is_bool($agendado);
 
             $allowMealDay = Allowstudenmealday::where('student_id', $user->student_id)
                 ->where('meal_id', $menu[$i]->meal_id)
@@ -285,7 +288,7 @@ class All extends Controller
             ->where('canceled_by_student', 0)
             ->get();
 
-        if(sizeof($schedulingStudent)>0){
+        if(sizeof($schedulingStudent)>5){
             return response()->json([
                 'message' => 'O estudante está bloqueado.'
             ], 202);

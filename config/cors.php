@@ -26,26 +26,25 @@ return [
     /*
     * Matches the request method. `[*]` allows all methods.
     */
-    'allowed_methods' => ['GET, POST, PUT, DELETE, OPTIONS'],
+    'allowed_methods' => ['*'],
 
     /*
-     * Matches the request origin. `[*]` allows all origins. Wildcards can be u$
+     * Matches the request origin. `[*]` allows all origins. Wildcards can be used, eg `*.mydomain.com`
      */
-    'allowed_origins' => ['http://localhost:3000'],
+    'allowed_origins' => ['https://ru.cedro.ifce.edu.br'],
 
     /*
      * Patterns that can be used with `preg_match` to match the origin.
      */
-    'allowed_origins_patterns' => ['Content-Type',
-        'Origin','Authorization'],
+    'allowed_origins_patterns' => ['*'],
 
     /*
-     * Sets the Access-Control-Allow-Headers response header. `[*]` allows all $
-     */
+     * Sets the Access-Control-Allow-Headers response header. `[*]` allows all headers.
+*     */
     'allowed_headers' => ['*'],
 
     /*
-     * Sets the Access-Control-Expose-Headers response header with these header$
+     * Sets the Access-Control-Expose-Headers response header with these headers.
      */
     'exposed_headers' => ['Authorization'],
 
@@ -58,5 +57,4 @@ return [
      * Sets the Access-Control-Allow-Credentials header.
      */
     'supports_credentials' => false,
-
 ];

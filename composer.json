@@ -8,7 +8,7 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^7.2",
+        "php": "^8.0",
         "asm89/stack-cors": "dev-master as 1.3.0",
         "fideloper/proxy": "^4.0",
         "fruitcake/laravel-cors": "^2.0",

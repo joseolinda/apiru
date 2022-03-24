@@ -20,7 +20,8 @@ class PasswordResetController extends Controller
      * @param  [string] email
      * @return [string] message
      */
-    public function redefinePassword(Request $request){
+    public function redefinePassword(Request $request)
+    {
         $rules = [
             'email' => 'required|string|email',
         ];
@@ -31,16 +32,18 @@ class PasswordResetController extends Controller
         ];
 
 
-        $validation = Validator::make($request->all(),$rules, $messages);
+        $validation = Validator::make($request->all(), $rules, $messages);
 
-        if($validation->fails()){
+        if ($validation->fails()) {
             return $validation->errors()->toJson();
         }
 
         $user = User::where('email', $request->email)->first();
         if (!$user)
             return response()->json([
-                'message' => 'O E-mail não foi encontrado.'], 404);
+                'message' => 'O E-mail não foi encontrado.'
+            ], 404);
+
         $passwordReset = PasswordReset::updateOrCreate(
             ['email' => $user->email],
             [
@@ -48,12 +51,32 @@ class PasswordResetController extends Controller
                 'token' => Str::random(60)
             ]
         );
-        if ($user && $passwordReset)
+
+        if ($user && $passwordReset) {
             $user->notify(
                 new PasswordResetRequestNotifications($passwordReset->token, $user)
             );
+
+            return response()->json([
+                'message' => 'Enviamos o link de redefinição de senha para seu e-mail.'
+                // 'message' => 'Senha redefinida para a senha padrão.'
+            ]);
+        }
+
+        // Mudar a senha para uma string padrão, sem enviar e-mail
+        // $default_pass = env("PASS_DEFAULT_RESET", "123456"); 
+        // $user->password = $default_pass;
+        // $update = $user->save();
+
+        // if ($update) {
+        //     return response()->json([
+        //         // 'message' => 'Enviamos o link de redefinição de senha para seu e-mail.'
+        //         'message' => 'Senha redefinida para a senha padrão.'
+        //     ]);
+        // }
+
         return response()->json([
-            'message' => 'Enviamos o link de redefinição de senha para seu e-mail.'
+            'message' => 'Não foi possível gerar uma nova senha.'
         ]);
     }
     /**
@@ -74,7 +97,8 @@ class PasswordResetController extends Controller
         if (Carbon::parse($passwordReset->updated_at)->addMinutes(720)->isPast()) {
             $passwordReset->delete();
             return response()->json([
-                'message' => 'Este token de redefinição de senha é inválido.'], 404);
+                'message' => 'Este token de redefinição de senha é inválido.'
+            ], 404);
         }
 
         return response()->json($passwordReset);
@@ -107,9 +131,9 @@ class PasswordResetController extends Controller
         ];
 
 
-        $validation = Validator::make($request->all(),$rules, $messages);
+        $validation = Validator::make($request->all(), $rules, $messages);
 
-        if($validation->fails()){
+        if ($validation->fails()) {
             return $validation->errors()->toJson();
         }
 

@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <title>API do RUCedro - IFCE</title>
+    <link rel="sortcut icon" href="favicon.ico" type="image/x-icon" />
+    <style>
+        /*
+        - Como Fazer Uma Imagem de Fundo Preencher Toda a Tela
+        - Autor: Guilherme Müller
+        - Site: http://guilhermemuller.com.br/blog/2011/06/08/como-fazer-uma-im$
+        */
+
+        /* reset de margens */
+        * {
+            margin: 0;
+            padding:0;
+        }
+
+        /* para garantir que estes elementos ocuparão toda a tela */
+        body, html {
+            width: 100%;
+            height: 100%;
+            font-family: Arial, Tahoma, sans-serif;
+        }
+
+        #fundo-externo {
+            overflow: hidden; /* para que não tenha rolagem se a imagem de fund$
+            width: 100%;
+            height: 100%;
+            position: relative; /* criamos um contexto para posicionamento */
+        }
+
+        #fundo {
+            position: fixed; /* posição fixa para que a possível rolagem da tel$
+            width: 100%;
+            height: 100%;
+        }
+        #fundo img {
+            width: 100%; /* com isso imagem ocupará toda a largura da tela. Se $
+            position: absolute;
+        }
+
+        #site {
+            position: absolute;
+            top: 40px;
+            left: 50%;
+            width: 560px;
+            padding: 20px;
+            margin-left: -300px; /* por causa do posicionamento absoluto temos $
+            background: #FFF; /* fundo branco para navegadores que não suportam$
+            background: rgba(255,255,255,0.8); /* fundo branco com um pouco de $
+        }
+
+        p {
+            margin-bottom: 1.5em;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.$
+    <script>
+        // JavaScript (em um site real colocar em arquivo externo)
+    </script>
+</head>
+<body>
+
+<div id="fundo-externo">
+    <div id="fundo">
+        <!-- <img src="questione.png" alt="" /> -->
+    </div>
+</div>
+<div id="site">
+    <h1>Vocêê está na API do Questione</h1>
+    <p>
+        Acesse o site do RUCedro clicando <a href="http://ru.cedro.ifce.edu.$
+    </p>
+</div>
+
+</body>
+</html>

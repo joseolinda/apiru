@@ -10,7 +10,7 @@ class Allowstudenmealday extends Model
     protected $table = 'allowstudenmealday';
 
     protected $fillable = [
-        'friday','monday','saturday','thursday','tuesday','wednesday','student_id','meal_id'
+        'friday','monday','saturday','thursday','tuesday','wednesday','student_id','meal_id','comentario'
     ];
     protected $guarded = [
         'id'
