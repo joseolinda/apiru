@@ -145,6 +145,10 @@ route::group(['prefix'=>'report','middleware' => ['check.admin', 'check.student'
     Route::get('/all-course', 'ReportStudentMealController@allCourse')->name('course.allCourse');
 });
 
+route::group(['prefix' => 'report', 'middleware' => ['check.admin']], function () {
+    route::get('/list-waste', 'ReportWasteController@index')->name('reportWaste.listWaste');
+    route::put('/add-waste-report', 'ReportWasteController@update')->name('reportWaste.addReport');
+});
 
 route::group(['prefix'=>'all'],function (){
     route::get('/campus','All@campus_active')->name('all.campus');
