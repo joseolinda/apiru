@@ -146,7 +146,7 @@ class ReportStudentMealController extends Controller
                 ->select('course.*', 'meal.description as meal_description', 'student.*', 'scheduling.*')
                 ->where('scheduling.campus_id', '=', $user->campus_id)
                 ->when($date, function ($query) use ($date) {
-                    return $query->where('.scheduling.date', '=', $date);
+                    return $query->where('scheduling.date', '=', $date);
                 })
                 ->when($meal_id, function ($query) use ($meal_id) {
                     return $query->where('scheduling.meal_id', '=', $meal_id);
