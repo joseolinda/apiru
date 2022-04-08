@@ -53,13 +53,19 @@ class PasswordResetController extends Controller
         );
 
         if ($user && $passwordReset) {
-            $user->notify(
-                new PasswordResetRequestNotifications($passwordReset->token, $user)
-            );
+
+            try{
+                $mail= $user->notify(
+                    new PasswordResetRequestNotifications($passwordReset->token, $user)
+                );
+                $returnMsg = 'Enviamos o link de redefinição de senha para seu e-mail.';
+            }
+            catch(\Exception $e){ 
+                $returnMsg = 'Não foi possível enviar o e-mail';
+            }
 
             return response()->json([
-                'message' => 'Enviamos o link de redefinição de senha para seu e-mail.'
-                // 'message' => 'Senha redefinida para a senha padrão.'
+                'message' => $returnMsg
             ]);
         }
 
