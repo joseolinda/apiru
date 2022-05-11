@@ -90,18 +90,19 @@ class StudentController extends Controller
         $user = auth()->user();
 
         $name = $request->name;
-        $students = Student::when($name, function ($query) use ($name) {
+        $students = Student::when($name, function ($query) use ($name, $user) {
                 $query->where('name', 'like', '%'.$name.'%')
+                        ->where('campus_id', $user->campus_id)
                         ->orWhere('id', '=', $name)
                         ->orWhere('mat', 'like', '%'.$name.'%');
                 return $query;
             })
+            ->where('campus_id', $user->campus_id)
             ->with('course')
             ->with('shift')
             ->with('user')
-            ->where('campus_id', $user->campus_id)
             ->orderBy('name')
-            ->paginate(10);
+            ->paginate(15);
 
         return response()->json($students);
     }

@@ -56,7 +56,7 @@ class All extends Controller
             ->pluck('meal_id');
 
         $menu = Menu::where('date',$request->date)
-            //->where('campus_id', $user->campus_id)
+            ->where('campus_id', $user->campus_id)
             ->whereIn('meal_id', $resultMealsEnable)
             //->whereNotIn('meal_id', $scheduling)
             ->with('meal')
