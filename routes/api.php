@@ -189,7 +189,7 @@ route::group(['prefix' => 'forms', 'middleware' => ['check.admin', 'check.assist
 });
 
 //Respostas do formulário
-route::group(['prefix'=> 'student/forms', 'middleware' => ['check.admin', 'check.student'] function(){
+route::group(['prefix'=> 'student/forms', 'middleware' => ['check.admin', 'check.student']], function(){
     route::get('/', 'Forms\Student@index')->name('forms.view');
     route::post('/response', 'Forms\Student@store')->name('forms.response');    
-}])
+});
