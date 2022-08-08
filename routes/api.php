@@ -187,3 +187,9 @@ route::group(['prefix' => 'forms', 'middleware' => ['check.admin', 'check.assist
     route::put('/{id}', 'Forms\AssistenciaForms@update')->name('forms.update');
     route::delete('/{id}', 'Forms\AssistenciaForms@destroy')->name('forms.destroy');
 }]);
+
+//Respostas do formulário
+route::group(['prefix'=> 'student/forms', 'middleware' => ['check.admin', 'check.student'] function(){
+    route::get('/', 'Forms\Student@index')->name('forms.view');
+    route::post('/response', 'Forms\Student@store')->name('forms.response');    
+}])
