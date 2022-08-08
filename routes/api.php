@@ -180,3 +180,10 @@ route::group(['prefix'=>'student/schedulings','middleware' => ['check.admin', 'c
     route::get('/allows-meal-by-day','Student\StudentSchedulingController@allowsMealByDay')->name('student.allowsMealByDay');
 });
 
+//Gerenciador de formularios 
+route::group(['prefix' => 'forms', 'middleware' => ['check.admin', 'check.assistance'], function (){
+    route::get('/', 'Forms\AssistenciaForms@index')->name('forms.show');
+    route::post('/new', 'Forms\AssistenciaForms@store')->name('forms.store');
+    route::put('/{id}', 'Forms\AssistenciaForms@update')->name('forms.update');
+    route::delete('/{id}', 'Forms\AssistenciaForms@destroy')->name('forms.destroy');
+}]);
