@@ -27,7 +27,9 @@ class StudentFormController extends Controller
         $user = auth()->user();
 
         if( $form_active = $this->hasFormActive($user) ) {
-            $wasResponded = $this->formWasResponded($form_active->id, $user->id);
+            $form_active->with("perguntas");
+            // $wasResponded = $this->formWasResponded($form_active->id, $user->id);
+            $wasResponded = false;
             return response()->json([
                 "showForm" => !$wasResponded,
                 "form" => $form_active
@@ -44,11 +46,16 @@ class StudentFormController extends Controller
      */
     public function hasFormActive(User $user)
     {
+        /*
 
         $form_active = Formulario::where("status_form", "publicado")
         ->where('campus_id', $user->campus_id)
         ->orderBy('id', 'desc')
         ->first();
+
+        */
+
+        $form_active = Formulario::with("perguntas");
                        
         return $form_active ? $form_active : false;
     }
@@ -77,6 +84,7 @@ class StudentFormController extends Controller
     {
 
         $questions = PerguntasFormulario::where("form_id", $form_id);
+        $questions->itensPergunta();
 
         return $questions;
     }
