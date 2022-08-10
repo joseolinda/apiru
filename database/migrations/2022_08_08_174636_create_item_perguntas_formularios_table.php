@@ -14,9 +14,11 @@ class CreateItemPerguntasFormulariosTable extends Migration
     public function up()
     {
         Schema::create('item_perguntas_formularios', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->foreignIdFor(PerguntasFormulario::class)->constrained();
+            $table->increments('id');
+            $table->integer('pform_id')->unsigned();
             $table->text('texto_item');
+
+            $table->foreign('pform_id')->references('id')->on('perguntas_formularios');
         });
     }
 

@@ -14,14 +14,17 @@ class CreateFormulariosTable extends Migration
     public function up()
     {
         Schema::create('formularios', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->increments('id');
             $table->string('titulo')->nullable(false);
-            $table->foreignIdFor(User::class)->constrained();
+            $table->integer('created_by');
+            $table->integer('campus_id');
             $table->dateTime('liberar_form');
             $table->dateTime('ocultar_form');
             $table->boolean('obrigatorio')->default(true);
             $table->enum('status_form', ['rascunho', 'publicado', 'finalizado'])->default('rascunho');
             $table->timestamps();
+
+            $table->foreign('created_by')->references('id')->on('user');
         });
     }
 

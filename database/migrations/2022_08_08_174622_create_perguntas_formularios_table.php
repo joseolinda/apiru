@@ -14,13 +14,15 @@ class CreatePerguntasFormulariosTable extends Migration
     public function up()
     {
         Schema::create('perguntas_formularios', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->increments('id');
             $table->text('titulo_pergunta');
             $table->boolean('obrigatorio')->default(true);
             $table->boolean('emabaralhar_itens')->default(false);
-            $table->enum('tipo-pergunta', ['texto', 'numero', 'multipla_escolha', 'caixa_selecao'])->default('texto');
-            $table->foreignIdFor(Formulario::class)->constrained();
+            $table->enum('tipo_pergunta', ['texto', 'numero', 'multipla_escolha', 'caixa_selecao'])->default('texto');
+            $table->integer('form_id')->unsigned();
             $table->timestamps();
+
+            $table->foreign('form_id')->references('id')->on('formularios');
         });
     }
 

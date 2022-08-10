@@ -14,10 +14,13 @@ class CreateRespostaFormulariosTable extends Migration
     public function up()
     {
         Schema::create('resposta_formularios', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->foreignIdFor(Formulario::class)->constrained();
-            $table->foreignIdFor(User::class)->constrained();
+            $table->increments('id');
+            $table->integer('form_id')->unsigned();
+            $table->integer('user_id');
             $table->timestamps();
+
+            $table->foreign('form_id')->references('id')->on('formularios');
+            $table->foreign('user_id')->references('id')->on('user');
         });
     }
 

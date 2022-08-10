@@ -14,16 +14,18 @@ class CreateGradeRespostaFormulariosTable extends Migration
     public function up()
     {
         Schema::create('grade_resposta_formularios', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $form_resp = $table->foreignIdFor(RespostaFormulario::class)->constrained();
-            $pergunta = $table->foreignIdFor(PerguntasFormulario::class)->constrained();
+            $table->increments('id');
+            $form_resp = $table->integer('respform_id')->unsigned();
+            $pergunta = $table->integer('pform_id')->unsigned();
             $table->text('resposta_texto')->nullable();
             $table->float('resposta_numero')->nullable();
-            $table->unsignedBigInteger('resposta_multipla')->nullable();
+            $table->integer('resposta_multipla')->unsigned()->nullable();
             $table->json('resposta_selecao')->nullable();
             $table->timestamps();
 
-            $table->unique($form_resp, $pergunta);
+            $table->foreign('respform_id')->references('id')->on('resposta_formularios');
+            $table->foreign('pform_id')->references('id')->on('perguntas_formularios');
+            $table->foreign('resposta_multipla')->references('id')->on('item_perguntas_formularios');
         });
     }
 
