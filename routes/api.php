@@ -181,7 +181,7 @@ route::group(['prefix'=>'student/schedulings','middleware' => ['check.admin', 'c
 });
 
 //Gerenciador de formularios 
-route::group(['prefix' => 'forms', 'middleware' => ['check.admin', 'check.assistance']], function (){
+route::group(['prefix' => 'forms'], function (){
     route::get('/', 'Forms\AssistenciaForms@index')->name('forms.show');
     route::post('/new', 'Forms\AssistenciaForms@store')->name('forms.store');
     route::put('/{id}/edit', 'Forms\AssistenciaForms@update')->name('forms.update');
@@ -189,7 +189,7 @@ route::group(['prefix' => 'forms', 'middleware' => ['check.admin', 'check.assist
 });
 
 //Respostas do formulário
-route::group(['prefix'=> 'student/forms', 'middleware' => ['check.admin', 'check.student']], function(){
-    route::get('/', 'Forms\Student@index')->name('forms.view');
-    route::post('/response', 'Forms\Student@store')->name('forms.response');    
+route::group(['prefix'=> 'student/forms'], function(){
+    route::get('/', 'Forms\StudentFormController@index')->name('forms.view');
+    route::post('/response', 'Forms\StudentFormController@store')->name('forms.response');    
 });
