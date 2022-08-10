@@ -30,7 +30,8 @@ class StudentFormController extends Controller
             $wasResponded = $this->formWasResponded($form_active->id, $user->id);
             return response()->json([
                 "showForm" => !$wasResponded,
-                "form" => $form_active
+                "form" => $form_active,
+                "user_id" => $user->id
             ], 200);
         } else {
             return response()->json(["showForm" => false], 200);
@@ -102,5 +103,6 @@ class StudentFormController extends Controller
     public function store(Request $request)
     {
         //
+        return response()->json($request, 200);
     }
 }
