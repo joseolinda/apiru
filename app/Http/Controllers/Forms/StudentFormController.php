@@ -31,9 +31,9 @@ class StudentFormController extends Controller
             return response()->json([
                 "showForm" => !$wasResponded,
                 "form" => $form_active
-            ], 202);
+            ], 200);
         } else {
-            return response()->json(["showForm" => false], 202);
+            return response()->json(["showForm" => false], 200);
         }
     }
 
